@@ -1,0 +1,63 @@
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated files
+mono_crash.*
+
+# VS Code directories
+.vscode/
+
+# Node.js directories
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage directory
+coverage/
+
+# Dependency directories
+bower_components/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# Build output directories
+dist/
+.cache/
+public/
+
+# .NET directories
+bin/
+obj/
+
+# JetBrains IDEs (Rider, WebStorm, DataGrip)
+.idea/
+*.iml
+
+# Ignore .NET user secrets
+**/secrets.json
+
+## DB Migration
+
+/server/Service/Migrations/
