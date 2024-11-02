@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.HttpOverrides;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Controller support
+builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
@@ -18,6 +22,16 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+
+// Add this to be able to get client ID from reverse proxy services such as "Google Cloud Run"
+// and the back-end will respond correctly to forwarded requests
+app.UseForwardedHeaders(
+    new ForwardedHeadersOptions
+    {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+    }
+);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -27,5 +41,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//UseRouting adds routing middleware to match incoming HTTP requests to endpoints.
+app.UseRouting();
+
+app.UseCors();
+app.UseAuthorization();
+app.MapControllers();
 
 app.Run();
