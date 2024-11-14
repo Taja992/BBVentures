@@ -139,3 +139,40 @@ create table "AspNetUserTokens"
 alter table "AspNetUserTokens"
     owner to postgres;
 
+create table "Board"
+(
+    "BoardId" text        not null
+        constraint "Board_pk"
+            primary key,
+    "UserId"  text        not null
+        constraint "Board_AspNetUsers_Id_fk"
+            references "AspNetUsers",
+    "Numbers" varchar(15) not null,
+    "WeekNum" integer     not null,
+    "Cost"    numeric,
+    length    integer
+);
+
+alter table "Board"
+    owner to postgres;
+
+create table "WinningBoard"
+(
+    "WbId"    integer    not null
+        constraint "WinningBoard_pk"
+            primary key,
+    numbers   varchar(5) not null,
+    "WeekNum" integer    not null
+);
+
+alter table "WinningBoard"
+    owner to postgres;
+
+create table "User"
+(
+    balance numeric not null
+);
+
+alter table "User"
+    owner to postgres;
+
