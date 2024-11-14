@@ -14,7 +14,7 @@ RUN dotnet restore
 COPY server/API/. ./server/API/
 COPY server/DataAccess/. ./server/DataAccess/
 COPY server/Service/. ./server/Service/
-COPY server/BBVenturesTests/. ./server/BBSportsTests/
+COPY server/BBVenturesTests/. ./server/BBVenturesTests/
 RUN dotnet publish -c release -o /app --no-restore
 
 # final stage/image
