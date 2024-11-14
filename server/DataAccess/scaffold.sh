@@ -1,4 +1,6 @@
-﻿connectionString="HOST=localhost;DB=postgres;UID=postgres;PWD=mysecret;PORT=5432;"
+﻿#!/bin/bash
+
+connectionString="HOST=localhost;DB=bbventure_db;UID=postgres;PWD=postgres;PORT=5432;"
 context="AppDbContext"
 
 dotnet ef dbcontext scaffold \
@@ -24,9 +26,14 @@ public partial class AppDbContext : IdentityDbContext<IdentityUser>
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options) { }
 "
-dbsets=$(cat $context.cs | grep DbSet | grep -v AspNet)
+
+dbsets=$(grep DbSet AppDbContext.cs | grep -v AspNet)
 post="}"
 
-echo -e $pre $dbsets $post >$context.cs
+cat <<EOF >$context.cs
+$pre
+$dbsets
+$post
+EOF
 
 dotnet format

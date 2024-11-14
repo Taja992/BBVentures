@@ -1,6 +1,6 @@
 namespace BBVenturesTests;
 
-public class UnitTest1
+public class UnitTests
 {
     [Fact]
     public void Test1()
