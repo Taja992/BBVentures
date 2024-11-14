@@ -78,7 +78,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 
-app.Urls.Add("http://localhost:5000");
+// app.Urls.Add("http://localhost:5000");
 
 
 // Add this to be able to get client ID from reverse proxy services such as "Google Cloud Run"
