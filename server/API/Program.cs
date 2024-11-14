@@ -15,6 +15,12 @@ var builder = WebApplication.CreateBuilder(args);
 // );
 //Also stuff like builder.Services.AddScoped<IRepositor<User>, UserRepository>();
 
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
 #endregion
 
 #region Security
@@ -51,14 +57,19 @@ builder.Services.AddSwaggerGen();
 #endregion
 
 
-// Controller support
+
+
+
+
+// Add services to the container.
 builder.Services.AddControllers();
+
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(b =>
     {
-        b.AllowAnyOrigin()
+        b.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -67,14 +78,17 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 
+app.Urls.Add("http://localhost:5000");
+
+
 // Add this to be able to get client ID from reverse proxy services such as "Google Cloud Run"
 // and the back-end will respond correctly to forwarded requests
-// app.UseForwardedHeaders(
-//     new ForwardedHeadersOptions
-//     {
-//         ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-//     }
-// );
+app.UseForwardedHeaders(
+    new ForwardedHeadersOptions
+    {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+    }
+);
 
 
 // Configure the HTTP request pipeline.
