@@ -92,7 +92,7 @@ app.UseRouting();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapIdentityApi<IdentityUser>().AllowAnonymous();
+// app.MapIdentityApi<IdentityUser>().AllowAnonymous();
 app.MapControllers();
 
 app.Run();

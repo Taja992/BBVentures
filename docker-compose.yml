@@ -1,12 +1,12 @@
-#services:
-#  db:
-#    image: postgres:latest
-#    container_name: dundler_mifflin_db
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: postgres
-#      POSTGRES_DB: dundlerdata
-#    volumes:
-#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-#    ports:
-#      - "5432:5432"
+services:
+  db:
+    image: postgres:latest
+    container_name: bbventure_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bbventure_db
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
