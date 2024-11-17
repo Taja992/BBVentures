@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,22 +6,17 @@ namespace DataAccess.Models;
 
 [Index("NormalizedEmail", Name = "EmailIndex")]
 [Index("NormalizedUserName", Name = "UserNameIndex", IsUnique = true)]
-public partial class AspNetUser
+public class AspNetUser
 {
-    [Key]
-    public string Id { get; set; } = null!;
+    [Key] public string Id { get; set; } = null!;
 
-    [StringLength(256)]
-    public string? UserName { get; set; }
+    [StringLength(256)] public string? UserName { get; set; }
 
-    [StringLength(256)]
-    public string? NormalizedUserName { get; set; }
+    [StringLength(256)] public string? NormalizedUserName { get; set; }
 
-    [StringLength(256)]
-    public string? Email { get; set; }
+    [StringLength(256)] public string? Email { get; set; }
 
-    [StringLength(256)]
-    public string? NormalizedEmail { get; set; }
+    [StringLength(256)] public string? NormalizedEmail { get; set; }
 
     public bool EmailConfirmed { get; set; }
 
@@ -53,6 +46,8 @@ public partial class AspNetUser
 
     [InverseProperty("User")]
     public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; } = new List<AspNetUserToken>();
+
+    [InverseProperty("User")] public virtual Player? Player { get; set; }
 
     [ForeignKey("UserId")]
     [InverseProperty("Users")]
