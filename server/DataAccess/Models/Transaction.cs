@@ -3,27 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Models;
 
-public class Board
+public class Transaction
 {
     [Key] public Guid Id { get; set; }
 
     public string PlayerId { get; set; } = null!;
 
-    public Guid GameId { get; set; }
-
-    public List<string>? Numbers { get; set; }
-
-    public bool IsAutoplay { get; set; }
+    public decimal Amount { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
-
-    [ForeignKey("GameId")]
-    [InverseProperty("Boards")]
-    public virtual Game Game { get; set; } = null!;
+    public string? MobilePayTransactionNumber { get; set; }
 
     [ForeignKey("PlayerId")]
-    [InverseProperty("Boards")]
+    [InverseProperty("Transactions")]
     public virtual Player Player { get; set; } = null!;
 }
