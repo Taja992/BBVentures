@@ -1,24 +1,31 @@
+using DataAccess;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+// using Service;
+// using Service.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 #region Data Access
 
-// var connectionString = builder.Configuration.GetConnectionString("AppDb");
-// builder.Services.AddDbContext<AppDbContext>(options =>
-//     options
-//         .UseNpgsql(connectionString)
-//         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-// );
+var connectionString = builder.Configuration.GetConnectionString("AppDb");
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options
+        .UseNpgsql(connectionString)
+        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+);
+
 //Also stuff like builder.Services.AddScoped<IRepositor<User>, UserRepository>();
 
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddJsonFile("appsettings.json", false, true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
     .AddEnvironmentVariables();
 
 #endregion
@@ -28,37 +35,42 @@ builder.Configuration
 // //Setting up Identity
 // builder.Services.AddAuthentication();
 //
-// builder
-//      .Services.AddIdentityApiEndpoints<IdentityUser>()
-//      .AddRoles<IdentityRole>()
-//      .AddEntityFrameworkStores<AppDbContext>();
-//
+builder
+    .Services.AddIdentityApiEndpoints<Player>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddAuthentication();
+
+
 // builder.Services.AddSingleton<IPasswordHasher<User>, Argon2idPasswordHasher<User>>();
-//
+
 // //Below is to globally require users to be authenticated
-// builder.Services.AddAuthorization(options => 
-//  { options.FallbackPolicy = new AuthorizationPolicyBuilder()
-//      .RequireAuthenticatedUser() 
-//      .Build(); 
-//  });
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
 #endregion
 
 #region Services
 
-//Stuff like builder.Services.AddScoped<IBlogService, BlogService>();
+// //Stuff like builder.Services.AddScoped<IBlogService, BlogService>();
+// builder.Services.AddScoped<ITokenClaimsService, JwtTokenClaimService>();
+// builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
 
 #endregion
 
 #region Swagger
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 #endregion
-
-
-
-
 
 
 // Add services to the container.
@@ -80,7 +92,14 @@ var app = builder.Build();
 
 // app.Urls.Add("http://localhost:5000");
 
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
+app.UseHttpsRedirection();
 // Add this to be able to get client ID from reverse proxy services such as "Google Cloud Run"
 // and the back-end will respond correctly to forwarded requests
 app.UseForwardedHeaders(
@@ -91,22 +110,13 @@ app.UseForwardedHeaders(
 );
 
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
 //UseRouting adds routing middleware to match incoming HTTP requests to endpoints.
 app.UseRouting();
 
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
-// app.MapIdentityApi<IdentityUser>().AllowAnonymous();
+app.MapIdentityApi<Player>().AllowAnonymous();
 app.MapControllers();
 
 app.Run();

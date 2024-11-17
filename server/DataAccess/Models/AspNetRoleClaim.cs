@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Models;
 
 [Index("RoleId", Name = "IX_AspNetRoleClaims_RoleId")]
-public partial class AspNetRoleClaim
+public class AspNetRoleClaim
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public string RoleId { get; set; } = null!;
 
