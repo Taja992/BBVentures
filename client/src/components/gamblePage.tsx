@@ -17,10 +17,10 @@ const GamblePage = () => {
             setToggledButtons([...toggledButtons, number]);
         }
     };
-    
+
     const handleSubmit = () => {
-        console.log(`Selected numbers`,toggledButtons);
-    }
+        console.log('Selected numbers:', toggledButtons);
+    };
 
     return (
         <div className="gamble-container">
@@ -42,6 +42,8 @@ const GamblePage = () => {
                         {i + 1}
                     </button>
                 ))}
+            </div>
+            <div className="submit-button-container">
                 <button className="submit-button" onClick={handleSubmit}>
                     Submit the lucky numbers!
                 </button>
