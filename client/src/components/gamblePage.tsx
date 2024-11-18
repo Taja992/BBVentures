@@ -20,7 +20,9 @@ const GamblePage = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Selected numbers:', toggledButtons);
+        if (toggledButtons.length === selectedFields) {
+            console.log('Selected numbers:', toggledButtons);
+        }
     };
 
     return (
@@ -28,7 +30,11 @@ const GamblePage = () => {
             <h1>Choose your numbers</h1>
             <div className="field-selection">
                 {[5, 6, 7, 8].map(fields => (
-                    <button key={fields} onClick={() => handleFieldSelection(fields)}>
+                    <button
+                        key={fields}
+                        onClick={() => handleFieldSelection(fields)}
+                        className={selectedFields === fields ? 'selected' : ''}
+                    >
                         {fields} Fields
                     </button>
                 ))}
@@ -45,7 +51,11 @@ const GamblePage = () => {
                 ))}
             </div>
             <div className="submit-button-container">
-                <button className="submit-button" onClick={handleSubmit}>
+                <button
+                    className="submit-button"
+                    onClick={handleSubmit}
+                    disabled={toggledButtons.length !== selectedFields}
+                >
                     Submit the lucky numbers!
                 </button>
             </div>

@@ -27,6 +27,10 @@
     background-color: #0056b3;
 }
 
+.field-selection button.selected {
+    background-color: #28a745;
+}
+
 .button-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -71,4 +75,9 @@ button.toggled {
 
 .submit-button:hover {
     background-color: #0f1e33;
+}
+
+.submit-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
 }
