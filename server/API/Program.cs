@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Service.Auth;
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -89,7 +90,13 @@ builder.Services.AddAuthorization(options =>
 // //Stuff like builder.Services.AddScoped<IBlogService, BlogService>();
 // builder.Services.AddScoped<ITokenClaimsService, JwtTokenClaimService>();
 // builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
+// builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+//
+//
+// builder.Services.AddScoped<IBoardService, BoardService>();
 
+// builder.Services.AddValidatorsFromAssemblyContaining<CreateBoardDto>();
+// builder.Services.AddValidatorsFromAssemblyContaining<UpdateBoardDto>();
 #endregion
 
 #region Swagger
