@@ -47,6 +47,10 @@ public class AuthController : ControllerBase
         {
             return BadRequest(validationResult.Errors);
         }
+        
+        
+        
+        
 
         var user = new Player
         {
