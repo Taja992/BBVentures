@@ -1,9 +1,15 @@
+using System.Text;
 using DataAccess;
 using DataAccess.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Service.Auth;
+
 
 // using Service;
 // using Service.Security;
@@ -35,12 +41,38 @@ builder.Configuration
 // //Setting up Identity
 // builder.Services.AddAuthentication();
 //
-builder
-    .Services.AddIdentityApiEndpoints<Player>()
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentity<Player, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
+
+var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new InvalidOperationException("JWT Key is not configured.");
+}
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(o =>
+    {
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+        };
+    });
 
 
 // builder.Services.AddSingleton<IPasswordHasher<User>, Argon2idPasswordHasher<User>>();
@@ -89,6 +121,20 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.Database.EnsureDeleted();
+        context.Database.EnsureCreated();
+        //at this point your columns and tables will be created based on what the context class looks like
+        //alternatively get the raw SQL from the DbContext and execute this manually after deleting the DB manually:
+        // var sql = context.Database.GenerateCreateScript();
+        // Console.WriteLine(sql); //this will print the SQL to build the exact DB from what the context looks like
+    }
+}
+
 
 // app.Urls.Add("http://localhost:5000");
 
@@ -116,7 +162,7 @@ app.UseRouting();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapIdentityApi<Player>().AllowAnonymous();
+// app.MapIdentityApi<Player>().AllowAnonymous();
 app.MapControllers();
 
 app.Run();
