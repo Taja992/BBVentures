@@ -108,16 +108,25 @@ builder.Services.AddSwaggerGen();
 // Add services to the container.
 builder.Services.AddControllers();
 
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(b =>
     {
-        b.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
+        b.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
 });
+
+// builder.Services.AddCors(options =>
+// {
+//     options.AddDefaultPolicy(b =>
+//     {
+//         b.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
+//             .AllowAnyMethod()
+//             .AllowAnyHeader();
+//     });
+// });
 
 var app = builder.Build();
 
