@@ -7,10 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <!--    Google cloud secret manager is added so we can hide connection string in program.cs-->
-        <PackageReference Include="Google.Cloud.SecretManager.V1" Version="2.5.0"/>
         <!--        Adding Identity to the project-->
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
