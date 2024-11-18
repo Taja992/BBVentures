@@ -11,9 +11,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Service.Auth;
 
 
-// using Service;
-// using Service.Security;
-
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -78,12 +75,12 @@ builder.Services.AddAuthentication(options =>
 // builder.Services.AddSingleton<IPasswordHasher<User>, Argon2idPasswordHasher<User>>();
 
 // //Below is to globally require users to be authenticated
-// builder.Services.AddAuthorization(options =>
-// {
-//     options.FallbackPolicy = new AuthorizationPolicyBuilder()
-//         .RequireAuthenticatedUser()
-//         .Build();
-// });
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 #endregion
 
@@ -108,25 +105,17 @@ builder.Services.AddSwaggerGen();
 // Add services to the container.
 builder.Services.AddControllers();
 
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(b =>
     {
         b.AllowAnyOrigin()
+        // b.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
 });
-
-// builder.Services.AddCors(options =>
-// {
-//     options.AddDefaultPolicy(b =>
-//     {
-//         b.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
-//             .AllowAnyMethod()
-//             .AllowAnyHeader();
-//     });
-// });
 
 var app = builder.Build();
 
@@ -145,7 +134,6 @@ if (app.Environment.IsDevelopment())
 }
 
 
-// app.Urls.Add("http://localhost:5000");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
