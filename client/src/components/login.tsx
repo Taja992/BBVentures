@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import './login.css';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Handle login logic here
         console.log('Email:', email);
         console.log('Password:', password);
+        
+        navigate('/gamble');
     };
 
     return (
