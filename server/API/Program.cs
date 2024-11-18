@@ -78,12 +78,12 @@ builder.Services.AddAuthentication(options =>
 // builder.Services.AddSingleton<IPasswordHasher<User>, Argon2idPasswordHasher<User>>();
 
 // //Below is to globally require users to be authenticated
-builder.Services.AddAuthorization(options =>
-{
-    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
+// builder.Services.AddAuthorization(options =>
+// {
+//     options.FallbackPolicy = new AuthorizationPolicyBuilder()
+//         .RequireAuthenticatedUser()
+//         .Build();
+// });
 
 #endregion
 
