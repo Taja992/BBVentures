@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 
@@ -12,6 +13,7 @@ public class BoardController(AppDbContext context) : ControllerBase
     
     [HttpGet]
     [Route("board")]
+    [AllowAnonymous]
     public ActionResult<List<Board>> GetAllBoards()
     {
         return Ok(boardService.GetAllBoards());
@@ -19,6 +21,7 @@ public class BoardController(AppDbContext context) : ControllerBase
     
     [HttpPost]
     [Route("board")]
+    [AllowAnonymous]
     public ActionResult<Board> AddBoard(Board b)
     {
         return Ok(boardService.AddBoard(b));

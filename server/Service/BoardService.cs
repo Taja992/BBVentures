@@ -1,29 +1,19 @@
 ﻿using DataAccess;
 using DataAccess.DataAccessObjects;
 using DataAccess.Models;
+using DataAccess.Repositories;
 
 namespace Service;
 
 public class BoardService(AppDbContext context)
 {
-    BoardDAO dao = new BoardDAO(context);
+    BoardRepository repo = new BoardRepository(context);
     
     public List<Board> GetAllBoards()
     {
-        return dao.GetAllBoards();
+        return repo.GetAllBoards();
     }
-
-    public Board AddBoard(Board b)
-    {
-        try
-        {
-            return dao.AddBoard(b);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
-    }
+    
     
     
     
