@@ -8,12 +8,22 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Service;
 using Service.Auth;
-
+using Service.Security;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region Configuration
+
+builder
+    .Services.AddOptionsWithValidateOnStart<AppOptions>()
+    .Bind(builder.Configuration.GetSection(nameof(AppOptions)))
+    .ValidateDataAnnotations();
+
+// builder.Services.AddSingleton(_ => TimeProvider.System);
+#endregion
 
 #region Data Access
 
@@ -37,21 +47,29 @@ builder.Configuration
 #region Security
 
 // //Setting up Identity
-// builder.Services.AddAuthentication();
-//
-builder.Services.AddIdentity<Player, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
+
+// builder.Services.AddIdentity<Player, IdentityRole>()
+//     .AddEntityFrameworkStores<AppDbContext>()
+//     .AddDefaultTokenProviders();
+
+builder
+    .Services.AddIdentityApiEndpoints<Player>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 
-var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
-if (string.IsNullOrEmpty(jwtKey))
-{
-    throw new InvalidOperationException("JWT Key is not configured.");
-}
+// var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+// if (string.IsNullOrEmpty(jwtKey))
+// {
+//     throw new InvalidOperationException("JWT Key is not configured.");
+// }
 
-builder.Services.AddAuthentication(options =>
+//Setting up Authorization using AppOptions class to store secrets and JwtTokenClaimService to add a way to customize the tokens to what we want
+var appOptions = builder.Configuration.GetSection(nameof(AppOptions)).Get<AppOptions>()!;
+
+builder
+    .Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -60,22 +78,13 @@ builder.Services.AddAuthentication(options =>
     })
     .AddJwtBearer(o =>
     {
-        o.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
-        };
+        o.TokenValidationParameters = JwtTokenClaimService.ValidationParameters(appOptions);
     });
 
-
+// builder.Services.AddScoped<ITokenClaimsService, JwtTokenClaimService>();
 // builder.Services.AddSingleton<IPasswordHasher<User>, Argon2idPasswordHasher<User>>();
 
-// //Below is to globally require users to be authenticated
+//Adds authorization requiring all end points to define who accesses them
 builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder()
@@ -87,9 +96,10 @@ builder.Services.AddAuthorization(options =>
 
 #region Services
 
-// //Stuff like builder.Services.AddScoped<IBlogService, BlogService>();
-// builder.Services.AddScoped<ITokenClaimsService, JwtTokenClaimService>();
+// Stuff like builder.Services.AddScoped<IBlogService, BlogService>();
+
 // builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
+
 // builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 //
 //
@@ -104,7 +114,10 @@ builder.Services.AddAuthorization(options =>
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.CustomSchemaIds(type => type.FullName);
+});
 
 #endregion
 
@@ -166,7 +179,7 @@ app.UseRouting();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
-// app.MapIdentityApi<Player>().AllowAnonymous();
+app.MapIdentityApi<Player>().AllowAnonymous();
 app.MapControllers();
 
 app.Run();
