@@ -15,6 +15,8 @@ public class ForbiddenError() : AppError("Forbiddden!") { }
 
 public class AuthenticationError() : AppError("Unable to authenticate!") { }
 
+public class UserNotFoundError() : AppError("User not found") {}
+
 public class ValidationError(IDictionary<string, string[]> Errors) : AppError("Validation failed!")
 {
     public IDictionary<string, string[]> Errors { get; } = Errors;
