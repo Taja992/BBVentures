@@ -42,6 +42,7 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
     .AddEnvironmentVariables();
 
+builder.Services.AddScoped<DbSeeder>();
 #endregion
 
 #region Security
@@ -81,7 +82,7 @@ builder
         o.TokenValidationParameters = JwtTokenClaimService.ValidationParameters(appOptions);
     });
 
-// builder.Services.AddScoped<ITokenClaimsService, JwtTokenClaimService>();
+builder.Services.AddScoped<ITokenClaimsService, JwtTokenClaimService>();
 // builder.Services.AddSingleton<IPasswordHasher<User>, Argon2idPasswordHasher<User>>();
 
 //Adds authorization requiring all end points to define who accesses them
@@ -139,6 +140,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+
 if (app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())
@@ -153,6 +155,12 @@ if (app.Environment.IsDevelopment())
     }
 }
 
+//using a seeder to add our roles
+using (var scope = app.Services.CreateScope())
+{
+    var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+    dbSeeder.SeedAsync().Wait();
+}
 
 
 // Configure the HTTP request pipeline.
