@@ -47,10 +47,6 @@ public class AuthController : ControllerBase
         {
             return BadRequest(validationResult.Errors);
         }
-        
-        
-        
-        
 
         var user = new Player
         {
@@ -66,7 +62,6 @@ public class AuthController : ControllerBase
         if (result.Succeeded)
             return Ok(new RegisterResponse(model.Email, model.Name));
         
-
         return BadRequest(ModelState);
     }
     

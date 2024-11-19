@@ -5,7 +5,7 @@
 // using Service.TransferModels.Requests.Create;
 // using Service.TransferModels.Requests.Update;
 //
-// namespace Service;
+// namespace Services.BoardService;
 //
 //
 // public interface IBoardService
