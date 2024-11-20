@@ -8,16 +8,26 @@ using Service.TransferModels.DTOs;
 namespace API.Controllers;
 
 [Route("api")]
+[ApiController]
 public class TransactionController(AppDbContext context) : ControllerBase
 {
     private TransactionService service = new TransactionService(context);
     
     [HttpGet]
-    [Route("/transactions")]
+    [Route("transactions")]
     [AllowAnonymous]
-    public List<TransactionDto> GetAllTransactions()
+    public ActionResult<List<TransactionDto>> GetAllTransactions()
     {
         return service.GetAllTransactions();
+    }
+
+    [HttpPost]
+    [Route("addTransaction")]
+    [AllowAnonymous]
+    public ActionResult<TransactionDto> AddTransaction([FromBody] TransactionDto dto)
+    {
+        var trans = service.CreateTransaction(dto);
+        return Ok(trans);
     }
     
 }

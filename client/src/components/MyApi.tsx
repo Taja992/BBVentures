@@ -1,4 +1,4 @@
-import {Api} from "../Api.ts";
+import {Api} from "../services/Api.ts";
 export const MyApi = new Api({
-    baseUrl: 'http://localhost:5252'
+    baseURL: 'http://localhost:5252'
 });

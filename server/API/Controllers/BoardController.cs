@@ -7,6 +7,7 @@ using Service;
 namespace API.Controller;
 
 [Route("api")]
+[ApiController]
 public class BoardController(AppDbContext context) : ControllerBase
 {
     private BoardService boardService = new BoardService(context);

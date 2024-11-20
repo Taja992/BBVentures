@@ -5,14 +5,15 @@ function History(){
     
     
     async function getAllBoards(){
-        const response = await MyApi.api.boardList()
+        const response = await MyApi.api.transactionsList();
         console.log(response.data)
     }
     
     return <>
-    
+        
         <button onClick={getAllBoards}>this is a test button</button>
     
+        
     </>
     
     
