@@ -18,11 +18,10 @@ function History(){
         <button onClick={getAllTrans}>this is a test button</button>
         {
             allTrans.map((t) => {return <>
-                <>detected transaction</>
-                <br/>
-                <>playerId: {t.playerId}</>
-                <>amount: {t.amount}</>
-                <br/>
+                <>detected transaction</> <br/>
+                <>Id: {t.id}</> <br/>
+                <>playerId: {t.playerId}</> <br/>
+                <>amount: {t.amount}</> <br/>
                 <br/>
             </>
             })

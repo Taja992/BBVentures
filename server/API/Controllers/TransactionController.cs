@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service;
@@ -13,10 +14,18 @@ public class TransactionController(AppDbContext context) : ControllerBase
 {
     private TransactionService service = new TransactionService(context);
     
-    [HttpGet]
+    /*[HttpGet]
     [Route("transactions")]
     [AllowAnonymous]
     public ActionResult<List<TransactionDto>> GetAllTransactions()
+    {
+        return service.GetAllTransactions();
+    }*/
+    
+    [HttpGet]
+    [Route("transactions")]
+    [AllowAnonymous]
+    public ActionResult<List<Transaction>> GetAllTransactions()
     {
         return service.GetAllTransactions();
     }

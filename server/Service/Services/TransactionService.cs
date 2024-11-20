@@ -9,11 +9,16 @@ public class TransactionService(AppDbContext context)
 {
     private TransactionRepository repo = new TransactionRepository(context);
 
-    public List<TransactionDto> GetAllTransactions()
+    /*public List<TransactionDto> GetAllTransactions()
     {
         List<Transaction> allTrans = repo.GetAllTransactions();
         List<TransactionDto> trans = new TransactionDto().FromEntities(allTrans);
         return trans;
+    }*/
+    
+    public List<Transaction> GetAllTransactions()
+    {
+        return repo.GetAllTransactions();
     }
     
     public async Task<TransactionDto> CreateTransaction(TransactionDto dto)
