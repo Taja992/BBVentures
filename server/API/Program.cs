@@ -1,6 +1,9 @@
 using System.Text;
 using DataAccess;
+using DataAccess.DataAccessObjects;
+using DataAccess.Interfaces;
 using DataAccess.Models;
+using DataAccess.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -99,8 +102,8 @@ builder.Services.AddAuthorization(options =>
 // Stuff like builder.Services.AddScoped<IBlogService, BlogService>();
 
 // builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
-
-// builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+ builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 //
 //
 // builder.Services.AddScoped<IBoardService, BoardService>();

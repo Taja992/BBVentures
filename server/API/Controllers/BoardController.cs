@@ -19,12 +19,12 @@ public class BoardController(AppDbContext context) : ControllerBase
         return Ok(boardService.GetAllBoards());
     }
     
-    [HttpPost]
+    /*[HttpPost]
     [Route("board")]
     [AllowAnonymous]
     public ActionResult<Board> AddBoard(Board b)
     {
         return Ok(boardService.AddBoard(b));
-    }
+    }*/
     
 }

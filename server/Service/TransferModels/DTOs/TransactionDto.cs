@@ -30,4 +30,11 @@ public class TransactionDto
         };
     }
     
+    public List<TransactionDto> FromEntities(List<Transaction> transactions)
+    {
+        //gets every transaction and turns them into a dto, using a "var" so theres no issues with the type
+        var dtos = transactions.Select(t => new TransactionDto().FromEntity(t));
+        return dtos.ToList(); // <- converting it back to a list of dtos and not a "var"
+    }
+    
 }
