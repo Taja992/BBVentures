@@ -1,9 +1,13 @@
 ﻿import React, { useState } from 'react';
 import './gamblePage.css';
+import { createBoard } from '../services/boardService';
 
 const GamblePage = () => {
     const [selectedFields, setSelectedFields] = useState(0);
     const [toggledButtons, setToggledButtons] = useState<number[]>([]);
+    const [playerId, setPlayerId] = useState(''); // Add playerId state
+    const [gameId, setGameId] = useState(''); // Add gameId state
+    const [isAutoplay, setIsAutoplay] = useState(false); // Add isAutoplay state
 
     const handleFieldSelection = (fields: number) => {
         setSelectedFields(fields);
@@ -18,10 +22,21 @@ const GamblePage = () => {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (toggledButtons.length === selectedFields) {
-            console.log('Selected numbers:', toggledButtons);
+            try {
+                const boardData = {
+                    playerId,
+                    gameId,
+                    numbers: toggledButtons,
+                    isAutoplay,
+                };
+                const response = await createBoard(boardData);
+                console.log('Board created successfully:', response);
+            } catch (error) {
+                console.error('Error creating board:', error);
+            }
         }
     };
 
