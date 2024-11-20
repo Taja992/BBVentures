@@ -7,8 +7,7 @@ public class TransactionDto
     public string PlayerId { get; set; } = null!;
 
     public decimal Amount { get; set; }
-
-
+    
     public string? MobilePayTransactionNumber { get; set; }
 
     public Transaction ToTransaction()
@@ -26,6 +25,7 @@ public class TransactionDto
         return new TransactionDto()
         {
             PlayerId = trans.PlayerId,
+            Amount = trans.Amount,
             MobilePayTransactionNumber = trans.MobilePayTransactionNumber
         };
     }
