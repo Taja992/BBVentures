@@ -9,10 +9,7 @@
     "rewrites": [
       {
         "source": "/api/**",
-        "run": {
-          "serviceId": "server",
-          "region": "europe-west1"
-        }
+        "destination": "https://server-792474364503.europe-west1.run.app/api/**"
       },
       {
         "source": "**",
