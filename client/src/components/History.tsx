@@ -1,10 +1,10 @@
 import {MyApi} from "../components/MyApi";
 import {useEffect, useState} from "react";
-import { DataAccessModelsTransaction } from "../services/Api";
+import { BBVenturesApiDataAccessModelsTransaction } from "../services/Api";
 
 function History(){
     
-    const [allTrans, setAllTrans] = useState<DataAccessModelsTransaction[]>([]);
+    const [allTrans, setAllTrans] = useState<BBVenturesApiDataAccessModelsTransaction[]>([]);
     
     useEffect(() => {getAllTrans()}, [])
     async function getAllTrans(){
