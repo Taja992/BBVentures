@@ -39,11 +39,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //Also stuff like builder.Services.AddScoped<IRepositor<User>, UserRepository>();
 
-builder.Configuration
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", false, true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
-    .AddEnvironmentVariables();
+// builder.Configuration
+//     .SetBasePath(Directory.GetCurrentDirectory())
+//     .AddJsonFile("appsettings.json", false, true)
+//     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
+//     .AddEnvironmentVariables();
 
 builder.Services.AddScoped<DbSeeder>();
 #endregion
