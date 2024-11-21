@@ -15,6 +15,76 @@ export interface BBVenturesApiAuthUserInfo {
   isPlayer?: boolean;
 }
 
+export interface BBVenturesApiDataAccessModelsBoard {
+  /** @format uuid */
+  id?: string;
+  playerId?: string | null;
+  /** @format uuid */
+  gameId?: string;
+  numbers?: string[] | null;
+  isAutoplay?: boolean;
+  /** @format date-time */
+  createdAt?: string | null;
+  /** @format date-time */
+  updatedAt?: string | null;
+  game?: BBVenturesApiDataAccessModelsGame;
+  player?: BBVenturesApiDataAccessModelsPlayer;
+}
+
+export interface BBVenturesApiDataAccessModelsGame {
+  /** @format uuid */
+  id?: string;
+  /** @format date-time */
+  createdAt?: string | null;
+  /** @format date-time */
+  endedAt?: string | null;
+  winnerNumbers?: string[] | null;
+  /** @format double */
+  totalRevenue?: number;
+  boards?: BBVenturesApiDataAccessModelsBoard[] | null;
+}
+
+export interface BBVenturesApiDataAccessModelsPlayer {
+  id?: string | null;
+  userName?: string | null;
+  normalizedUserName?: string | null;
+  email?: string | null;
+  normalizedEmail?: string | null;
+  emailConfirmed?: boolean;
+  passwordHash?: string | null;
+  securityStamp?: string | null;
+  concurrencyStamp?: string | null;
+  phoneNumber?: string | null;
+  phoneNumberConfirmed?: boolean;
+  twoFactorEnabled?: boolean;
+  /** @format date-time */
+  lockoutEnd?: string | null;
+  lockoutEnabled?: boolean;
+  /** @format int32 */
+  accessFailedCount?: number;
+  isActive?: boolean;
+  /** @format double */
+  balance?: number;
+  /** @format date-time */
+  createdAt?: string | null;
+  /** @format date-time */
+  updatedAt?: string | null;
+  boards?: BBVenturesApiDataAccessModelsBoard[] | null;
+  transactions?: BBVenturesApiDataAccessModelsTransaction[] | null;
+}
+
+export interface BBVenturesApiDataAccessModelsTransaction {
+  /** @format uuid */
+  id?: string;
+  playerId?: string | null;
+  /** @format double */
+  amount?: number;
+  /** @format date-time */
+  createdAt?: string | null;
+  mobilePayTransactionNumber?: string | null;
+  player?: BBVenturesApiDataAccessModelsPlayer;
+}
+
 export interface BBVenturesApiLoginRequest {
   email?: string | null;
   password?: string | null;
@@ -110,6 +180,13 @@ export interface BBVenturesApiRegisterRequest {
 export interface BBVenturesApiRegisterResponse {
   email?: string | null;
   name?: string | null;
+}
+
+export interface BBVenturesApiServiceTransferModelsDTOsTransactionDto {
+  playerId?: string | null;
+  /** @format double */
+  amount?: number;
+  mobilePayTransactionNumber?: string | null;
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -514,6 +591,53 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<BBVenturesApiAuthUserInfo, any>({
         path: `/api/Auth/userinfo`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Board
+     * @name BoardList
+     * @request GET:/api/board
+     */
+    boardList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiDataAccessModelsBoard[], any>({
+        path: `/api/board`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transaction
+     * @name TransactionsList
+     * @request GET:/api/transactions
+     */
+    transactionsList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiDataAccessModelsTransaction[], any>({
+        path: `/api/transactions`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transaction
+     * @name AddTransactionCreate
+     * @request POST:/api/addTransaction
+     */
+    addTransactionCreate: (data: BBVenturesApiServiceTransferModelsDTOsTransactionDto, params: RequestParams = {}) =>
+      this.request<BBVenturesApiServiceTransferModelsDTOsTransactionDto, any>({
+        path: `/api/addTransaction`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
