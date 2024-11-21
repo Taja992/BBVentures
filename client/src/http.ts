@@ -4,8 +4,9 @@ import { tokenStorage, TOKEN_KEY } from "./atoms/auth.ts";
 // URL prefix for own server
 // This is to protect us from accidently sending the JWT to 3rd party services.
 const AUTHORIZE_ORIGIN = "/";
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
 
-const _api = new Api();
+const _api = new Api({ baseURL: BACKEND_URL});
 
 _api.instance.interceptors.request.use((config) => {
     // Get the JWT from storage.
