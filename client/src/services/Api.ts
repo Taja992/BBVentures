@@ -9,77 +9,22 @@
  * ---------------------------------------------------------------
  */
 
-export interface DataAccessModelsBoard {
-  /** @format uuid */
-  id?: string;
-  playerId?: string | null;
-  /** @format uuid */
-  gameId?: string;
-  numbers?: string[] | null;
-  isAutoplay?: boolean;
-  /** @format date-time */
-  createdAt?: string | null;
-  /** @format date-time */
-  updatedAt?: string | null;
-  game?: DataAccessModelsGame;
-  player?: DataAccessModelsPlayer;
+export interface BBVenturesApiAuthUserInfo {
+  username?: string | null;
+  isAdmin?: boolean;
+  isPlayer?: boolean;
 }
 
-export interface DataAccessModelsGame {
-  /** @format uuid */
-  id?: string;
-  /** @format date-time */
-  createdAt?: string | null;
-  /** @format date-time */
-  endedAt?: string | null;
-  winnerNumbers?: string[] | null;
-  /** @format double */
-  totalRevenue?: number;
-  boards?: DataAccessModelsBoard[] | null;
-}
-
-export interface DataAccessModelsPlayer {
-  id?: string | null;
-  userName?: string | null;
-  normalizedUserName?: string | null;
+export interface BBVenturesApiLoginRequest {
   email?: string | null;
-  normalizedEmail?: string | null;
-  emailConfirmed?: boolean;
-  passwordHash?: string | null;
-  securityStamp?: string | null;
-  concurrencyStamp?: string | null;
-  phoneNumber?: string | null;
-  phoneNumberConfirmed?: boolean;
-  twoFactorEnabled?: boolean;
-  /** @format date-time */
-  lockoutEnd?: string | null;
-  lockoutEnabled?: boolean;
-  /** @format int32 */
-  accessFailedCount?: number;
-  isActive?: boolean;
-  /** @format double */
-  balance?: number;
-  /** @format date-time */
-  createdAt?: string | null;
-  /** @format date-time */
-  updatedAt?: string | null;
-  boards?: DataAccessModelsBoard[] | null;
-  transactions?: DataAccessModelsTransaction[] | null;
+  password?: string | null;
 }
 
-export interface DataAccessModelsTransaction {
-  /** @format uuid */
-  id?: string;
-  playerId?: string | null;
-  /** @format double */
-  amount?: number;
-  /** @format date-time */
-  createdAt?: string | null;
-  mobilePayTransactionNumber?: string | null;
-  player?: DataAccessModelsPlayer;
+export interface BBVenturesApiLoginResponse {
+  jwt?: string | null;
 }
 
-export interface MicrosoftAspNetCoreAuthenticationBearerTokenAccessTokenResponse {
+export interface BBVenturesApiMicrosoftAspNetCoreAuthenticationBearerTokenAccessTokenResponse {
   tokenType?: string | null;
   accessToken?: string | null;
   /** @format int64 */
@@ -87,7 +32,7 @@ export interface MicrosoftAspNetCoreAuthenticationBearerTokenAccessTokenResponse
   refreshToken?: string | null;
 }
 
-export interface MicrosoftAspNetCoreHttpHttpValidationProblemDetails {
+export interface BBVenturesApiMicrosoftAspNetCoreHttpHttpValidationProblemDetails {
   type?: string | null;
   title?: string | null;
   /** @format int32 */
@@ -98,48 +43,48 @@ export interface MicrosoftAspNetCoreHttpHttpValidationProblemDetails {
   [key: string]: any;
 }
 
-export interface MicrosoftAspNetCoreIdentityDataForgotPasswordRequest {
+export interface BBVenturesApiMicrosoftAspNetCoreIdentityDataForgotPasswordRequest {
   email?: string | null;
 }
 
-export interface MicrosoftAspNetCoreIdentityDataInfoRequest {
+export interface BBVenturesApiMicrosoftAspNetCoreIdentityDataInfoRequest {
   newEmail?: string | null;
   newPassword?: string | null;
   oldPassword?: string | null;
 }
 
-export interface MicrosoftAspNetCoreIdentityDataInfoResponse {
+export interface BBVenturesApiMicrosoftAspNetCoreIdentityDataInfoResponse {
   email?: string | null;
   isEmailConfirmed?: boolean;
 }
 
-export interface MicrosoftAspNetCoreIdentityDataLoginRequest {
+export interface BBVenturesApiMicrosoftAspNetCoreIdentityDataLoginRequest {
   email?: string | null;
   password?: string | null;
   twoFactorCode?: string | null;
   twoFactorRecoveryCode?: string | null;
 }
 
-export interface MicrosoftAspNetCoreIdentityDataRefreshRequest {
+export interface BBVenturesApiMicrosoftAspNetCoreIdentityDataRefreshRequest {
   refreshToken?: string | null;
 }
 
-export interface MicrosoftAspNetCoreIdentityDataRegisterRequest {
+export interface BBVenturesApiMicrosoftAspNetCoreIdentityDataRegisterRequest {
   email?: string | null;
   password?: string | null;
 }
 
-export interface MicrosoftAspNetCoreIdentityDataResendConfirmationEmailRequest {
+export interface BBVenturesApiMicrosoftAspNetCoreIdentityDataResendConfirmationEmailRequest {
   email?: string | null;
 }
 
-export interface MicrosoftAspNetCoreIdentityDataResetPasswordRequest {
+export interface BBVenturesApiMicrosoftAspNetCoreIdentityDataResetPasswordRequest {
   email?: string | null;
   resetCode?: string | null;
   newPassword?: string | null;
 }
 
-export interface MicrosoftAspNetCoreIdentityDataTwoFactorRequest {
+export interface BBVenturesApiMicrosoftAspNetCoreIdentityDataTwoFactorRequest {
   enable?: boolean | null;
   twoFactorCode?: string | null;
   resetSharedKey?: boolean;
@@ -147,7 +92,7 @@ export interface MicrosoftAspNetCoreIdentityDataTwoFactorRequest {
   forgetMachine?: boolean;
 }
 
-export interface MicrosoftAspNetCoreIdentityDataTwoFactorResponse {
+export interface BBVenturesApiMicrosoftAspNetCoreIdentityDataTwoFactorResponse {
   sharedKey?: string | null;
   /** @format int32 */
   recoveryCodesLeft?: number;
@@ -156,37 +101,15 @@ export interface MicrosoftAspNetCoreIdentityDataTwoFactorResponse {
   isMachineRemembered?: boolean;
 }
 
-export interface ServiceAuthAuthUserInfo {
-  username?: string | null;
-  isAdmin?: boolean;
-  canBuy?: boolean;
-}
-
-export interface ServiceAuthLoginRequest {
-  email?: string | null;
-  password?: string | null;
-}
-
-export interface ServiceAuthLoginResponse {
-  jwt?: string | null;
-}
-
-export interface ServiceAuthRegisterRequest {
+export interface BBVenturesApiRegisterRequest {
   email?: string | null;
   password?: string | null;
   name?: string | null;
 }
 
-export interface ServiceAuthRegisterResponse {
+export interface BBVenturesApiRegisterResponse {
   email?: string | null;
   name?: string | null;
-}
-
-export interface ServiceTransferModelsDTOsTransactionDto {
-  playerId?: string | null;
-  /** @format double */
-  amount?: number;
-  mobilePayTransactionNumber?: string | null;
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -336,8 +259,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name RegisterCreate
      * @request POST:/register
      */
-    registerCreate: (data: MicrosoftAspNetCoreIdentityDataRegisterRequest, params: RequestParams = {}) =>
-      this.request<void, MicrosoftAspNetCoreHttpHttpValidationProblemDetails>({
+    registerCreate: (data: BBVenturesApiMicrosoftAspNetCoreIdentityDataRegisterRequest, params: RequestParams = {}) =>
+      this.request<void, BBVenturesApiMicrosoftAspNetCoreHttpHttpValidationProblemDetails>({
         path: `/register`,
         method: "POST",
         body: data,
@@ -354,14 +277,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/login
      */
     loginCreate: (
-      data: MicrosoftAspNetCoreIdentityDataLoginRequest,
+      data: BBVenturesApiMicrosoftAspNetCoreIdentityDataLoginRequest,
       query?: {
         useCookies?: boolean;
         useSessionCookies?: boolean;
       },
       params: RequestParams = {},
     ) =>
-      this.request<MicrosoftAspNetCoreAuthenticationBearerTokenAccessTokenResponse, any>({
+      this.request<BBVenturesApiMicrosoftAspNetCoreAuthenticationBearerTokenAccessTokenResponse, any>({
         path: `/login`,
         method: "POST",
         query: query,
@@ -379,8 +302,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name RefreshCreate
      * @request POST:/refresh
      */
-    refreshCreate: (data: MicrosoftAspNetCoreIdentityDataRefreshRequest, params: RequestParams = {}) =>
-      this.request<MicrosoftAspNetCoreAuthenticationBearerTokenAccessTokenResponse, any>({
+    refreshCreate: (data: BBVenturesApiMicrosoftAspNetCoreIdentityDataRefreshRequest, params: RequestParams = {}) =>
+      this.request<BBVenturesApiMicrosoftAspNetCoreAuthenticationBearerTokenAccessTokenResponse, any>({
         path: `/refresh`,
         method: "POST",
         body: data,
@@ -421,7 +344,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/resendConfirmationEmail
      */
     resendConfirmationEmailCreate: (
-      data: MicrosoftAspNetCoreIdentityDataResendConfirmationEmailRequest,
+      data: BBVenturesApiMicrosoftAspNetCoreIdentityDataResendConfirmationEmailRequest,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
@@ -440,8 +363,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name ForgotPasswordCreate
      * @request POST:/forgotPassword
      */
-    forgotPasswordCreate: (data: MicrosoftAspNetCoreIdentityDataForgotPasswordRequest, params: RequestParams = {}) =>
-      this.request<void, MicrosoftAspNetCoreHttpHttpValidationProblemDetails>({
+    forgotPasswordCreate: (
+      data: BBVenturesApiMicrosoftAspNetCoreIdentityDataForgotPasswordRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, BBVenturesApiMicrosoftAspNetCoreHttpHttpValidationProblemDetails>({
         path: `/forgotPassword`,
         method: "POST",
         body: data,
@@ -457,8 +383,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name ResetPasswordCreate
      * @request POST:/resetPassword
      */
-    resetPasswordCreate: (data: MicrosoftAspNetCoreIdentityDataResetPasswordRequest, params: RequestParams = {}) =>
-      this.request<void, MicrosoftAspNetCoreHttpHttpValidationProblemDetails>({
+    resetPasswordCreate: (
+      data: BBVenturesApiMicrosoftAspNetCoreIdentityDataResetPasswordRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, BBVenturesApiMicrosoftAspNetCoreHttpHttpValidationProblemDetails>({
         path: `/resetPassword`,
         method: "POST",
         body: data,
@@ -474,10 +403,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name PostManage
      * @request POST:/manage/2fa
      */
-    postManage: (data: MicrosoftAspNetCoreIdentityDataTwoFactorRequest, params: RequestParams = {}) =>
+    postManage: (data: BBVenturesApiMicrosoftAspNetCoreIdentityDataTwoFactorRequest, params: RequestParams = {}) =>
       this.request<
-        MicrosoftAspNetCoreIdentityDataTwoFactorResponse,
-        MicrosoftAspNetCoreHttpHttpValidationProblemDetails | void
+        BBVenturesApiMicrosoftAspNetCoreIdentityDataTwoFactorResponse,
+        BBVenturesApiMicrosoftAspNetCoreHttpHttpValidationProblemDetails | void
       >({
         path: `/manage/2fa`,
         method: "POST",
@@ -496,8 +425,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     infoList: (params: RequestParams = {}) =>
       this.request<
-        MicrosoftAspNetCoreIdentityDataInfoResponse,
-        MicrosoftAspNetCoreHttpHttpValidationProblemDetails | void
+        BBVenturesApiMicrosoftAspNetCoreIdentityDataInfoResponse,
+        BBVenturesApiMicrosoftAspNetCoreHttpHttpValidationProblemDetails | void
       >({
         path: `/manage/info`,
         method: "GET",
@@ -512,10 +441,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name InfoCreate
      * @request POST:/manage/info
      */
-    infoCreate: (data: MicrosoftAspNetCoreIdentityDataInfoRequest, params: RequestParams = {}) =>
+    infoCreate: (data: BBVenturesApiMicrosoftAspNetCoreIdentityDataInfoRequest, params: RequestParams = {}) =>
       this.request<
-        MicrosoftAspNetCoreIdentityDataInfoResponse,
-        MicrosoftAspNetCoreHttpHttpValidationProblemDetails | void
+        BBVenturesApiMicrosoftAspNetCoreIdentityDataInfoResponse,
+        BBVenturesApiMicrosoftAspNetCoreHttpHttpValidationProblemDetails | void
       >({
         path: `/manage/info`,
         method: "POST",
@@ -533,8 +462,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name AuthLoginCreate
      * @request POST:/api/Auth/login
      */
-    authLoginCreate: (data: ServiceAuthLoginRequest, params: RequestParams = {}) =>
-      this.request<ServiceAuthLoginResponse, any>({
+    authLoginCreate: (data: BBVenturesApiLoginRequest, params: RequestParams = {}) =>
+      this.request<BBVenturesApiLoginResponse, any>({
         path: `/api/Auth/login`,
         method: "POST",
         body: data,
@@ -550,8 +479,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name AuthRegisterCreate
      * @request POST:/api/Auth/register
      */
-    authRegisterCreate: (data: ServiceAuthRegisterRequest, params: RequestParams = {}) =>
-      this.request<ServiceAuthRegisterResponse, any>({
+    authRegisterCreate: (data: BBVenturesApiRegisterRequest, params: RequestParams = {}) =>
+      this.request<BBVenturesApiRegisterResponse, any>({
         path: `/api/Auth/register`,
         method: "POST",
         body: data,
@@ -582,56 +511,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Auth/userinfo
      */
     authUserinfoList: (params: RequestParams = {}) =>
-      this.request<ServiceAuthAuthUserInfo, any>({
+      this.request<BBVenturesApiAuthUserInfo, any>({
         path: `/api/Auth/userinfo`,
         method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Board
-     * @name BoardList
-     * @request GET:/api/board
-     */
-    boardList: (params: RequestParams = {}) =>
-      this.request<DataAccessModelsBoard[], any>({
-        path: `/api/board`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Transaction
-     * @name TransactionsList
-     * @request GET:/api/transactions
-     */
-    transactionsList: (params: RequestParams = {}) =>
-      this.request<ServiceTransferModelsDTOsTransactionDto[], any>({
-        path: `/api/transactions`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Transaction
-     * @name AddTransactionCreate
-     * @request POST:/api/addTransaction
-     */
-    addTransactionCreate: (data: ServiceTransferModelsDTOsTransactionDto, params: RequestParams = {}) =>
-      this.request<ServiceTransferModelsDTOsTransactionDto, any>({
-        path: `/api/addTransaction`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),

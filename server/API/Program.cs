@@ -39,11 +39,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //Also stuff like builder.Services.AddScoped<IRepositor<User>, UserRepository>();
 
-builder.Configuration
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", false, true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
-    .AddEnvironmentVariables();
+// builder.Configuration
+//     .SetBasePath(Directory.GetCurrentDirectory())
+//     .AddJsonFile("appsettings.json", false, true)
+//     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
+//     .AddEnvironmentVariables();
 
 builder.Services.AddScoped<DbSeeder>();
 #endregion
@@ -120,7 +120,20 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.CustomSchemaIds(type => type.FullName);
+    // Custom schema IDs with namespace, removing "ServiceAuth"
+    c.CustomSchemaIds(type =>
+    {
+        var fullName = type.FullName;
+        if (fullName == null)
+        {
+            // Fallback in case fullName is null
+            return $"BBVenturesApi{type.Name}";
+        }
+
+        // Remove "Service.Auth" from the full name
+        fullName = fullName.Replace("Service.Auth.", "");
+        return $"BBVenturesApi{fullName.Replace(".", "")}";
+    });
 });
 
 #endregion
@@ -185,7 +198,7 @@ app.UseForwardedHeaders(
 
 
 //UseRouting adds routing middleware to match incoming HTTP requests to endpoints.
-app.UseRouting();
+// app.UseRouting();
 
 app.UseCors();
 app.UseAuthentication();
