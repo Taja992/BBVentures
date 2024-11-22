@@ -1,17 +1,18 @@
-import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './playerPage.css';
 
 const PlayerPage = () => {
+    const { userId } = useParams<{ userId: string }>();
+
     return (
         <div className="player-container">
             <header className="player-header">
-                <h1>Player Dashboard</h1>
+                <h1>Player Dashboard - {userId}</h1>
                 <nav>
                     <ul>
-                        <li><Link to="/player/boards">My Boards</Link></li>
-                        <li><Link to="/player/games">Current Games</Link></li>
-                        <li><Link to="/player/transactions">My Transactions</Link></li>
-                        <li><Link to="/player/profile">My Profile</Link></li>
+                        <li><a href={`/player/${userId}/profile`}>Profile</a></li>
+                        <li><a href={`/player/${userId}/games`}>Games</a></li>
+                        <li><a href={`/player/${userId}/stats`}>Stats</a></li>
                     </ul>
                 </nav>
             </header>
