@@ -5,7 +5,7 @@ import { BBVenturesApiDataAccessModelsTransaction } from "../../services/Api";
 
 function History(){
     
-    const [allTrans, setAllTrans] = useState<BBVenturesApiDataAccessModelsTransaction[]>([]);
+    const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
     
     useEffect(() => {getAllTrans()}, [])
     async function getAllTrans(){

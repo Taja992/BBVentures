@@ -1,17 +1,21 @@
-import { Link } from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import './adminPage.css';
 
 const AdminPage = () => {
+    const { adminId } = useParams<{ adminId: string }>();
+
+
+
     return (
         <div className="admin-container">
             <header className="admin-header">
-                <h1>Admin Dashboard</h1>
+                <h1>Admin Dashboard - {adminId}</h1>
                 <nav>
                     <ul>
-                        <li><Link to="/admin/players">Manage Players</Link></li>
-                        <li><Link to="/admin/games">Manage Games</Link></li>
-                        <li><Link to="/admin/boards">Manage Boards</Link></li>
-                        <li><Link to="/admin/transactions">View Transactions</Link></li>
+                        <li><Link to={`/admin/${adminId}/players`}>Manage Players</Link></li>
+                        <li><Link to={`/admin/${adminId}/games`}>Manage Games</Link></li>
+                        <li><Link to={`/admin/${adminId}/boards`}>Manage Boards</Link></li>
+                        <li><Link to={`/admin/${adminId}/transactions`}>View Transactions</Link></li>
                     </ul>
                 </nav>
             </header>

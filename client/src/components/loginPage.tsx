@@ -1,5 +1,4 @@
-import './login.css';
-import { useNavigate } from 'react-router-dom';
+import './loginn.css';
 import { Credentials, useAuth } from "../atoms/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -20,34 +19,26 @@ const schema: yup.ObjectSchema<Credentials> = yup
     })
     .required();
 
-const Login = () => {
-    const { login, user } = useAuth(); // Using our useAuth in atoms to get login feature
-    const navigate = useNavigate();
+
+const LoginPage = () => {
+    const { login } = useAuth(); // Using our useAuth in atoms to get login feature
+
 
     // Initializing react-hook-form with yup validation schema
     const {
         register, // Function to register input fields
         handleSubmit, // Function to handle form submission
         formState: { errors }, // Object containing form errors
-    } = useForm({ resolver: yupResolver(schema) }); // Using yupResolver to integrate yup with react-hook-form
+    } = useForm<Credentials>({ resolver: yupResolver(schema) }); // Using yupResolver to integrate yup with react-hook-form
 
     // Function to handle form submission
-    const onSubmit: SubmitHandler<Credentials> = (data) => {
-        // Using toast.promise to show notifications for the login process
-        toast.promise(login(data), {
-            success: "Logged in successfully", // Message on successful login
-            error: "Invalid credentials", // Message on login failure
-            loading: "Logging in...", // Message while login is in progress
-        }).then(() => {
-            // Check user role and navigate accordingly
-            if (user?.isAdmin) {
-                navigate('/admin'); // Navigate to admin page if user is an admin
-            } else if (user?.isPlayer) {
-                navigate('/player'); // Navigate to player page if user is not an admin
-            } else {
-                navigate('/');
-            }
-        });
+    const onSubmit: SubmitHandler<Credentials> = async (data) => {
+        try {
+            await login(data); // Call the login function with form data
+            toast.success("Login successful!"); // Show success message
+        } catch {
+            toast.error("Login failed. Please check your credentials and try again."); // Show error message
+        }
     };
 
     return (
@@ -63,7 +54,7 @@ const Login = () => {
                         {...register("email")} // Registering email input field
                         required
                     />
-                    {errors.email && <p>{errors.email.message}</p>} // Display email error message if validation fails
+                    {errors.email && <p className="error-message">{errors.email.message}</p>}
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
@@ -73,7 +64,7 @@ const Login = () => {
                         {...register("password")} // Registering password input field
                         required
                     />
-                    {errors.password && <p>{errors.password.message}</p>} // Display password error message if validation fails
+                    {errors.password && <p className="error-message">{errors.password.message}</p>}
                 </div>
                 <button type="submit">Login</button>
             </form>
@@ -81,4 +72,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginPage;

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Service;
 using Service.Auth;
 using Service.Security;
+using Service.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -104,7 +105,9 @@ builder.Services.AddAuthorization(options =>
 
 // builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
- builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<GameService>();
 //
 //
 // builder.Services.AddScoped<IBoardService, BoardService>();
@@ -120,19 +123,24 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    // Custom schema IDs with namespace, removing "ServiceAuth"
     c.CustomSchemaIds(type =>
     {
-        var fullName = type.FullName;
-        if (fullName == null)
-        {
-            // Fallback in case fullName is null
-            return $"BBVenturesApi{type.Name}";
-        }
 
-        // Remove "Service.Auth" from the full name
-        fullName = fullName.Replace("Service.Auth.", "");
-        return $"BBVenturesApi{fullName.Replace(".", "")}";
+        var customPrefix = "BBVenturesApi";
+        
+        var identityPrefix = "MicrosoftIdentity";
+        
+        var typeNamespace = type.Namespace;
+        
+        var simpleName = type.Name;
+
+        // Check if the type is from the Microsoft.AspNetCore.Identity namespace
+        if (typeNamespace?.StartsWith("Microsoft.AspNetCore.Identity") == true)
+        {
+            return $"{identityPrefix}{simpleName}";
+        }
+        // For custom endpoints, use the BBVenturesApi prefix
+        return $"{customPrefix}{simpleName}";
     });
 });
 
@@ -168,15 +176,17 @@ if (app.Environment.IsDevelopment())
         //alternatively get the raw SQL from the DbContext and execute this manually after deleting the DB manually:
         // var sql = context.Database.GenerateCreateScript();
         // Console.WriteLine(sql); //this will print the SQL to build the exact DB from what the context looks like
+        var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+        dbSeeder.SeedAsync().Wait();
     }
 }
 
-//using a seeder to add our roles
-using (var scope = app.Services.CreateScope())
-{
-    var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-    dbSeeder.SeedAsync().Wait();
-}
+// //using a seeder to add our roles
+// using (var scope = app.Services.CreateScope())
+// {
+//     var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+//     dbSeeder.SeedAsync().Wait();
+// }
 
 
 // Configure the HTTP request pipeline.
