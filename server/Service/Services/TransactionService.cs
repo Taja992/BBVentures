@@ -9,17 +9,17 @@ public class TransactionService(AppDbContext context)
 {
     private TransactionRepository repo = new TransactionRepository(context);
 
-    /*public List<TransactionDto> GetAllTransactions()
+    public List<TransactionResponseDto> GetAllTransactions()
     {
         List<Transaction> allTrans = repo.GetAllTransactions();
-        List<TransactionDto> trans = new TransactionDto().FromEntities(allTrans);
+        List<TransactionResponseDto> trans = new TransactionResponseDto().FromEntities(allTrans);
         return trans;
-    }*/
+    }
     
-    public List<Transaction> GetAllTransactions()
+    /*public List<Transaction> GetAllTransactions()
     {
         return repo.GetAllTransactions();
-    }
+    }*/
     
     public async Task<TransactionDto> CreateTransaction(TransactionDto dto)
     {

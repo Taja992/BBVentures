@@ -25,7 +25,7 @@ public class TransactionController(AppDbContext context) : ControllerBase
     [HttpGet]
     [Route("transactions")]
     [AllowAnonymous]
-    public ActionResult<List<Transaction>> GetAllTransactions()
+    public ActionResult<List<TransactionResponseDto>> GetAllTransactions()
     {
         return service.GetAllTransactions();
     }
