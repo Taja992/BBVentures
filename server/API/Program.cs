@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Service;
 using Service.Auth;
 using Service.Security;
+using Service.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -104,7 +105,9 @@ builder.Services.AddAuthorization(options =>
 
 // builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
- builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<GameService>();
 //
 //
 // builder.Services.AddScoped<IBoardService, BoardService>();
