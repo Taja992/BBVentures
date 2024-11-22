@@ -120,19 +120,24 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    // Custom schema IDs with namespace, removing "ServiceAuth"
     c.CustomSchemaIds(type =>
     {
-        var fullName = type.FullName;
-        if (fullName == null)
-        {
-            // Fallback in case fullName is null
-            return $"BBVenturesApi{type.Name}";
-        }
 
-        // Remove "Service.Auth" from the full name
-        fullName = fullName.Replace("Service.Auth.", "");
-        return $"BBVenturesApi{fullName.Replace(".", "")}";
+        var customPrefix = "BBVenturesApi";
+        
+        var identityPrefix = "MicrosoftIdentity";
+        
+        var typeNamespace = type.Namespace;
+        
+        var simpleName = type.Name;
+
+        // Check if the type is from the Microsoft.AspNetCore.Identity namespace
+        if (typeNamespace?.StartsWith("Microsoft.AspNetCore.Identity") == true)
+        {
+            return $"{identityPrefix}{simpleName}";
+        }
+        // For custom endpoints, use the BBVenturesApi prefix
+        return $"{customPrefix}{simpleName}";
     });
 });
 
