@@ -16,6 +16,13 @@ public class TransactionService(AppDbContext context)
         return trans;
     }
     
+    public List<TransactionResponseDto> GetAllTransactionsFromUser(string GUID)
+    {
+        List<Transaction> transFromUser = repo.GetAllTransactionsFromUser(GUID);
+        List<TransactionResponseDto> trans = new TransactionResponseDto().FromEntities(transFromUser);
+        return trans;
+    }
+    
     /*public List<Transaction> GetAllTransactions()
     {
         return repo.GetAllTransactions();

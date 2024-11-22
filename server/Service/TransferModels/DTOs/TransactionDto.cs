@@ -65,9 +65,11 @@ public class TransactionResponseDto
     {
         return new TransactionResponseDto()
         {
+            Id = trans.Id,
             PlayerId = trans.PlayerId,
             Amount = trans.Amount,
-            MobilePayTransactionNumber = trans.MobilePayTransactionNumber
+            MobilePayTransactionNumber = trans.MobilePayTransactionNumber,
+            CreatedAt = trans.CreatedAt
         };
     }
     

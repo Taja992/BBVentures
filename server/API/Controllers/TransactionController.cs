@@ -8,7 +8,7 @@ using Service.TransferModels.DTOs;
 
 namespace API.Controllers;
 
-[Route("api")]
+[Route("api/[controller]")]
 [ApiController]
 public class TransactionController(AppDbContext context) : ControllerBase
 {
@@ -29,6 +29,14 @@ public class TransactionController(AppDbContext context) : ControllerBase
     {
         return service.GetAllTransactions();
     }
+    
+    [HttpGet]
+    [Route("transactionsFromUser")]
+    [AllowAnonymous]
+    public ActionResult<List<TransactionResponseDto>> GetAllTransactionsFromUser(string guid)
+    {
+        return service.GetAllTransactionsFromUser(guid);
+    }
 
     [HttpPost]
     [Route("addTransaction")]
@@ -37,6 +45,15 @@ public class TransactionController(AppDbContext context) : ControllerBase
     {
         var trans = service.CreateTransaction(dto);
         return Ok(trans); //lol
+    }
+    
+    [HttpPut]
+    [Route("updateTransaction")]
+    [AllowAnonymous]
+    public ActionResult<TransactionDto> UpdateTransaction([FromBody] TransactionResponseDto dto)
+    {
+        var trans = service.UpdateTransaction(dto);
+        return Ok(trans); 
     }
     
 }

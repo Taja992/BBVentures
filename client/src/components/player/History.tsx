@@ -1,7 +1,7 @@
 
 import {useEffect, useState} from "react";
 import { MyApi } from "../../services/MyApi";
-import { BBVenturesApiDataAccessModelsTransaction } from "../../services/Api";
+import { BBVenturesApiTransaction } from "../../services/Api";
 
 function History(){
     
