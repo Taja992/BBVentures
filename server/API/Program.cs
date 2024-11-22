@@ -176,15 +176,17 @@ if (app.Environment.IsDevelopment())
         //alternatively get the raw SQL from the DbContext and execute this manually after deleting the DB manually:
         // var sql = context.Database.GenerateCreateScript();
         // Console.WriteLine(sql); //this will print the SQL to build the exact DB from what the context looks like
+        var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+        dbSeeder.SeedAsync().Wait();
     }
 }
 
-//using a seeder to add our roles
-using (var scope = app.Services.CreateScope())
-{
-    var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-    dbSeeder.SeedAsync().Wait();
-}
+// //using a seeder to add our roles
+// using (var scope = app.Services.CreateScope())
+// {
+//     var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+//     dbSeeder.SeedAsync().Wait();
+// }
 
 
 // Configure the HTTP request pipeline.

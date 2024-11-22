@@ -52,6 +52,18 @@ export interface BBVenturesApiGame {
   boards?: BBVenturesApiBoard[] | null;
 }
 
+export interface BBVenturesApiGameDto {
+  /** @format uuid */
+  id?: string;
+  /** @format date-time */
+  createdAt?: string | null;
+  /** @format date-time */
+  endedAt?: string | null;
+  winnerNumbers?: string[] | null;
+  /** @format double */
+  totalRevenue?: number;
+}
+
 export interface BBVenturesApiHttpValidationProblemDetails {
   type?: string | null;
   title?: string | null;
@@ -591,6 +603,55 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<BBVenturesApiBoard[], any>({
         path: `/api/board`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Game
+     * @name GamesList
+     * @request GET:/api/games
+     */
+    gamesList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiGame[], any>({
+        path: `/api/games`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Game
+     * @name AddGameCreate
+     * @request POST:/api/addGame
+     */
+    addGameCreate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
+      this.request<BBVenturesApiGame, any>({
+        path: `/api/addGame`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Game
+     * @name UpdateGameUpdate
+     * @request PUT:/api/updateGame
+     */
+    updateGameUpdate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
+      this.request<BBVenturesApiGame, any>({
+        path: `/api/updateGame`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
