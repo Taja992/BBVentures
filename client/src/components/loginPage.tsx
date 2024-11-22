@@ -19,6 +19,7 @@ const schema: yup.ObjectSchema<Credentials> = yup
     })
     .required();
 
+
 const LoginPage = () => {
     const { login } = useAuth(); // Using our useAuth in atoms to get login feature
 
