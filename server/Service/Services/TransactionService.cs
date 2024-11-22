@@ -25,8 +25,15 @@ public class TransactionService(AppDbContext context)
     {
         //use validator to validate and throw if we want
         Transaction trans = dto.ToTransaction();
-        trans.CreatedAt = DateTime.Now;
+        trans.CreatedAt = DateTime.UtcNow;
         Transaction newTrans = await repo.AddTransaction(trans);
         return new TransactionDto().FromEntity(newTrans);
+    }
+
+    public async Task<TransactionResponseDto> UpdateTransaction(TransactionResponseDto dto)
+    {
+        Transaction trans = dto.ToTransaction();
+        Transaction newTrans = await repo.UpdateTransaction(trans);
+        return new TransactionResponseDto().FromEntity(newTrans);
     }
 }
