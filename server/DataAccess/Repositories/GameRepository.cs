@@ -4,24 +4,50 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories;
 
-public class GameRepository(AppDbContext context) : IGameRepository
+public class GameRepository : IGameRepository
 {
+    private readonly AppDbContext _context;
+
+    public GameRepository(AppDbContext context)
+    {
+        _context = context;
+    }
+
     public List<Game> GetAllGames()
     {
-        return context.Games.Include(g => g.Boards).ToList();
+        return _context.Games.Include(g => g.Boards).ToList();
     }
 
     public async Task<Game> AddGame(Game game)
     {
-        context.Games.Add(game);
-        await context.SaveChangesAsync();
+        _context.Games.Add(game);
+        await _context.SaveChangesAsync();
         return game;
     }
 
     public async Task<Game> UpdateGame(Game game)
     {
-        context.Games.Update(game);
-        await context.SaveChangesAsync();
-        return game;
+        try
+        {
+            _context.Games.Update(game);
+            await _context.SaveChangesAsync();
+            return game;
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!GameExists(game.Id))
+            {
+                throw new KeyNotFoundException("Game not found.");
+            }
+            else
+            {
+                throw;
+            }
+        }
+    }
+
+    private bool GameExists(Guid id)
+    {
+        return _context.Games.Any(e => e.Id == id);
     }
 }

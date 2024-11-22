@@ -36,7 +36,7 @@ public class TransactionController(AppDbContext context) : ControllerBase
     public ActionResult<TransactionDto> AddTransaction([FromBody] TransactionDto dto)
     {
         var trans = service.CreateTransaction(dto);
-        return Ok(trans);
+        return Ok(trans); //lol
     }
     
 }
