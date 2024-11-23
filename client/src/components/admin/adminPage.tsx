@@ -1,5 +1,6 @@
 import {Link, useParams} from 'react-router-dom';
 import './adminPage.css';
+import StartGame from "./startGameComponent.tsx";
 
 const AdminPage = () => {
     const { adminId } = useParams<{ adminId: string }>();
@@ -26,7 +27,7 @@ const AdminPage = () => {
                 </section>
                 <section className="admin-section">
                     <h2>Games Overview</h2>
-                    {/* Placeholder for games management component */}
+                    <StartGame />
                 </section>
                 <section className="admin-section">
                     <h2>Boards Overview</h2>

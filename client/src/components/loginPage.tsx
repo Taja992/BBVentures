@@ -25,8 +25,7 @@ const LoginPage = () => {
 
 
     // Initializing react-hook-form with yup validation schema
-    const {
-        register, // Function to register input fields
+    const { register, // Function to register input fields
         handleSubmit, // Function to handle form submission
         formState: { errors }, // Object containing form errors
     } = useForm<Credentials>({ resolver: yupResolver(schema) }); // Using yupResolver to integrate yup with react-hook-form
@@ -66,7 +65,7 @@ const LoginPage = () => {
                     />
                     {errors.password && <p className="error-message">{errors.password.message}</p>}
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit" className="login-button">Login</button>
             </form>
         </div>
     );
