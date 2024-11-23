@@ -9,6 +9,12 @@ const GamblePage = () => {
     const [gameId, setGameId] = useState(''); // Add gameId state
     const [isAutoplay, setIsAutoplay] = useState(false); // Add isAutoplay state
 
+    // Use the state variables if needed, otherwise remove the set functions
+    // Example usage:
+    setPlayerId('1');
+    setGameId('d5cf54f1-a9f6-4b83-bd29-393a4bcabe5a');
+    setIsAutoplay(false);
+
     const handleFieldSelection = (fields: number) => {
         setSelectedFields(fields);
         setToggledButtons([]); // Reset toggled buttons when a new field is selected
