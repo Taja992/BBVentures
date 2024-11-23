@@ -20,7 +20,7 @@ public class GameController(GameService service) : ControllerBase
 
     [HttpPost]
     [Route("addGame")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Game>> AddGame([FromBody] GameDto dto)
     {
         var game = await service.CreateGame(dto);
