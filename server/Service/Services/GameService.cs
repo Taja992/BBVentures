@@ -13,33 +13,24 @@ public class GameService
         _repository = repository;
     }
 
-    public List<Game> GetAllGames()
+    public List<GameDto> GetAllGames()
     {
-        return _repository.GetAllGames();
+        var games = _repository.GetAllGames();
+        return games.Select(GameDto.FromEntity).ToList();
     }
 
-    public async Task<Game> CreateGame(GameDto dto)
+    public async Task<GameDto> CreateGame(GameDto dto)
     {
-        var game = new Game
-        {
-            Id = Guid.NewGuid(),
-            CreatedAt = DateTime.UtcNow,
-            TotalRevenue = dto.TotalRevenue,
-            WinnerNumbers = dto.WinnerNumbers
-        };
-        return await _repository.AddGame(game);
+        var game = dto.ToEntity();
+        game.Id = Guid.NewGuid();
+        var createdGame = await _repository.AddGame(game);
+        return GameDto.FromEntity(createdGame);
     }
 
-    public async Task<Game> UpdateGame(GameDto dto)
+    public async Task<GameDto> UpdateGame(GameDto dto)
     {
-        var game = new Game
-        {
-            Id = dto.Id,
-            CreatedAt = dto.CreatedAt,
-            EndedAt = dto.EndedAt,
-            TotalRevenue = dto.TotalRevenue,
-            WinnerNumbers = dto.WinnerNumbers
-        };
-        return await _repository.UpdateGame(game);
+        var game = dto.ToEntity();
+        var updatedGame = await _repository.UpdateGame(game);
+        return GameDto.FromEntity(updatedGame);
     }
 }
