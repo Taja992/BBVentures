@@ -1,6 +1,6 @@
 
 import {useEffect, useState} from "react";
-import { MyApi } from "../../services/MyApi";
+import { http } from "../../http";
 import { BBVenturesApiTransaction } from "../../services/Api";
 
 function History(){
@@ -9,7 +9,7 @@ function History(){
     
     useEffect(() => {getAllTrans()}, [])
     async function getAllTrans(){
-        const response = await MyApi.api.transactionsList();
+        const response = await http.transactionsList();
         setAllTrans(response.data);
         console.log(response.data)
     }

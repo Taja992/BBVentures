@@ -14,7 +14,7 @@ _api.instance.interceptors.request.use((config) => {
     // Add Authorization header if we have a JWT and the request goes to our own
     // server.
     if (jwt && config.url?.startsWith(AUTHORIZE_ORIGIN)) {
-        // Set Authorization header, so server can tell hos is logged in.
+        // Set Authorization header, so server can tell who is logged in.
         config.headers.Authorization = `Bearer ${jwt}`;
     }
     return config;
