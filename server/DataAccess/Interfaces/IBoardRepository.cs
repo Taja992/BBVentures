@@ -1,4 +1,4 @@
- using DataAccess.Models;
+﻿ using DataAccess.Models;
 
  namespace DataAccess.Interfaces;
 
@@ -7,7 +7,7 @@
 
      Task<Board> CreateBoard(Board board);
 
-     public List<Board> GetAllBoards();
+     Task<List<Board>> GetAllBoards();
 
      public Task<Board> AddBoard(Board b);
 

@@ -28,9 +28,8 @@ namespace Service.Services
 
             var board = new Board
             {
-                Id = Guid.NewGuid(),
-                PlayerId = "1", // Change later, for testing purposes
-                GameId = Guid.Parse("d5cf54f1-a9f6-4b83-bd29-393a4bcabe5a"), //createBoardDto.GameId
+                PlayerId = createBoardDto.PlayerId,
+                GameId = createBoardDto.GameId,
                 Numbers = createBoardDto.Numbers,
                 IsAutoplay = createBoardDto.IsAutoplay,
                 CreatedAt = DateTime.UtcNow,
@@ -49,6 +48,22 @@ namespace Service.Services
                 CreatedAt = newBoard.CreatedAt,
                 UpdatedAt = newBoard.UpdatedAt
             };
+        }
+        
+        public async Task<List<BoardDto>> GetAllBoards()
+        {
+            var boards = await _boardRepository.GetAllBoards();
+
+            return boards.Select(board => new BoardDto
+            {
+                Id = board.Id,
+                PlayerId = board.PlayerId,
+                GameId = board.GameId,
+                Numbers = board.Numbers,
+                IsAutoplay = board.IsAutoplay,
+                CreatedAt = board.CreatedAt,
+                UpdatedAt = board.UpdatedAt
+            }).ToList();
         }
     }
 }

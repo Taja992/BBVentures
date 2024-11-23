@@ -39,6 +39,28 @@ export interface BBVenturesApiBoard {
   player?: BBVenturesApiPlayer;
 }
 
+export interface BBVenturesApiBoardDto {
+  /** @format uuid */
+  id?: string;
+  playerId?: string | null;
+  /** @format uuid */
+  gameId?: string;
+  numbers?: string[] | null;
+  isAutoplay?: boolean;
+  /** @format date-time */
+  createdAt?: string | null;
+  /** @format date-time */
+  updatedAt?: string | null;
+}
+
+export interface BBVenturesApiCreateBoardDto {
+  playerId?: string | null;
+  /** @format uuid */
+  gameId?: string;
+  numbers?: string[] | null;
+  isAutoplay?: boolean;
+}
+
 export interface BBVenturesApiGame {
   /** @format uuid */
   id?: string;
@@ -140,6 +162,17 @@ export interface BBVenturesApiTransactionDto {
   playerId?: string | null;
   /** @format double */
   amount?: number;
+  mobilePayTransactionNumber?: string | null;
+}
+
+export interface BBVenturesApiTransactionResponseDto {
+  /** @format uuid */
+  id?: string;
+  playerId?: string | null;
+  /** @format double */
+  amount?: number;
+  /** @format date-time */
+  createdAt?: string | null;
   mobilePayTransactionNumber?: string | null;
 }
 
@@ -596,13 +629,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Board
-     * @name BoardList
-     * @request GET:/api/board
+     * @name BoardBoardList
+     * @request GET:/api/Board/board
      */
-    boardList: (params: RequestParams = {}) =>
+    boardBoardList: (params: RequestParams = {}) =>
       this.request<BBVenturesApiBoard[], any>({
-        path: `/api/board`,
+        path: `/api/Board/board`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Board
+     * @name BoardCreateCreate
+     * @request POST:/api/Board/create
+     */
+    boardCreateCreate: (data: BBVenturesApiCreateBoardDto, params: RequestParams = {}) =>
+      this.request<BBVenturesApiBoardDto, any>({
+        path: `/api/Board/create`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -660,12 +710,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transaction
-     * @name TransactionsList
-     * @request GET:/api/transactions
+     * @name TransactionList
+     * @request GET:/api/Transaction
      */
-    transactionsList: (params: RequestParams = {}) =>
-      this.request<BBVenturesApiTransaction[], any>({
-        path: `/api/transactions`,
+    transactionList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiTransactionResponseDto[], any>({
+        path: `/api/Transaction`,
         method: "GET",
         format: "json",
         ...params,
@@ -675,13 +725,51 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transaction
-     * @name AddTransactionCreate
-     * @request POST:/api/addTransaction
+     * @name TransactionTransactionsFromUserList
+     * @request GET:/api/Transaction/transactionsFromUser
      */
-    addTransactionCreate: (data: BBVenturesApiTransactionDto, params: RequestParams = {}) =>
+    transactionTransactionsFromUserList: (
+      query?: {
+        guid?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BBVenturesApiTransactionResponseDto[], any>({
+        path: `/api/Transaction/transactionsFromUser`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transaction
+     * @name TransactionAddTransactionCreate
+     * @request POST:/api/Transaction/addTransaction
+     */
+    transactionAddTransactionCreate: (data: BBVenturesApiTransactionDto, params: RequestParams = {}) =>
       this.request<BBVenturesApiTransactionDto, any>({
-        path: `/api/addTransaction`,
+        path: `/api/Transaction/addTransaction`,
         method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transaction
+     * @name TransactionUpdateTransactionUpdate
+     * @request PUT:/api/Transaction/updateTransaction
+     */
+    transactionUpdateTransactionUpdate: (data: BBVenturesApiTransactionResponseDto, params: RequestParams = {}) =>
+      this.request<BBVenturesApiTransactionDto, any>({
+        path: `/api/Transaction/updateTransaction`,
+        method: "PUT",
         body: data,
         type: ContentType.Json,
         format: "json",
