@@ -39,28 +39,6 @@ export interface BBVenturesApiBoard {
   player?: BBVenturesApiPlayer;
 }
 
-export interface BBVenturesApiBoardDto {
-  /** @format uuid */
-  id?: string;
-  playerId?: string | null;
-  /** @format uuid */
-  gameId?: string;
-  numbers?: string[] | null;
-  isAutoplay?: boolean;
-  /** @format date-time */
-  createdAt?: string | null;
-  /** @format date-time */
-  updatedAt?: string | null;
-}
-
-export interface BBVenturesApiCreateBoardDto {
-  playerId?: string | null;
-  /** @format uuid */
-  gameId?: string;
-  numbers?: string[] | null;
-  isAutoplay?: boolean;
-}
-
 export interface BBVenturesApiGame {
   /** @format uuid */
   id?: string;
@@ -630,11 +608,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Board
      * @name BoardList
-     * @request GET:/api/Board
+     * @request GET:/api/board
      */
     boardList: (params: RequestParams = {}) =>
       this.request<BBVenturesApiBoard[], any>({
-        path: `/api/Board`,
+        path: `/api/board`,
         method: "GET",
         format: "json",
         ...params,
@@ -643,13 +621,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Board
-     * @name BoardCreateCreate
-     * @request POST:/api/Board/create
+     * @tags Game
+     * @name GamesList
+     * @request GET:/api/games
      */
-    boardCreateCreate: (data: BBVenturesApiCreateBoardDto, params: RequestParams = {}) =>
-      this.request<BBVenturesApiBoardDto, any>({
-        path: `/api/Board/create`,
+    gamesList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiGame[], any>({
+        path: `/api/games`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Game
+     * @name AddGameCreate
+     * @request POST:/api/addGame
+     */
+    addGameCreate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
+      this.request<BBVenturesApiGame, any>({
+        path: `/api/addGame`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -661,44 +654,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Game
-     * @name GameList
-     * @request GET:/api/Game
+     * @name UpdateGameUpdate
+     * @request PUT:/api/updateGame
      */
-    gameList: (params: RequestParams = {}) =>
-      this.request<BBVenturesApiGameDto[], any>({
-        path: `/api/Game`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Game
-     * @name GameAddGameCreate
-     * @request POST:/api/Game/addGame
-     */
-    gameAddGameCreate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
-      this.request<BBVenturesApiGameDto, any>({
-        path: `/api/Game/addGame`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Game
-     * @name GameUpdateGameUpdate
-     * @request PUT:/api/Game/updateGame
-     */
-    gameUpdateGameUpdate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
-      this.request<BBVenturesApiGameDto, any>({
-        path: `/api/Game/updateGame`,
+    updateGameUpdate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
+      this.request<BBVenturesApiGame, any>({
+        path: `/api/updateGame`,
         method: "PUT",
         body: data,
         type: ContentType.Json,
@@ -710,12 +671,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transaction
-     * @name TransactionList
-     * @request GET:/api/Transaction
+     * @name TransactionTransactionsList
+     * @request GET:/api/Transaction/transactions
      */
-    transactionList: (params: RequestParams = {}) =>
+    transactionTransactionsList: (params: RequestParams = {}) =>
       this.request<BBVenturesApiTransactionResponseDto[], any>({
-        path: `/api/Transaction`,
+        path: `/api/Transaction/transactions`,
         method: "GET",
         format: "json",
         ...params,

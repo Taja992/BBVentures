@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Service;
 using Service.Auth;
@@ -17,8 +16,7 @@ using Service.Security;
 using Service.Services;
 using Service.TransferModels.Requests.Create;
 using Service.Validators;
-using DataAccess.Interfaces;
-using DataAccess.Repositories;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -176,8 +174,8 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        // context.Database.EnsureDeleted();
-        // context.Database.EnsureCreated();
+        context.Database.EnsureDeleted();
+        context.Database.EnsureCreated();
         //at this point your columns and tables will be created based on what the context class looks like
         //alternatively get the raw SQL from the DbContext and execute this manually after deleting the DB manually:
         // var sql = context.Database.GenerateCreateScript();

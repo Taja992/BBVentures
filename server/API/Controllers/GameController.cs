@@ -6,7 +6,7 @@ using Service.TransferModels.DTOs;
 
 namespace API.Controllers;
 
-[Route("api")]
+[Route("api/[controller]")]
 [ApiController]
 public class GameController : ControllerBase
 {
@@ -18,7 +18,6 @@ public class GameController : ControllerBase
     }
 
     [HttpGet]
-    [Route("games")]
     [AllowAnonymous]
     public ActionResult<List<GameDto>> GetAllGames()
     {
