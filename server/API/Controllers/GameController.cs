@@ -27,7 +27,7 @@ public class GameController : ControllerBase
 
     [HttpPost]
     [Route("addGame")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<GameDto>> AddGame([FromBody] GameDto dto)
     {
         var game = await _service.CreateGame(dto);
