@@ -8,31 +8,38 @@ namespace API.Controllers;
 
 [Route("api")]
 [ApiController]
-public class GameController(GameService service) : ControllerBase
+public class GameController : ControllerBase
 {
+    private readonly GameService _service;
+
+    public GameController(GameService service)
+    {
+        _service = service;
+    }
+
     [HttpGet]
     [Route("games")]
     [AllowAnonymous]
-    public ActionResult<List<Game>> GetAllGames()
+    public ActionResult<List<GameDto>> GetAllGames()
     {
-        return service.GetAllGames();
+        return Ok(_service.GetAllGames());
     }
 
     [HttpPost]
     [Route("addGame")]
     [AllowAnonymous]
-    public async Task<ActionResult<Game>> AddGame([FromBody] GameDto dto)
+    public async Task<ActionResult<GameDto>> AddGame([FromBody] GameDto dto)
     {
-        var game = await service.CreateGame(dto);
+        var game = await _service.CreateGame(dto);
         return Ok(game);
     }
 
     [HttpPut]
     [Route("updateGame")]
     [AllowAnonymous]
-    public async Task<ActionResult<Game>> UpdateGame([FromBody] GameDto dto)
+    public async Task<ActionResult<GameDto>> UpdateGame([FromBody] GameDto dto)
     {
-        var game = await service.UpdateGame(dto);
+        var game = await _service.UpdateGame(dto);
         return Ok(game);
     }
 }
