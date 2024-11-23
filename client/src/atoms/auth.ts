@@ -3,6 +3,8 @@ import { atomWithStorage, createJSONStorage } from "jotai/utils";
 import { useNavigate } from "react-router-dom";
 import { http } from "../http";
 import { BBVenturesApiAuthUserInfo } from "../services/Api.ts";
+import {jwtDecode} from "jwt-decode";
+import {DecodedToken} from "./decoder.ts";
 
 // Storage key for JWT
 export const TOKEN_KEY = "token";
@@ -44,9 +46,27 @@ export const useAuth = (): AuthHook => {
 
     // Function to handle login
     const login = async (credentials: Credentials) => {
-        const response = await http.authLoginCreate(credentials); // Call login API
-        const data = response.data;
-        setJwt(data.jwt!); // Store the JWT in the atom
+        try {
+            const response = await http.authLoginCreate(credentials); // Call login API
+            const data = response.data;
+            const jwt = data.jwt!;
+            setJwt(jwt); // Store the JWT in the atom
+
+            // Decode the JWT to extract user information
+            const decodedToken: DecodedToken = jwtDecode<DecodedToken>(jwt);
+            const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            const role = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+            // Navigate based on the user's role
+            if (role === "Admin") {
+                navigate(`/admin/${userId}`);
+            } else {
+                navigate(`/player/${userId}`);
+            }
+        } catch (error) {
+            console.error("Login failed:", error);
+            throw error; // Re-throw the error for toast.promise to handle
+        }
     };
 
     // Function to handle logout

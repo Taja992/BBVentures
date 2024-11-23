@@ -5,7 +5,7 @@ using DataAccess.Repositories;
 
 namespace Service;
 
-public class BoardService(AppDbContext context)
+public class BoardServiceDeleteIGuess(AppDbContext context)
 {
     BoardRepository repo = new BoardRepository(context);
     

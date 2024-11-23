@@ -1,13 +1,18 @@
-﻿ using DataAccess.Interfaces;
+ using DataAccess.Interfaces;
  using DataAccess.Models;
 
  namespace DataAccess.Repositories;
 
  public class BoardRepository(AppDbContext context) : IBoardRepository
  {
-   
-     
+      public async Task<Board> CreateBoard(Board b)
+      {
+          context.Boards.Add(b);
+          await context.SaveChangesAsync();
+          return b;
+      }
       
+
       public List<Board> GetAllBoards()
       {
           return context.Boards.ToList();
@@ -33,3 +38,4 @@
           context.SaveChanges();
       }
  }
+
