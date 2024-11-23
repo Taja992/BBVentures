@@ -629,12 +629,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Board
-     * @name BoardBoardList
-     * @request GET:/api/Board/board
+     * @name BoardList
+     * @request GET:/api/Board
      */
-    boardBoardList: (params: RequestParams = {}) =>
+    boardList: (params: RequestParams = {}) =>
       this.request<BBVenturesApiBoard[], any>({
-        path: `/api/Board/board`,
+        path: `/api/Board`,
         method: "GET",
         format: "json",
         ...params,
@@ -661,12 +661,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Game
-     * @name GamesList
-     * @request GET:/api/games
+     * @name GameList
+     * @request GET:/api/Game
      */
-    gamesList: (params: RequestParams = {}) =>
-      this.request<BBVenturesApiGame[], any>({
-        path: `/api/games`,
+    gameList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiGameDto[], any>({
+        path: `/api/Game`,
         method: "GET",
         format: "json",
         ...params,
@@ -676,12 +676,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Game
-     * @name AddGameCreate
-     * @request POST:/api/addGame
+     * @name GameAddGameCreate
+     * @request POST:/api/Game/addGame
      */
-    addGameCreate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
-      this.request<BBVenturesApiGame, any>({
-        path: `/api/addGame`,
+    gameAddGameCreate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
+      this.request<BBVenturesApiGameDto, any>({
+        path: `/api/Game/addGame`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -693,12 +693,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Game
-     * @name UpdateGameUpdate
-     * @request PUT:/api/updateGame
+     * @name GameUpdateGameUpdate
+     * @request PUT:/api/Game/updateGame
      */
-    updateGameUpdate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
-      this.request<BBVenturesApiGame, any>({
-        path: `/api/updateGame`,
+    gameUpdateGameUpdate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
+      this.request<BBVenturesApiGameDto, any>({
+        path: `/api/Game/updateGame`,
         method: "PUT",
         body: data,
         type: ContentType.Json,

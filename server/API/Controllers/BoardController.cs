@@ -7,7 +7,7 @@ using Service.Services;
 using Service.TransferModels.DTOs;
 using Service.TransferModels.Requests.Create;
 
-namespace API.Controller;
+namespace API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -21,7 +21,6 @@ public class BoardController : ControllerBase
     }
     
     [HttpGet]
-    [Route("board")]
     [AllowAnonymous]
     public ActionResult<List<Board>> GetAllBoards()
     {
@@ -36,13 +35,5 @@ public class BoardController : ControllerBase
         var boardDto = await _boardService.CreateBoard(createBoardDto);
         return Ok(boardDto);
     }
-    
-    /*[HttpPost]
-    [Route("board")]
-    [AllowAnonymous]
-    public ActionResult<Board> AddBoard(Board b)
-    {
-        return Ok(boardService.AddBoard(b));
-    }*/
     
 }

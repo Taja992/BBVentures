@@ -26,7 +26,7 @@ const StartGame: React.FC = () => {
         };
 
         try {
-            await http.addGameCreate(game);
+            await http.gameAddGameCreate(game);
             setSuccess('Game created successfully!');
             toast.success('Game created successfully!');
             setGames([...games, game])
