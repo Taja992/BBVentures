@@ -5,9 +5,7 @@
 
  public class BoardRepository(AppDbContext context) : IBoardRepository
  {
-   
      
-      
       public List<Board> GetAllBoards()
       {
           return context.Boards.ToList();

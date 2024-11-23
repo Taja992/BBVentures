@@ -38,3 +38,46 @@ public class TransactionDto
     }
     
 }
+
+public class TransactionResponseDto
+{
+    public Guid Id { get; set; }
+
+    public string PlayerId { get; set; } = null!;
+
+    public decimal Amount { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+
+    public string? MobilePayTransactionNumber { get; set; }
+    
+    public Transaction ToTransaction()
+    {
+        return new Transaction()
+        {
+            PlayerId = PlayerId,
+            Amount = Amount,
+            MobilePayTransactionNumber = MobilePayTransactionNumber
+        };
+    }
+
+    public TransactionResponseDto FromEntity(Transaction trans)
+    {
+        return new TransactionResponseDto()
+        {
+            Id = trans.Id,
+            PlayerId = trans.PlayerId,
+            Amount = trans.Amount,
+            MobilePayTransactionNumber = trans.MobilePayTransactionNumber,
+            CreatedAt = trans.CreatedAt
+        };
+    }
+    
+    public List<TransactionResponseDto> FromEntities(List<Transaction> transactions)
+    {
+        //gets every transaction and turns them into a dto, using a "var" so theres no issues with the type
+        var dtos = transactions.Select(t => new TransactionResponseDto().FromEntity(t));
+        return dtos.ToList(); // <- converting it back to a list of dtos and not a "var"
+    }
+
+}
