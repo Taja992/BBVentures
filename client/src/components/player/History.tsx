@@ -9,7 +9,7 @@ function History(){
     
     useEffect(() => {getAllTrans()}, [])
     async function getAllTrans(){
-        const response = await http.transactionsList();
+        const response = await http.transactionTransactionsList();
         setAllTrans(response.data);
         console.log(response.data)
     }

@@ -143,6 +143,17 @@ export interface BBVenturesApiTransactionDto {
   mobilePayTransactionNumber?: string | null;
 }
 
+export interface BBVenturesApiTransactionResponseDto {
+  /** @format uuid */
+  id?: string;
+  playerId?: string | null;
+  /** @format double */
+  amount?: number;
+  /** @format date-time */
+  createdAt?: string | null;
+  mobilePayTransactionNumber?: string | null;
+}
+
 export interface MicrosoftIdentityForgotPasswordRequest {
   email?: string | null;
 }
@@ -660,12 +671,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transaction
-     * @name TransactionsList
-     * @request GET:/api/transactions
+     * @name TransactionTransactionsList
+     * @request GET:/api/Transaction/transactions
      */
-    transactionsList: (params: RequestParams = {}) =>
-      this.request<BBVenturesApiTransaction[], any>({
-        path: `/api/transactions`,
+    transactionTransactionsList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiTransactionResponseDto[], any>({
+        path: `/api/Transaction/transactions`,
         method: "GET",
         format: "json",
         ...params,
@@ -675,13 +686,51 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transaction
-     * @name AddTransactionCreate
-     * @request POST:/api/addTransaction
+     * @name TransactionTransactionsFromUserList
+     * @request GET:/api/Transaction/transactionsFromUser
      */
-    addTransactionCreate: (data: BBVenturesApiTransactionDto, params: RequestParams = {}) =>
+    transactionTransactionsFromUserList: (
+      query?: {
+        guid?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BBVenturesApiTransactionResponseDto[], any>({
+        path: `/api/Transaction/transactionsFromUser`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transaction
+     * @name TransactionAddTransactionCreate
+     * @request POST:/api/Transaction/addTransaction
+     */
+    transactionAddTransactionCreate: (data: BBVenturesApiTransactionDto, params: RequestParams = {}) =>
       this.request<BBVenturesApiTransactionDto, any>({
-        path: `/api/addTransaction`,
+        path: `/api/Transaction/addTransaction`,
         method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transaction
+     * @name TransactionUpdateTransactionUpdate
+     * @request PUT:/api/Transaction/updateTransaction
+     */
+    transactionUpdateTransactionUpdate: (data: BBVenturesApiTransactionResponseDto, params: RequestParams = {}) =>
+      this.request<BBVenturesApiTransactionDto, any>({
+        path: `/api/Transaction/updateTransaction`,
+        method: "PUT",
         body: data,
         type: ContentType.Json,
         format: "json",
