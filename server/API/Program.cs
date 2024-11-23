@@ -15,6 +15,10 @@ using Service;
 using Service.Auth;
 using Service.Security;
 using Service.Services;
+using Service.TransferModels.Requests.Create;
+using Service.Validators;
+using DataAccess.Interfaces;
+using DataAccess.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -104,6 +108,10 @@ builder.Services.AddAuthorization(options =>
 // Stuff like builder.Services.AddScoped<IBlogService, BlogService>();
 
 // builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
+
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<IBoardService, BoardService>();
+builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
@@ -112,8 +120,6 @@ builder.Services.AddScoped<GameService>();
 //
 // builder.Services.AddScoped<IBoardService, BoardService>();
 
-// builder.Services.AddValidatorsFromAssemblyContaining<CreateBoardDto>();
-// builder.Services.AddValidatorsFromAssemblyContaining<UpdateBoardDto>();
 #endregion
 
 #region Swagger
@@ -127,11 +133,11 @@ builder.Services.AddSwaggerGen(c =>
     {
 
         var customPrefix = "BBVenturesApi";
-        
+
         var identityPrefix = "MicrosoftIdentity";
-        
+
         var typeNamespace = type.Namespace;
-        
+
         var simpleName = type.Name;
 
         // Check if the type is from the Microsoft.AspNetCore.Identity namespace
@@ -170,8 +176,8 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
+        // context.Database.EnsureDeleted();
+        // context.Database.EnsureCreated();
         //at this point your columns and tables will be created based on what the context class looks like
         //alternatively get the raw SQL from the DbContext and execute this manually after deleting the DB manually:
         // var sql = context.Database.GenerateCreateScript();

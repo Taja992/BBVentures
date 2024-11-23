@@ -10,14 +10,14 @@ namespace API.Controller;
 [ApiController]
 public class BoardController(AppDbContext context) : ControllerBase
 {
-    private BoardService boardService = new BoardService(context);
+    private BoardServiceDeleteIGuess _boardServiceDeleteIGuess = new BoardServiceDeleteIGuess(context);
     
     [HttpGet]
     [Route("board")]
     [AllowAnonymous]
     public ActionResult<List<Board>> GetAllBoards()
     {
-        return Ok(boardService.GetAllBoards());
+        return Ok(_boardServiceDeleteIGuess.GetAllBoards());
     }
     
     /*[HttpPost]
