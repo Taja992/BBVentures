@@ -202,4 +202,3 @@ create index "IX_Boards_GameId"
 
 create index "IX_Boards_PlayerId"
     on "Boards" ("PlayerId");
-

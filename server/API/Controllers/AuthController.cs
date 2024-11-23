@@ -78,6 +78,7 @@ public class AuthController(
     }
     
     [HttpGet]
+    [AllowAnonymous]
     [Route("userinfo")]
     public async Task<ActionResult<AuthUserInfo>> UserInfo()
     {
@@ -95,8 +96,8 @@ public class AuthController(
         
         var roles = await userManager.GetRolesAsync(user);
         var isAdmin = roles.Contains(Role.Admin);
-        var canBuy = roles.Contains(Role.Player) || isAdmin;
-        return Ok (new AuthUserInfo(username, isAdmin, canBuy));
+        var isPlayer = roles.Contains(Role.Player) || isAdmin;
+        return Ok (new AuthUserInfo(username, isAdmin, isPlayer));
     }
     
 }

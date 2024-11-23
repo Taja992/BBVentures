@@ -1,28 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Service.Services;
-using Service.TransferModels.Requests.Create;
-using System.Threading.Tasks;
+﻿using DataAccess;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Service;
 
-namespace API.Controllers
+namespace API.Controller;
+
+[Route("api")]
+[ApiController]
+public class BoardController(AppDbContext context) : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    private BoardService boardService = new BoardService(context);
+    
+    [HttpGet]
+    [Route("board")]
     [AllowAnonymous]
-    public class BoardController : ControllerBase
+    public ActionResult<List<Board>> GetAllBoards()
     {
-        private readonly IBoardService _boardService;
-
-        public BoardController(IBoardService boardService)
-        {
-            _boardService = boardService;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateBoard([FromBody] CreateBoardDto createBoardDto)
-        {
-            var result = await _boardService.CreateBoard(createBoardDto);
-            return Ok(result);
-        }
+        return Ok(boardService.GetAllBoards());
     }
+    
+    /*[HttpPost]
+    [Route("board")]
+    [AllowAnonymous]
+    public ActionResult<Board> AddBoard(Board b)
+    {
+        return Ok(boardService.AddBoard(b));
+    }*/
+    
 }

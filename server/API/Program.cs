@@ -1,6 +1,9 @@
 using System.Text;
 using DataAccess;
+using DataAccess.DataAccessObjects;
+using DataAccess.Interfaces;
 using DataAccess.Models;
+using DataAccess.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -16,6 +19,7 @@ using Service.TransferModels.Requests.Create;
 using Service.Validators;
 using DataAccess.Interfaces;
 using DataAccess.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,11 +44,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //Also stuff like builder.Services.AddScoped<IRepositor<User>, UserRepository>();
 
-builder.Configuration
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", false, true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
-    .AddEnvironmentVariables();
+// builder.Configuration
+//     .SetBasePath(Directory.GetCurrentDirectory())
+//     .AddJsonFile("appsettings.json", false, true)
+//     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
+//     .AddEnvironmentVariables();
 
 builder.Services.AddScoped<DbSeeder>();
 #endregion
@@ -108,6 +112,13 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<IBoardService, BoardService>();
 builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<GameService>();
+//
+//
+// builder.Services.AddScoped<IBoardService, BoardService>();
 
 #endregion
 
@@ -118,7 +129,25 @@ builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.CustomSchemaIds(type => type.FullName);
+    c.CustomSchemaIds(type =>
+    {
+
+        var customPrefix = "BBVenturesApi";
+
+        var identityPrefix = "MicrosoftIdentity";
+
+        var typeNamespace = type.Namespace;
+
+        var simpleName = type.Name;
+
+        // Check if the type is from the Microsoft.AspNetCore.Identity namespace
+        if (typeNamespace?.StartsWith("Microsoft.AspNetCore.Identity") == true)
+        {
+            return $"{identityPrefix}{simpleName}";
+        }
+        // For custom endpoints, use the BBVenturesApi prefix
+        return $"{customPrefix}{simpleName}";
+    });
 });
 
 #endregion
@@ -153,15 +182,17 @@ if (app.Environment.IsDevelopment())
         //alternatively get the raw SQL from the DbContext and execute this manually after deleting the DB manually:
         // var sql = context.Database.GenerateCreateScript();
         // Console.WriteLine(sql); //this will print the SQL to build the exact DB from what the context looks like
+        var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+        dbSeeder.SeedAsync().Wait();
     }
 }
 
-//using a seeder to add our roles
-using (var scope = app.Services.CreateScope())
-{
-    var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-    dbSeeder.SeedAsync().Wait();
-}
+// //using a seeder to add our roles
+// using (var scope = app.Services.CreateScope())
+// {
+//     var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+//     dbSeeder.SeedAsync().Wait();
+// }
 
 
 // Configure the HTTP request pipeline.
@@ -183,7 +214,7 @@ app.UseForwardedHeaders(
 
 
 //UseRouting adds routing middleware to match incoming HTTP requests to endpoints.
-app.UseRouting();
+// app.UseRouting();
 
 app.UseCors();
 app.UseAuthentication();
