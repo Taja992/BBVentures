@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from "./loginPage.tsx";
-import History from "./History.tsx";
+import History from "./player/History"
 import GamblePage from "./gamblePage.tsx";
 import AdminPage from "./admin/adminPage.tsx";
 import PlayerPage from "./player/playerPage.tsx";
