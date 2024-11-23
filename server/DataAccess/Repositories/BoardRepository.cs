@@ -5,14 +5,14 @@
 
  public class BoardRepository(AppDbContext context) : IBoardRepository
  {
-   
-     public async Task<Board> CreateBoard(Board board)
-             {
-                 context.Boards.Add(board);
-                 await context.SaveChangesAsync();
-                 return board;
-             }
+      public async Task<Board> CreateBoard(Board b)
+      {
+          context.Boards.Add(b);
+          await context.SaveChangesAsync();
+          return b;
+      }
       
+
       public List<Board> GetAllBoards()
       {
           return context.Boards.ToList();

@@ -1,6 +1,7 @@
-import {MyApi} from "../components/MyApi";
+
 import {useEffect, useState} from "react";
-import { BBVenturesApiTransaction } from "../services/Api";
+import { MyApi } from "../../services/MyApi";
+import { BBVenturesApiTransaction } from "../../services/Api";
 
 function History(){
     
