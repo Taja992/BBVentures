@@ -8,11 +8,7 @@ using DataAccess.Models;
 
 namespace Service.Services
 {
-    public interface IBoardService
-    {
-        Task<BoardDto> CreateBoard(CreateBoardDto createBoardDto);
-    }
-
+    
     public class BoardService : IBoardService
     {
         private readonly AppDbContext _context;

@@ -8,8 +8,8 @@
    
      public async Task<Board> CreateBoard(Board board)
              {
-                 _context.Boards.Add(board);
-                 await _context.SaveChangesAsync();
+                 context.Boards.Add(board);
+                 await context.SaveChangesAsync();
                  return board;
              }
       
