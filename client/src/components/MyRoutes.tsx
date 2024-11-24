@@ -5,6 +5,7 @@ import GamblePage from "./gamblePage.tsx";
 import AdminPage from "./admin/adminPage.tsx";
 import PlayerPage from "./player/playerPage.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
+import UserHistory from './player/UserHistory.tsx';
 
 const MyRoutes = () => {
     return (
@@ -12,6 +13,7 @@ const MyRoutes = () => {
             <Routes>
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/history" element={<History />} />
+                <Route path="/history/:user" element={<UserHistory />} />
                 <Route path="/gamble" element={<GamblePage />} />
                 <Route
                     path="/player/:username"

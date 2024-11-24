@@ -2,23 +2,27 @@
 import {useEffect, useState} from "react";
 import { http } from "../../http";
 import { BBVenturesApiTransaction } from "../../services/Api";
+//import {useParams} from "react-router-dom";
 
-function History(){
+function UserHistory(guid: { guid?: string; } | undefined ){
+//function UserHistory(){
     
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
     //let a: string | undefined;
-    const [guid] = useState("sdaf7843t7wed")
+    //const { guid } = useParams<{guid: string}>();
     
     
     useEffect(() => {getAllTrans()}, [])
     async function getAllTrans(){
         const response = await http.transactionTransactionsList();
         
+        console.log(guid);
+        
         // @ts-ignore
         const response2 = await http.transactionTransactionsFromUserList(guid);
-        setAllTrans(response.data);
-        console.log(response.data)
-        console.log(response2.data)
+        setAllTrans(response2.data);
+        console.log(response.data);
+        console.log(response2.data);
     }
     
     return <>
@@ -40,4 +44,4 @@ function History(){
     
 }
 
-export default History
+export default UserHistory

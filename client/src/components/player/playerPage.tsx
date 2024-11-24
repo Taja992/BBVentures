@@ -1,9 +1,21 @@
 import { useParams } from 'react-router-dom';
 import './playerPage.css';
+import UserHistory from './UserHistory';
+import {useEffect} from "react";
+import {useAtom} from "jotai/react/useAtom";
+import { guid } from '../../atoms/atoms';
 
 const PlayerPage = () => {
-    const { userId } = useParams<{ userId: string }>();
-
+    const { userId } = useParams<{ userId: string}>();
+    const [, setGuid] = useAtom(guid);
+    
+    
+    useEffect(() => test, []);
+    
+    function test(){
+        setGuid(userId);
+    }
+    
     return (
         <div className="player-container">
             <header className="player-header">
@@ -28,6 +40,7 @@ const PlayerPage = () => {
                 <section className="player-section">
                     <h2>My Transactions</h2>
                     {/* Placeholder for player's transactions component */}
+                    <UserHistory/>
                 </section>
                 <section className="player-section">
                     <h2>My Profile</h2>

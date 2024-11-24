@@ -2,6 +2,7 @@ import {atom} from "jotai";
 import {BBVenturesApiGameDto} from "../services/Api.ts";
 
 
+export const guid = atom<string | null>(null);
 
 export const loadingAtom = atom(false);
 export const errorAtom = atom<string | null>(null);
