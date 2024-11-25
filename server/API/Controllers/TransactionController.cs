@@ -32,7 +32,7 @@ public class TransactionController(AppDbContext context) : ControllerBase
     [HttpGet]
     [Route("transactionsFromUser")]
     [AllowAnonymous]
-    public ActionResult<List<TransactionResponseDto>> GetAllTransactionsFromUser(string guid)
+    public ActionResult<List<TransactionResponseDto>> GetAllTransactionsFromUser([FromQuery] string guid)
     {
         return service.GetAllTransactionsFromUser(guid);
     }

@@ -2,27 +2,23 @@
 import {useEffect, useState} from "react";
 import { http } from "../../http";
 import { BBVenturesApiTransaction } from "../../services/Api";
-//import {useAtom} from "jotai/react/useAtom";
-//import {useParams} from "react-router-dom";
+import {useAtom} from "jotai";
+import { userIdAtom } from "../../atoms/atoms";
 
-//function UserHistory(guid: { guid?: string; } | undefined ){
-// @ts-ignore
-function UserHistory({guid}){
+function UserHistory(){
     
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
-    
-    //let a: string | undefined;
-    //const { guid } = useParams<{guid: string}>();
+    const [playerId]= useAtom(userIdAtom);
     
     
     useEffect(() => {getAllTrans()}, [])
     async function getAllTrans(){
-        const response = await http.transactionTransactionsList();
+        const response = await http.transactionList();
         
-        console.log(guid);
+        console.log(playerId);
         
-        // @ts-ignore
-        const response2 = await http.transactionTransactionsFromUserList(guid);
+        
+        const response2 = await http.transactionTransactionsFromUserList(playerId!);
         setAllTrans(response2.data);
         console.log(response.data);
         console.log(response2.data);
