@@ -13,6 +13,14 @@ public partial class AspNetUser
     [Key]
     public string Id { get; set; } = null!;
 
+    public bool IsActive { get; set; }
+
+    public decimal Balance { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
     [StringLength(256)]
     public string? UserName { get; set; }
 
@@ -54,8 +62,11 @@ public partial class AspNetUser
     [InverseProperty("User")]
     public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; } = new List<AspNetUserToken>();
 
-    [InverseProperty("IdNavigation")]
-    public virtual Player? Player { get; set; }
+    [InverseProperty("Player")]
+    public virtual ICollection<Board> Boards { get; set; } = new List<Board>();
+
+    [InverseProperty("Player")]
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 
     [ForeignKey("UserId")]
     [InverseProperty("Users")]

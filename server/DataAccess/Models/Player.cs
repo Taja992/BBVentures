@@ -9,7 +9,7 @@ namespace DataAccess.Models;
 
 public partial class Player : IdentityUser
 {
-    
+
     public bool IsActive { get; set; }
 
     public decimal Balance { get; set; }
@@ -20,7 +20,7 @@ public partial class Player : IdentityUser
 
     [InverseProperty("Player")]
     public virtual ICollection<Board> Boards { get; set; } = new List<Board>();
-    
+
     [InverseProperty("Player")]
     public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

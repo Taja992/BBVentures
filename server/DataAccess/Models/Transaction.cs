@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Models;
 
+[Index("PlayerId", Name = "IX_Transactions_PlayerId")]
 public partial class Transaction
 {
     [Key]
@@ -21,5 +22,5 @@ public partial class Transaction
 
     [ForeignKey("PlayerId")]
     [InverseProperty("Transactions")]
-    public virtual Player Player { get; set; } = null!;
+    public virtual AspNetUser Player { get; set; } = null!;
 }
