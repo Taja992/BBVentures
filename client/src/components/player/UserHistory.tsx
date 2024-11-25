@@ -18,7 +18,7 @@ function UserHistory(){
         console.log(playerId);
         
         
-        const response2 = await http.transactionTransactionsFromUserList(playerId!);
+        const response2 = await http.transactionTransactionsFromUserList({guid: playerId!});
         setAllTrans(response2.data);
         console.log(response.data);
         console.log(response2.data);
