@@ -53,10 +53,10 @@ create table "Games"
     "Id"            uuid    not null
         constraint "PK_Games"
             primary key,
+    "CreatedAt"     timestamp with time zone,
+    "EndedAt"       timestamp with time zone,
     "WinnerNumbers" text[],
-    "TotalRevenue"  numeric not null,
-    "weekNumber"    integer,
-    "isActive"      boolean
+    "TotalRevenue"  numeric not null
 );
 
 alter table "Games"
