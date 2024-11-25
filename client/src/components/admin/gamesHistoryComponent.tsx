@@ -38,7 +38,8 @@ const GamesHistory: React.FC = () => {
                 <thead>
                 <tr>
                     <th className="py-2 px-4 border border-black">Game ID</th>
-                    <th className="py-2 px-4 border border-black">Created At</th>
+                    <th className="py-2 px-4 border border-black">Is Active</th>
+                    <th className="py-2 px-4 border border-black">Week Number</th>
                     <th className="py-2 px-4 border border-black">Total Revenue</th>
                     <th className="py-2 px-4 border border-black">Winner Numbers</th>
                 </tr>
@@ -47,7 +48,8 @@ const GamesHistory: React.FC = () => {
                 {games.map((game) => (
                     <tr key={game.id} className="text-center">
                         <td className="py-2 px-4 border border-black">{game.id}</td>
-                        <td className="py-2 px-4 border border-black">{game.createdAt}</td>
+                        <td className="py-2 px-4 border border-black">{game.isActive}</td>
+                        <td className="py-2 px-4 border border-black">{game.weekNumber}</td>
                         <td className="py-2 px-4 border border-black">{game.totalRevenue}</td>
                         <td className="py-2 px-4 border border-black">{game.winnerNumbers?.join(', ') || 'N/A'}</td>
                     </tr>
