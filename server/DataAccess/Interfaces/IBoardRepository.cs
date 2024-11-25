@@ -4,7 +4,10 @@
 
  public interface IBoardRepository
  {
-     public List<Board> GetAllBoards();
+
+     Task<Board> CreateBoard(Board board);
+
+     Task<List<Board>> GetAllBoards();
 
      public Task<Board> AddBoard(Board b);
 
@@ -12,3 +15,4 @@
 
      public void DeleteBoard(Board b);
  }
+

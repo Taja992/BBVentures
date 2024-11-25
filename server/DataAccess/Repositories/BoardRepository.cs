@@ -1,33 +1,42 @@
 ﻿ using DataAccess.Interfaces;
  using DataAccess.Models;
+ using Microsoft.EntityFrameworkCore;
 
  namespace DataAccess.Repositories;
 
  public class BoardRepository(AppDbContext context) : IBoardRepository
  {
-     
-      public List<Board> GetAllBoards()
+      public async Task<Board> CreateBoard(Board board)
       {
-          return context.Boards.ToList();
+          context.Boards.Add(board);
+          await context.SaveChangesAsync();
+          return board;
+      }
+      
+      
+      public async Task<List<Board>> GetAllBoards()
+      {
+          return await context.Boards.ToListAsync();
       }
 
-      public async Task<Board> AddBoard(Board b)
+      public async Task<Board> AddBoard(Board board)
       {
-          context.Boards.Add(b);
+          context.Boards.Add(board);
           await context.SaveChangesAsync();
-          return b;
+          return board;
       }
     
-      public async Task<Board> UpdateBoard(Board b)
+      public async Task<Board> UpdateBoard(Board board)
       {
-          context.Boards.Update(b);
+          context.Boards.Update(board);
           await context.SaveChangesAsync();
-          return b;
+          return board;
       }
 
-      public void DeleteBoard(Board b)
+      public void DeleteBoard(Board board)
       {
-          context.Boards.Remove(b);
+          context.Boards.Remove(board);
           context.SaveChanges();
       }
  }
+

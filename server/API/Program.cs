@@ -1,4 +1,5 @@
 using System.Text;
+using Api.Misc;
 using DataAccess;
 using DataAccess.DataAccessObjects;
 using DataAccess.Interfaces;
@@ -9,12 +10,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Service;
 using Service.Auth;
 using Service.Security;
 using Service.Services;
+using Service.TransferModels.Requests.Create;
+using Service.Validators;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,24 +41,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
 );
 
-//Also stuff like builder.Services.AddScoped<IRepositor<User>, UserRepository>();
-
-// builder.Configuration
-//     .SetBasePath(Directory.GetCurrentDirectory())
-//     .AddJsonFile("appsettings.json", false, true)
-//     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
-//     .AddEnvironmentVariables();
 
 builder.Services.AddScoped<DbSeeder>();
 #endregion
 
 #region Security
 
-// //Setting up Identity
-
-// builder.Services.AddIdentity<Player, IdentityRole>()
-//     .AddEntityFrameworkStores<AppDbContext>()
-//     .AddDefaultTokenProviders();
 
 builder
     .Services.AddIdentityApiEndpoints<Player>()
@@ -63,12 +54,8 @@ builder
     .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<SetPasswordRequestValidator>();
 
-// var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
-// if (string.IsNullOrEmpty(jwtKey))
-// {
-//     throw new InvalidOperationException("JWT Key is not configured.");
-// }
 
 //Setting up Authorization using AppOptions class to store secrets and JwtTokenClaimService to add a way to customize the tokens to what we want
 var appOptions = builder.Configuration.GetSection(nameof(AppOptions)).Get<AppOptions>()!;
@@ -87,7 +74,7 @@ builder
     });
 
 builder.Services.AddScoped<ITokenClaimsService, JwtTokenClaimService>();
-// builder.Services.AddSingleton<IPasswordHasher<User>, Argon2idPasswordHasher<User>>();
+
 
 //Adds authorization requiring all end points to define who accesses them
 builder.Services.AddAuthorization(options =>
@@ -97,6 +84,8 @@ builder.Services.AddAuthorization(options =>
         .Build();
 });
 
+builder.Services.AddSingleton<IEmailSender<Player>, AppEmailSender>();
+
 #endregion
 
 #region Services
@@ -104,6 +93,10 @@ builder.Services.AddAuthorization(options =>
 // Stuff like builder.Services.AddScoped<IBlogService, BlogService>();
 
 // builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
+
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<IBoardService, BoardService>();
+builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
@@ -112,8 +105,6 @@ builder.Services.AddScoped<GameService>();
 //
 // builder.Services.AddScoped<IBoardService, BoardService>();
 
-// builder.Services.AddValidatorsFromAssemblyContaining<CreateBoardDto>();
-// builder.Services.AddValidatorsFromAssemblyContaining<UpdateBoardDto>();
 #endregion
 
 #region Swagger
@@ -127,11 +118,11 @@ builder.Services.AddSwaggerGen(c =>
     {
 
         var customPrefix = "BBVenturesApi";
-        
+
         var identityPrefix = "MicrosoftIdentity";
-        
+
         var typeNamespace = type.Namespace;
-        
+
         var simpleName = type.Name;
 
         // Check if the type is from the Microsoft.AspNetCore.Identity namespace

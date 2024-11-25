@@ -23,7 +23,6 @@ public class TransactionController(AppDbContext context) : ControllerBase
     }*/
     
     [HttpGet]
-    [Route("transactions")]
     [AllowAnonymous]
     public ActionResult<List<TransactionResponseDto>> GetAllTransactions()
     {
