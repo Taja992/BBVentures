@@ -2,12 +2,15 @@
 import {useEffect, useState} from "react";
 import { http } from "../../http";
 import { BBVenturesApiTransaction } from "../../services/Api";
+//import {useAtom} from "jotai/react/useAtom";
 //import {useParams} from "react-router-dom";
 
-function UserHistory(guid: { guid?: string; } | undefined ){
-//function UserHistory(){
+//function UserHistory(guid: { guid?: string; } | undefined ){
+// @ts-ignore
+function UserHistory({guid}){
     
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
+    
     //let a: string | undefined;
     //const { guid } = useParams<{guid: string}>();
     
