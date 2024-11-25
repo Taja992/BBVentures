@@ -147,7 +147,8 @@ export interface BBVenturesApiRegisterResponse {
 
 export interface BBVenturesApiSetPasswordRequest {
   email?: string | null;
-  token?: string | null;
+  emailConfirmationToken?: string | null;
+  passwordResetToken?: string | null;
   newPassword?: string | null;
 }
 

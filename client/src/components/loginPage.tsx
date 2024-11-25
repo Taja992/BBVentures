@@ -1,4 +1,4 @@
-import './loginn.css';
+import './login.css';
 import { Credentials, useAuth } from "../atoms/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
