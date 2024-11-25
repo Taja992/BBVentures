@@ -56,7 +56,9 @@ create table "Games"
     "CreatedAt"     timestamp with time zone,
     "EndedAt"       timestamp with time zone,
     "WinnerNumbers" text[],
-    "TotalRevenue"  numeric not null
+    "TotalRevenue"  numeric not null,
+    "IsActive"      boolean not null, 
+    "WeekNumber"    integer not null  
 );
 
 alter table "Games"

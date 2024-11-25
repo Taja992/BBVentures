@@ -9,6 +9,8 @@ public class GameDto
     public DateTime? EndedAt { get; set; }
     public List<string>? WinnerNumbers { get; set; }
     public decimal TotalRevenue { get; set; }
+    public bool IsActive { get; set; }
+    public int WeekNumber { get; set; }
 
     public Game ToEntity()
     {
@@ -18,7 +20,9 @@ public class GameDto
             CreatedAt = CreatedAt ?? DateTime.UtcNow,
             EndedAt = EndedAt,
             TotalRevenue = TotalRevenue,
-            WinnerNumbers = WinnerNumbers
+            WinnerNumbers = WinnerNumbers,
+            IsActive = IsActive,
+            WeekNumber = WeekNumber
         };
     }
 
@@ -30,7 +34,9 @@ public class GameDto
             CreatedAt = game.CreatedAt,
             EndedAt = game.EndedAt,
             TotalRevenue = game.TotalRevenue,
-            WinnerNumbers = game.WinnerNumbers
+            WinnerNumbers = game.WinnerNumbers,
+            IsActive = game.IsActive,
+            WeekNumber = game.WeekNumber
         };
     }
 }
