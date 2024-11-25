@@ -2,14 +2,13 @@
 
 namespace Service.Auth;
 
-public record RegisterRequest(string Email, string Password, string Name);
+public record RegisterRequest(string Email, string Name);
 
 public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {
     public RegisterRequestValidator()
     {
         RuleFor(x => x.Email).EmailAddress().NotEmpty();
-        RuleFor(x => x.Password).MinimumLength(6);
         RuleFor(x => x.Name).NotEmpty();
     }
 }
@@ -22,6 +21,18 @@ public class LoginRequestValidator : AbstractValidator<LoginRequest>
     {
         RuleFor(x => x.Email).NotEmpty();
         RuleFor(x => x.Password).NotEmpty();
+    }
+}
+
+public record SetPasswordRequest(string Email, string Token, string NewPassword);
+
+public class SetPasswordRequestValidator : AbstractValidator<SetPasswordRequest>
+{
+    public SetPasswordRequestValidator()
+    {
+        RuleFor(x => x.Email).EmailAddress().NotEmpty();
+        RuleFor(x => x.Token).NotEmpty();
+        RuleFor(x => x.NewPassword).NotEmpty();
     }
 }
 
