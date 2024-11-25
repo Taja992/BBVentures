@@ -6,6 +6,8 @@ import AdminPage from "./admin/adminPage.tsx";
 import PlayerPage from "./player/playerPage.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import ComponentTestPage from "./componentTestPage.tsx";
+import SetPasswordPage from "./player/SetPasswordPage.tsx";
+
 
 const MyRoutes = () => {
     return (
@@ -15,6 +17,7 @@ const MyRoutes = () => {
                 <Route path="/history" element={<History />} />
                 {/*<Route path="/gamble" element={<GamblePage />} />*/}
                 <Route path="/test" element={<ComponentTestPage />} />
+                <Route path="/set-password" element={<SetPasswordPage />} />
                 <Route
                     path="/player/:username"
                     element={<ProtectedRoute element={PlayerPage} />}
