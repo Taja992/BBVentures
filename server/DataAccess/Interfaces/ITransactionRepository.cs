@@ -9,7 +9,7 @@ public interface ITransactionRepository
     public List<Transaction> GetAllTransactionsFromUser(string Id);
 
     public Task<Transaction> AddTransaction(Transaction trans);
-    
+
     public Task<Transaction> UpdateTransaction(Transaction trans);
-    
+
 }

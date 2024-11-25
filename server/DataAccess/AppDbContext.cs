@@ -1,3 +1,4 @@
+
 using DataAccess.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -16,5 +17,5 @@ public partial class AppDbContext : IdentityDbContext<Player>
     public virtual DbSet<Game> Games { get; set; }
     public virtual DbSet<Player> Players { get; set; }
     public virtual DbSet<Transaction> Transactions { get; set; }
-    
+
 }
