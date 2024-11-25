@@ -10,3 +10,10 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
+        
+  mailcatcher:
+    image: dockage/mailcatcher
+    restart: always
+    ports:
+      - "1025:1025"
+      - "1080:1080"
