@@ -55,7 +55,8 @@ create table "Games"
             primary key,
     "WinnerNumbers" text[],
     "TotalRevenue"  numeric not null,
-    "weekNumber"    integer
+    "weekNumber"    integer,
+    "isActive"      boolean
 );
 
 alter table "Games"

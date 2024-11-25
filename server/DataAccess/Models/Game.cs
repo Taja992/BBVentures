@@ -18,6 +18,9 @@ public partial class Game
     [Column("weekNumber")]
     public int? WeekNumber { get; set; }
 
+    [Column("isActive")]
+    public bool? IsActive { get; set; }
+
     [InverseProperty("Game")]
     public virtual ICollection<Board> Boards { get; set; } = new List<Board>();
 }

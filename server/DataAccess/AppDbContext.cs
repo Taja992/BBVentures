@@ -6,16 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
 
-public partial class AppDbContext : IdentityDbContext<Player>
+public partial class AppDbContext : IdentityDbContext<IdentityUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-    {
-    }
+        : base(options) { }
 
     public virtual DbSet<Board> Boards { get; set; }
     public virtual DbSet<Game> Games { get; set; }
-    public virtual DbSet<Player> Players { get; set; }
     public virtual DbSet<Transaction> Transactions { get; set; }
-
 }
