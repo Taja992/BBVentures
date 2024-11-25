@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import './adminPage.css';
-import StartGame from './startGameComponent.tsx';
+// import StartGame from './startGameComponent.tsx';
 import GamesHistory from './gamesHistoryComponent.tsx';
 
 const AdminPage = () => {
@@ -26,7 +26,7 @@ const AdminPage = () => {
                 </section>
                 <section className="admin-section">
                     <h2>Games Overview</h2>
-                    <StartGame />
+                    {/*<StartGame />*/}
                     <GamesHistory />
                 </section>
                 <section className="admin-section">

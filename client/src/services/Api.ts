@@ -64,26 +64,24 @@ export interface BBVenturesApiCreateBoardDto {
 export interface BBVenturesApiGame {
   /** @format uuid */
   id?: string;
-  /** @format date-time */
-  createdAt?: string | null;
-  /** @format date-time */
-  endedAt?: string | null;
   winnerNumbers?: string[] | null;
   /** @format double */
   totalRevenue?: number;
+  isActive?: boolean;
+  /** @format int32 */
+  weekNumber?: number;
   boards?: BBVenturesApiBoard[] | null;
 }
 
 export interface BBVenturesApiGameDto {
   /** @format uuid */
   id?: string;
-  /** @format date-time */
-  createdAt?: string | null;
-  /** @format date-time */
-  endedAt?: string | null;
   winnerNumbers?: string[] | null;
   /** @format double */
   totalRevenue?: number;
+  isActive?: boolean;
+  /** @format int32 */
+  weekNumber?: number;
 }
 
 export interface BBVenturesApiHttpValidationProblemDetails {
@@ -599,27 +597,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         type: ContentType.Json,
         format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Auth
-     * @name AuthConfirmList
-     * @request GET:/api/Auth/confirm
-     */
-    authConfirmList: (
-      query?: {
-        token?: string;
-        email?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/Auth/confirm`,
-        method: "GET",
-        query: query,
         ...params,
       }),
 
