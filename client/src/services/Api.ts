@@ -137,13 +137,18 @@ export interface BBVenturesApiPlayer {
 
 export interface BBVenturesApiRegisterRequest {
   email?: string | null;
-  password?: string | null;
   name?: string | null;
 }
 
 export interface BBVenturesApiRegisterResponse {
   email?: string | null;
   name?: string | null;
+}
+
+export interface BBVenturesApiSetPasswordRequest {
+  email?: string | null;
+  token?: string | null;
+  newPassword?: string | null;
 }
 
 export interface BBVenturesApiTransaction {
@@ -593,6 +598,43 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthConfirmList
+     * @request GET:/api/Auth/confirm
+     */
+    authConfirmList: (
+      query?: {
+        token?: string;
+        email?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/Auth/confirm`,
+        method: "GET",
+        query: query,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthSetPasswordCreate
+     * @request POST:/api/Auth/set-password
+     */
+    authSetPasswordCreate: (data: BBVenturesApiSetPasswordRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/Auth/set-password`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
 
