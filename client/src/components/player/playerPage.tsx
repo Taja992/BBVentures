@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import './playerPage.css';
+import BoardForm from './Forms/BoardForm';
 
 const PlayerPage = () => {
     const { userId } = useParams<{ userId: string }>();
@@ -19,7 +20,7 @@ const PlayerPage = () => {
             <main className="player-main">
                 <section className="player-section">
                     <h2>My Board</h2>
-                    {/* Placeholder for player's boards component */}
+                    <BoardForm />
                 </section>
                 <section className="player-section">
                     <h2>My Played Boards</h2>

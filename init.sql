@@ -53,7 +53,7 @@ create table "Games"
     "Id"            uuid    not null
         constraint "PK_Games"
             primary key,
-    "WinnerNumbers" text[],
+    "WinnerNumbers" int[],
     "TotalRevenue"  numeric not null,
     "IsActive"      boolean not null,
     "WeekNumber"    integer not null
@@ -188,7 +188,7 @@ create table "Boards"
         constraint "FK_Boards_Games_GameId"
             references "Games"
             on delete cascade,
-    "Numbers"    text[],
+    "Numbers"    int[],
     "IsAutoplay" boolean not null,
     "CreatedAt"  timestamp with time zone,
     "UpdatedAt"  timestamp with time zone

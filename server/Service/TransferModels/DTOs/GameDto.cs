@@ -5,7 +5,7 @@ namespace Service.TransferModels.DTOs;
 public class GameDto
 {
     public Guid Id { get; set; }
-    public List<string>? WinnerNumbers { get; set; }
+    public List<int>? WinnerNumbers { get; set; }
     public decimal TotalRevenue { get; set; }
     public bool IsActive { get; set; }
     public int WeekNumber { get; set; }

@@ -15,7 +15,7 @@ public partial class Board
 
     public Guid GameId { get; set; }
 
-    public List<string>? Numbers { get; set; }
+    public List<int>? Numbers { get; set; }
 
     public bool IsAutoplay { get; set; }
 

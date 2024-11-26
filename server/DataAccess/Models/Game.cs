@@ -11,7 +11,7 @@ public partial class Game
     [Key]
     public Guid Id { get; set; }
 
-    public List<string>? WinnerNumbers { get; set; }
+    public List<int>? WinnerNumbers { get; set; }
 
     public decimal TotalRevenue { get; set; }
     
