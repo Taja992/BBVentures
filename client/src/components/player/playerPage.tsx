@@ -18,19 +18,19 @@ const PlayerPage = () => {
             </header>
             <main className="player-main">
                 <section className="player-section">
-                    <h2>My Boards</h2>
+                    <h2>My Board</h2>
                     {/* Placeholder for player's boards component */}
                 </section>
                 <section className="player-section">
-                    <h2>Current Games</h2>
+                    <h2>My Played Boards</h2>
                     {/* Placeholder for current games component */}
                 </section>
                 <section className="player-section">
-                    <h2>My Transactions</h2>
+                    <h2>Game History</h2>
                     {/* Placeholder for player's transactions component */}
                 </section>
                 <section className="player-section">
-                    <h2>My Profile</h2>
+                    <h2>My Transactions</h2>
                     {/* Placeholder for player's profile component */}
                 </section>
             </main>
