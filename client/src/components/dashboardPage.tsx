@@ -3,6 +3,7 @@ import { http } from "../http";
 import { userInfoAtom } from "../atoms/atoms";
 import { useAtom } from "jotai";
 import AdminComponent from "./admin/exampleAdminComponent";
+import RegisterUser from "./admin/registerUser";
 
 
 const DashboardPage = () => {
@@ -27,6 +28,7 @@ const DashboardPage = () => {
     return (<>
             <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
             <h2>{userInfo?.isAdmin && <AdminComponent />}</h2>
+                {userInfo?.isAdmin && <RegisterUser />}
         </>
     );
 };
