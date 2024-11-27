@@ -7,6 +7,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element: Component, ...rest }) => {
     const token = tokenStorage.getItem(TOKEN_KEY, null);
+    // !!token converts token to a boolean
     const isAuthenticated = !!token;
 
     return isAuthenticated ? <Component {...rest} /> : <Navigate to="/" />;
