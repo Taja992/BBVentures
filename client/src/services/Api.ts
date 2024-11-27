@@ -648,6 +648,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags Auth
+     * @name AuthMeList
+     * @request GET:/api/Auth/me
+     */
+    authMeList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiPlayer, any>({
+        path: `/api/Auth/me`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Board
      * @name BoardList
      * @request GET:/api/Board
