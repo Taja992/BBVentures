@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { tokenStorage, TOKEN_KEY } from './atoms/auth.ts';
+import { tokenStorage, TOKEN_KEY } from './atoms/atoms.ts';
 
 interface ProtectedRouteProps {
     element: React.ComponentType<any>;

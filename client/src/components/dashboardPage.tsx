@@ -1,9 +1,12 @@
 ﻿import {useEffect, useState } from "react";
 import { http } from "../http";
-
+import { userInfoAtom } from "../atoms/atoms";
+import { useAtom } from "jotai";
+import AdminComponent from "./admin/exampleAdminComponent";
 
 
 const DashboardPage = () => {
+    const [userInfo] = useAtom(userInfoAtom);
     const [username, setUsername] = useState<string | null>(null);
 
     useEffect(() => {
@@ -23,6 +26,7 @@ const DashboardPage = () => {
 
     return (<>
             <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
+            <h2>{userInfo?.isAdmin && <AdminComponent />}</h2>
         </>
     );
 };
