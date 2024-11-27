@@ -62,7 +62,7 @@ public class JwtTokenClaimService : ITokenClaimsService
             ClockSkew = TimeSpan.FromSeconds(0),
 
             // Default value is true already.
-            // They are just set here to emphasis the importance.
+            // They are just set here to emphasise the importance.
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,

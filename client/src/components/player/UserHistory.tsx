@@ -2,23 +2,26 @@
 import {useEffect, useState} from "react";
 import { http } from "../../http";
 import { BBVenturesApiTransaction } from "../../services/Api";
+import {useAtom} from "jotai";
+import { userIdAtom } from "../../atoms/atoms";
 
-function History(){
+function UserHistory(){
     
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
-    //let a: string | undefined;
-    const [guid] = useState("sdaf7843t7wed")
+    const [playerId]= useAtom(userIdAtom);
     
     
     useEffect(() => {getAllTrans()}, [])
     async function getAllTrans(){
         const response = await http.transactionList();
         
-        // @ts-ignore
-        const response2 = await http.transactionTransactionsFromUserList(guid);
-        setAllTrans(response.data);
-        console.log(response.data)
-        console.log(response2.data)
+        console.log(playerId);
+        
+        
+        const response2 = await http.transactionTransactionsFromUserList({guid: playerId!});
+        setAllTrans(response2.data);
+        console.log(response.data);
+        console.log(response2.data);
     }
     
     return <>
@@ -40,4 +43,4 @@ function History(){
     
 }
 
-export default History
+export default UserHistory
