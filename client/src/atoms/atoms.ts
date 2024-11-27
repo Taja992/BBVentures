@@ -1,5 +1,5 @@
 import {atom} from "jotai";
-import {BBVenturesApiGameDto} from "../services/Api.ts";
+import {BBVenturesApiAuthUserInfo, BBVenturesApiGameDto} from "../services/Api.ts";
 import {atomWithStorage, createJSONStorage } from "jotai/utils";
 import { http } from "../http.ts";
 
@@ -8,7 +8,7 @@ import { http } from "../http.ts";
 export const loadingAtom = atom(false);
 export const errorAtom = atom<string | null>(null);
 export const successAtom = atom<string | null>(null);
-
+export const allUsersAtom = atom<BBVenturesApiAuthUserInfo[]>([]);
 
 export const userIdAtom = atom<string | null>(null);
 export const userRoleAtom = atom<string | null>(null);

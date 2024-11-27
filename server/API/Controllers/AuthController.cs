@@ -53,7 +53,7 @@ public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterRe
 {
     await registerValidator.ValidateAndThrowAsync(data);
 
-    var player = await emailService.CreateUserAsync(data.Email);
+    var player = await emailService.CreateUserAsync(data.Email, data.Name);
     if (player == null)
     {
         return BadRequest("User creation failed.");
