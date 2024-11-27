@@ -1,11 +1,10 @@
-import {Link, useParams} from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import './adminPage.css';
-import StartGame from "./startGameComponent.tsx";
+// import StartGame from './startGameComponent.tsx';
+import GamesHistory from './gamesHistoryComponent.tsx';
 
 const AdminPage = () => {
     const { adminId } = useParams<{ adminId: string }>();
-
-
 
     return (
         <div className="admin-container">
@@ -27,7 +26,8 @@ const AdminPage = () => {
                 </section>
                 <section className="admin-section">
                     <h2>Games Overview</h2>
-                    <StartGame />
+                    {/*<StartGame />*/}
+                    <GamesHistory />
                 </section>
                 <section className="admin-section">
                     <h2>Boards Overview</h2>

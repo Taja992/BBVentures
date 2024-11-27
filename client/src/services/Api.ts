@@ -64,26 +64,24 @@ export interface BBVenturesApiCreateBoardDto {
 export interface BBVenturesApiGame {
   /** @format uuid */
   id?: string;
-  /** @format date-time */
-  createdAt?: string | null;
-  /** @format date-time */
-  endedAt?: string | null;
   winnerNumbers?: string[] | null;
   /** @format double */
   totalRevenue?: number;
+  isActive?: boolean;
+  /** @format int32 */
+  weekNumber?: number;
   boards?: BBVenturesApiBoard[] | null;
 }
 
 export interface BBVenturesApiGameDto {
   /** @format uuid */
   id?: string;
-  /** @format date-time */
-  createdAt?: string | null;
-  /** @format date-time */
-  endedAt?: string | null;
   winnerNumbers?: string[] | null;
   /** @format double */
   totalRevenue?: number;
+  isActive?: boolean;
+  /** @format int32 */
+  weekNumber?: number;
 }
 
 export interface BBVenturesApiHttpValidationProblemDetails {
@@ -135,6 +133,19 @@ export interface BBVenturesApiPlayer {
   transactions?: BBVenturesApiTransaction[] | null;
 }
 
+export interface BBVenturesApiPlayerDto {
+  isActive?: boolean;
+  /** @format double */
+  balance?: number;
+  /** @format date-time */
+  createdAt?: string | null;
+  /** @format date-time */
+  updatedAt?: string | null;
+  userName?: string | null;
+  email?: string | null;
+  emailConfirmed?: boolean;
+}
+
 export interface BBVenturesApiRegisterRequest {
   email?: string | null;
   name?: string | null;
@@ -147,7 +158,8 @@ export interface BBVenturesApiRegisterResponse {
 
 export interface BBVenturesApiSetPasswordRequest {
   email?: string | null;
-  token?: string | null;
+  emailConfirmationToken?: string | null;
+  passwordResetToken?: string | null;
   newPassword?: string | null;
 }
 
@@ -605,27 +617,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Auth
-     * @name AuthConfirmList
-     * @request GET:/api/Auth/confirm
-     */
-    authConfirmList: (
-      query?: {
-        token?: string;
-        email?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/Auth/confirm`,
-        method: "GET",
-        query: query,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Auth
      * @name AuthSetPasswordCreate
      * @request POST:/api/Auth/set-password
      */
@@ -662,6 +653,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     authUserinfoList: (params: RequestParams = {}) =>
       this.request<BBVenturesApiAuthUserInfo, any>({
         path: `/api/Auth/userinfo`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthMeList
+     * @request GET:/api/Auth/me
+     */
+    authMeList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiPlayer, any>({
+        path: `/api/Auth/me`,
         method: "GET",
         format: "json",
         ...params,
@@ -814,6 +820,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "PUT",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserGetallList
+     * @request GET:/api/User/getall
+     */
+    userGetallList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiPlayerDto[], any>({
+        path: `/api/User/getall`,
+        method: "GET",
         format: "json",
         ...params,
       }),

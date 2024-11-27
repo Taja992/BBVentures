@@ -1,5 +1,5 @@
-using System.Text;
-using Api.Misc;
+
+using API.Misc;
 using DataAccess;
 using DataAccess.DataAccessObjects;
 using DataAccess.Interfaces;
@@ -86,6 +86,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddSingleton<IEmailSender<Player>, AppEmailSender>();
 
+
 #endregion
 
 #region Services
@@ -94,15 +95,22 @@ builder.Services.AddSingleton<IEmailSender<Player>, AppEmailSender>();
 
 // builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
 
-builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBoardService, BoardService>();
-builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
+builder.Services.AddScoped<GameService>();
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
+
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
-builder.Services.AddScoped<GameService>();
-//
-//
+
+
+builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
 // builder.Services.AddScoped<IBoardService, BoardService>();
 
 #endregion

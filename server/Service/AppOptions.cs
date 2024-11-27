@@ -13,6 +13,8 @@ public sealed class AppOptions
     [Required]
     public required string Address { get; set; }
     [Required]
+    public required string FrontendAddress { get; set; } 
+    [Required]
     public required string SmtpServer { get; set; }
     [Required]
     public int? SmtpPort { get; set; }
