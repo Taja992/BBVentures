@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using RazorLight;
 using Service;
 
-namespace Api.Misc;
+namespace API.Misc;
 
 public record EmailModel(Player Player, string Email, string CodeOrLink);
 
@@ -21,7 +21,7 @@ public class AppEmailSender(IOptions<AppOptions> options, ILogger<AppEmailSender
         .UseOptions(new RazorLightOptions() { EnableDebugMode = true })
         .Build();
 
-    public async Task RenderAndSend<TModel>(
+    private async Task RenderAndSend<TModel>(
         string toEmail,
         string subject,
         string template,
@@ -32,12 +32,12 @@ public class AppEmailSender(IOptions<AppOptions> options, ILogger<AppEmailSender
         await SendEmailAsync(toEmail, subject, message);
     }
 
-    public async Task<string> RenderTemplateAsync<TModel>(string template, TModel model)
+    private async Task<string> RenderTemplateAsync<TModel>(string template, TModel model)
     {
         return await engine.CompileRenderAsync($"API.Emails.{template}", model);
     }
 
-    public async Task SendEmailAsync(string toEmail, string subject, string message)
+    private async Task SendEmailAsync(string toEmail, string subject, string message)
     {
         try
         {
