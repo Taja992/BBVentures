@@ -1,3 +1,4 @@
+/*
 
 import './playerPage.css';
 import { http } from '../../http';
@@ -21,7 +22,7 @@ const TransactionDetails: React.FC<{ transaction: BBVenturesApiTransaction }> = 
             {transaction.player && (
                 <div>
                     <h3>Player Details</h3>
-                    {/* Display player details here */}
+                    {/!* Display player details here *!/}
                 </div>
             )}
         </div>
@@ -47,11 +48,11 @@ const PlayerPage: React.FC = () => {
             <main className="player-main">
                 <section className="player-section">
                     <h2>My Boards</h2>
-                    {/* Placeholder for player's boards component */}
+                    {/!* Placeholder for player's boards component *!/}
                 </section>
                 <section className="player-section">
                     <h2>Current Games</h2>
-                    {/* Placeholder for current games component */}
+                    {/!* Placeholder for current games component *!/}
                 </section>
                 <section className="player-section">
                     <h2>My Transactions</h2>
@@ -61,7 +62,7 @@ const PlayerPage: React.FC = () => {
                 </section>
                 <section className="player-section">
                     <h2>My Profile</h2>
-                    {/* Placeholder for player's profile component */}
+                    {/!* Placeholder for player's profile component *!/}
                 </section>
             </main>
         </div>
@@ -69,3 +70,4 @@ const PlayerPage: React.FC = () => {
 };
 
 export default PlayerPage;
+*/
