@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using System.Security.Claims;
+using DataAccess;
 using DataAccess.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -245,7 +246,27 @@ public class AuthController(
         var isPlayer = roles.Contains(Role.Player) || isAdmin;
         return Ok (new AuthUserInfo(username, isAdmin, isPlayer));
     }
-    
+
+    [HttpGet]
+    [Route("me")]
+    [Authorize]
+    public async  Task<ActionResult<Player>> GetCurrentUser()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        var user = await userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(user);
+    }
     
 }
 
