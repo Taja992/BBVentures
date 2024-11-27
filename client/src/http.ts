@@ -1,5 +1,5 @@
 import { Api } from "./services/Api.ts";
-import { tokenStorage, TOKEN_KEY } from "./atoms/auth.ts";
+import { tokenStorage, TOKEN_KEY } from "./atoms/atoms.ts";
 
 // URL prefix for own server
 // This is to protect us from accidently sending the JWT to 3rd party services.

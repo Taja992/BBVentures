@@ -1,31 +1,10 @@
-import { atom, useAtom } from "jotai";
-import { atomWithStorage, createJSONStorage } from "jotai/utils";
+import { useAtom } from "jotai";
+
 import { useNavigate } from "react-router-dom";
 import { http } from "../http";
 import { BBVenturesApiAuthUserInfo } from "../services/Api.ts";
+import { jwtAtom, userInfoAtom } from "./atoms.ts";
 
-
-// Storage key for JWT
-export const TOKEN_KEY = "token";
-
-// Create a storage mechanism for JWT using sessionStorage
-export const tokenStorage = createJSONStorage<string | null>(
-    () => sessionStorage,
-);
-
-// Create an atom to store JWT, initialized with the value from sessionStorage
-const jwtAtom = atomWithStorage<string | null>(TOKEN_KEY, null, tokenStorage);
-
-// Create an atom to fetch and store user info based on the JWT
-const userInfoAtom = atom(async (get) => {
-    // Get the current JWT value
-    const token = get(jwtAtom);
-    if (!token) return null; // If no token, return null
-
-    // Fetch user info from the API using the JWT
-    const response = await http.authUserinfoList();
-    return response.data; // Return the user info data
-});
 
 // Define the shape of the credentials object
 export type Credentials = { email: string; password: string };

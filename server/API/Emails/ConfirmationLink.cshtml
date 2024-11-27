@@ -50,12 +50,17 @@
             text-decoration: none;
             border-radius: 5px;
         }
+        
         .footer {
             text-align: center;
             padding: 10px 0;
             color: #999999;
             font-size: 12px;
         }
+        .email-text {
+            color: #ffffff;
+        }
+        
     </style>
 </head>
 <body>
@@ -68,8 +73,8 @@
             <p>Thank you for signing up on our site! We need you to confirm your email address.</p>
             <p>To do that, please click on the link below. A new password must be assigned at the link given.</p>
             <a href="@Model.CodeOrLink" class="button">
-                <div>Confirm and set new Password</div>
-                <div>@Model.Email</div>
+                <div class="email-text">Confirm and set new Password</div>
+                <div class="email-text">@Model.Email</div>
             </a>
         </div>
         <div class="footer">
