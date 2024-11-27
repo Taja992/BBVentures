@@ -776,16 +776,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name TransactionTransactionsFromUserList
      * @request GET:/api/Transaction/transactionsFromUser
      */
-    transactionTransactionsFromUserList: (
-      query?: {
-        guid?: string;
-      },
-      params: RequestParams = {},
-    ) =>
+    transactionTransactionsFromUserList: (params: RequestParams = {}) =>
       this.request<BBVenturesApiTransactionResponseDto[], any>({
         path: `/api/Transaction/transactionsFromUser`,
         method: "GET",
-        query: query,
         format: "json",
         ...params,
       }),
