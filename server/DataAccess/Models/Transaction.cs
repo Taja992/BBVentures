@@ -19,6 +19,8 @@ public partial class Transaction
 
     public string? MobilePayTransactionNumber { get; set; }
 
+    public bool isPending { get; set; }
+
     [ForeignKey("PlayerId")]
     [InverseProperty("Transactions")]
     public virtual Player Player { get; set; } = null!;
