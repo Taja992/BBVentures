@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Service;
 using Service.Auth;
 using Service.Security;
+using Service.Services;
 // using Service.Security;
 using LoginRequest = Service.Auth.LoginRequest;
 using RegisterRequest = Service.Auth.RegisterRequest;
@@ -27,6 +28,7 @@ public class AuthController(
     IValidator<SetPasswordRequest> setPasswordValidator,
     IOptions<AppOptions> options,
     IEmailSender<Player> emailSender,
+    EmailService emailService,
     ILogger<AuthController> logger) : ControllerBase
 {
     
@@ -49,58 +51,149 @@ public class AuthController(
     }
     
         
-    [HttpPost]
-    [Route("register")]
-    [AllowAnonymous]
-    public async Task<ActionResult<RegisterResponse>> Register( [FromBody] RegisterRequest data )
+[HttpPost]
+[Route("register")]
+[AllowAnonymous]
+public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterRequest data)
+{
+    await registerValidator.ValidateAndThrowAsync(data);
+
+    var player = await CreateUserAsync(data.Email);
+    if (player == null)
     {
-        await registerValidator.ValidateAndThrowAsync(data);
-
-        var player = new Player
-        { 
-            UserName = data.Email,
-            Email = data.Email
-        };
-        
-        var defaultPassword = "DefaultPassword123!";
-        
-        var result = await userManager.CreateAsync(player, defaultPassword);
-        if (!result.Succeeded)
-        {
-            foreach (var error in result.Errors)
-            {
-                logger.LogError("Error code: {Code}, Description: {Description}", error.Code, error.Description);
-            }
-            throw new ValidationError(
-                //ToDictionary is kind of like a hashmap storing keys to values for errors
-                result.Errors.ToDictionary(x => x.Code, x => new[] { x.Description })
-            );
-        }
-        await userManager.AddToRoleAsync(player, Role.Player);
-
-        //below is setting up emails
-        var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(player);
-        var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(player);
-        
-        // logger.LogInformation("Generated email confirmation token: {Token}", emailConfirmationToken);
-        // logger.LogInformation("Generated password reset token: {Token}", passwordResetToken);
-
-        var qs = new Dictionary<string, string?> {
-            { "emailConfirmationToken", emailConfirmationToken }, 
-            { "passwordResetToken", passwordResetToken }, 
-            { "email", player.Email } };
-        
-        var confirmationLink = new UriBuilder(options.Value.FrontendAddress)
-        {
-            Path = "/set-password",
-            Query = QueryString.Create(qs).Value
-        }.Uri.ToString();
-
-        await emailSender.SendConfirmationLinkAsync(player, player.Email, confirmationLink);
-        
-        
-        return Ok(new RegisterResponse(Email: player.Email, Name: player.UserName));
+        return BadRequest("User creation failed.");
     }
+
+    var tokens = await GenerateTokensAsync(player);
+    await SendConfirmationEmailAsync(player, tokens.emailConfirmationToken, tokens.passwordResetToken);
+
+    return Ok(new RegisterResponse(Email: player.Email ?? string.Empty, Name: player.UserName ?? string.Empty));
+}
+
+private async Task<Player?> CreateUserAsync(string email)
+{
+    var player = new Player
+    {
+        UserName = email,
+        Email = email
+    };
+
+    var defaultPassword = "DefaultPassword123!";
+    var result = await userManager.CreateAsync(player, defaultPassword);
+    if (!result.Succeeded)
+    {
+        foreach (var error in result.Errors)
+        {
+            logger.LogError("Error code: {Code}, Description: {Description}", error.Code, error.Description);
+        }
+        throw new ValidationError(
+            result.Errors.ToDictionary(x => x.Code, x => new[] { x.Description })
+        );
+    }
+
+    await userManager.AddToRoleAsync(player, Role.Player);
+    return player;
+}
+
+private async Task<(string emailConfirmationToken, string passwordResetToken)> GenerateTokensAsync(Player player)
+{
+    var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(player);
+    var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(player);
+    return (emailConfirmationToken, passwordResetToken);
+}
+
+private async Task SendConfirmationEmailAsync(Player player, string emailConfirmationToken, string passwordResetToken)
+{
+    var email = player.Email ?? throw new InvalidOperationException("Player email is null");
+    var qs = new Dictionary<string, string?>
+    {
+        { "emailConfirmationToken", emailConfirmationToken },
+        { "passwordResetToken", passwordResetToken },
+        { "email", email }
+    };
+
+    var confirmationLink = new UriBuilder(options.Value.FrontendAddress)
+    {
+        Path = "/set-password",
+        Query = QueryString.Create(qs).Value
+    }.Uri.ToString();
+
+    await emailSender.SendConfirmationLinkAsync(player, email, confirmationLink);
+}
+
+[HttpPost]
+[Route("set-password")]
+[AllowAnonymous]
+public async Task<IActionResult> SetPassword([FromBody] SetPasswordRequest data)
+{
+    await setPasswordValidator.ValidateAndThrowAsync(data);
+
+    var player = await userManager.FindByEmailAsync(data.Email);
+    if (player == null)
+    {
+        return BadRequest("Invalid Email");
+    }
+
+    var emailConfirmResult = await ConfirmEmailAsync(player, data.EmailConfirmationToken);
+    if (!emailConfirmResult.Succeeded)
+    {
+        return BadRequest(emailConfirmResult.Errors);
+    }
+
+    var resetPasswordResult = await ResetPasswordAsync(player, data.PasswordResetToken, data.NewPassword);
+    if (!resetPasswordResult.Succeeded)
+    {
+        return BadRequest(resetPasswordResult.Errors);
+    }
+
+    var updateResult = await UpdateUserAsync(player);
+    if (!updateResult.Succeeded)
+    {
+        return BadRequest(updateResult.Errors);
+    }
+
+    return Ok("Password set successfully");
+}
+
+private async Task<IdentityResult> ConfirmEmailAsync(Player player, string emailConfirmationToken)
+{
+    var result = await userManager.ConfirmEmailAsync(player, emailConfirmationToken);
+    if (!result.Succeeded)
+    {
+        foreach (var error in result.Errors)
+        {
+            logger.LogError("Email confirmation error code: {Code}, Description: {Description}", error.Code, error.Description);
+        }
+    }
+    return result;
+}
+
+private async Task<IdentityResult> ResetPasswordAsync(Player player, string passwordResetToken, string newPassword)
+{
+    var result = await userManager.ResetPasswordAsync(player, passwordResetToken, newPassword);
+    if (!result.Succeeded)
+    {
+        foreach (var error in result.Errors)
+        {
+            logger.LogError("Password reset error code: {Code}, Description: {Description}", error.Code, error.Description);
+        }
+    }
+    return result;
+}
+
+private async Task<IdentityResult> UpdateUserAsync(Player player)
+{
+    player.IsActive = true;
+    var result = await userManager.UpdateAsync(player);
+    if (!result.Succeeded)
+    {
+        foreach (var error in result.Errors)
+        {
+            logger.LogError("Update error code: {Code}, Description: {Description}", error.Code, error.Description);
+        }
+    }
+    return result;
+}
     
     // [HttpGet]
     // [Route("confirm")]
@@ -134,58 +227,6 @@ public class AuthController(
     //         throw new AuthenticationError();
     //     return Results.Content("<h1>Email confirmed</h1>", "text/html", statusCode: 200);
     // }
-    
-    
-    [HttpPost]
-    [Route("set-password")]
-    [AllowAnonymous]
-    public async Task<IActionResult> SetPassword([FromBody] SetPasswordRequest data)
-    {
-        // logger.LogInformation("Received email confirmation token: {Token}", data.EmailConfirmationToken);
-        // logger.LogInformation("Received password reset token: {Token}", data.PasswordResetToken);
-        await setPasswordValidator.ValidateAndThrowAsync(data);
-    
-        var player = await userManager.FindByEmailAsync(data.Email);
-        if (player == null)
-        {
-            return BadRequest("Invalid Email");
-        }
-
-        // Confirm the email first
-        var emailConfirmResult = await userManager.ConfirmEmailAsync(player, data.EmailConfirmationToken);
-        if (!emailConfirmResult.Succeeded)
-        {
-            foreach (var error in emailConfirmResult.Errors)
-            {
-                logger.LogError("Email confirmation error code: {Code}, Description: {Description}", error.Code, error.Description);
-            }
-            return BadRequest(emailConfirmResult.Errors);
-        }
-
-        // Reset the password
-        var resetPasswordResult = await userManager.ResetPasswordAsync(player, data.PasswordResetToken, data.NewPassword);
-        if (!resetPasswordResult.Succeeded)
-        {
-            foreach (var error in resetPasswordResult.Errors)
-            {
-                logger.LogError("Password reset error code: {Code}, Description: {Description}", error.Code, error.Description);
-            }
-            return BadRequest(resetPasswordResult.Errors);
-        }
-        
-        player.IsActive = true;
-        var updateResult = await userManager.UpdateAsync(player);
-        if (!updateResult.Succeeded)
-        {
-            foreach (var error in updateResult.Errors)
-            {
-                logger.LogError("Update error code: {Code}, Description: {Description}", error.Code, error.Description);
-            }
-            return BadRequest(updateResult.Errors);
-        }
-
-        return Ok("Password set successfully");
-    }
 
     // [HttpPost]
     // [Route("set-password")]
