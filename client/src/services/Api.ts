@@ -133,6 +133,19 @@ export interface BBVenturesApiPlayer {
   transactions?: BBVenturesApiTransaction[] | null;
 }
 
+export interface BBVenturesApiPlayerDto {
+  isActive?: boolean;
+  /** @format double */
+  balance?: number;
+  /** @format date-time */
+  createdAt?: string | null;
+  /** @format date-time */
+  updatedAt?: string | null;
+  userName?: string | null;
+  email?: string | null;
+  emailConfirmed?: boolean;
+}
+
 export interface BBVenturesApiRegisterRequest {
   email?: string | null;
   name?: string | null;
@@ -807,6 +820,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "PUT",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserGetallList
+     * @request GET:/api/User/getall
+     */
+    userGetallList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiPlayerDto[], any>({
+        path: `/api/User/getall`,
+        method: "GET",
         format: "json",
         ...params,
       }),
