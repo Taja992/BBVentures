@@ -1,8 +1,13 @@
-﻿using DataAccess;
+﻿using System.Security.Claims;
+using DataAccess;
 using DataAccess.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Service;
+using Service.Security;
 using Service.Services;
 using Service.TransferModels.DTOs;
 
@@ -14,27 +19,27 @@ public class TransactionController(AppDbContext context) : ControllerBase
 {
     private TransactionService service = new TransactionService(context);
     
-    /*[HttpGet]
-    [Route("transactions")]
-    [AllowAnonymous]
-    public ActionResult<List<TransactionDto>> GetAllTransactions()
-    {
-        return service.GetAllTransactions();
-    }*/
-    
     [HttpGet]
     [AllowAnonymous]
     public ActionResult<List<TransactionResponseDto>> GetAllTransactions()
     {
-        return service.GetAllTransactions();
+        return Ok(service.GetAllTransactions());
     }
     
     [HttpGet]
     [Route("transactionsFromUser")]
     [AllowAnonymous]
-    public ActionResult<List<TransactionResponseDto>> GetAllTransactionsFromUser([FromQuery] string guid)
+    public ActionResult<List<TransactionResponseDto>> GetAllTransactionsFromUser()
     {
-        return service.GetAllTransactionsFromUser(guid);
+        
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+        
+        return Ok(service.GetAllTransactionsFromUser(userId));
     }
 
     [HttpPost]
