@@ -13,9 +13,9 @@ namespace API.Controllers;
 [ApiController]
 public class BoardController : ControllerBase
 {
-    private readonly BoardService _boardService;
+    private readonly IBoardService _boardService;
 
-    public BoardController(BoardService boardService)
+    public BoardController(IBoardService boardService)
     {
         _boardService = boardService;
     }

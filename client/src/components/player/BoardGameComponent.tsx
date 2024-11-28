@@ -30,7 +30,7 @@ const BoardGameComponent = () => {
         try {
             const response = await http.boardCreateCreate({
                 playerId: userId,
-                gameId: 'some-game-id', // Replace with actual game ID
+                gameId: '6e980638-fed3-4742-a1de-08b177eb98d0', // Replace with actual game ID
                 numbers: selectedNumbers,
                 isAutoplay: false
             });

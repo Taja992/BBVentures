@@ -1,6 +1,11 @@
-﻿namespace Service.Services;
+﻿using Service.TransferModels.DTOs;
+using Service.TransferModels.Requests.Create;
 
-public class IBoardService
+namespace Service.Services
 {
-    
+    public interface IBoardService
+    {
+        Task<BoardDto> CreateBoard(CreateBoardDto createBoardDto);
+        Task<List<BoardDto>> GetAllBoards();
+    }
 }
