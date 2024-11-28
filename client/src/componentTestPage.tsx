@@ -1,9 +1,14 @@
 
-const StartGame: React.FC = () => {
 
 
+
+
+const GetAllUsers2: React.FC = () => {
+    
+    
     return (
-        <></>
+        <>
+        </>
     );
 };
-export default StartGame;
+export default GetAllUsers2;

@@ -134,6 +134,7 @@ export interface BBVenturesApiPlayer {
 }
 
 export interface BBVenturesApiPlayerDto {
+  id?: string | null;
   isActive?: boolean;
   /** @format double */
   balance?: number;
@@ -172,6 +173,7 @@ export interface BBVenturesApiTransaction {
   /** @format date-time */
   createdAt?: string | null;
   mobilePayTransactionNumber?: string | null;
+  isPending?: boolean;
   player?: BBVenturesApiPlayer;
 }
 
@@ -830,6 +832,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/User/getall`,
         method: "GET",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserUpdateUpdate
+     * @request PUT:/api/User/update
+     */
+    userUpdateUpdate: (data: BBVenturesApiPlayerDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/User/update`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

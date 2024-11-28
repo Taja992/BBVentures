@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Services;
 using Service.TransferModels.DTOs;
@@ -17,6 +18,27 @@ public class UserController(IUserService service) : ControllerBase
     {
         var players = await service.GetAllPlayers();
         return Ok(players);
+    }
+
+    [HttpPut]
+    [Authorize(Roles = "Admin")]
+    [Route("update")]
+    public async Task<ActionResult> UpdatePlayer([FromBody] PlayerDto playerDto)
+    {
+        if (string.IsNullOrEmpty(playerDto.Id))
+        {
+            return BadRequest("Invalid player data.");
+        }
+
+        var result = await service.UpdatePlayer(playerDto);
+        if (result)
+        {
+            return NoContent();
+        }
+        else
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error updating player");
+        }
     }
     
 }

@@ -11,4 +11,15 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return await context.Players
             .ToListAsync();
     }
+
+    public async Task<Player?> GetPlayerById(string id)
+    {
+        return await context.Players.FindAsync(id);
+    }
+
+    public async Task<bool> UpdatePlayer(Player player)
+    {
+        context.Players.Update(player);
+        return await context.SaveChangesAsync() > 0;
+    }
 }

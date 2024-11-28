@@ -5,6 +5,7 @@ namespace Service.TransferModels.DTOs;
 
 public class PlayerDto
 {
+    public required string Id { get; set; }
     public bool IsActive { get; set; }
     public decimal Balance { get; set; }
     public DateTime? CreatedAt { get; set; }
@@ -17,6 +18,7 @@ public class PlayerDto
     {
         return new PlayerDto()
         {
+            Id = player.Id,
             IsActive = player.IsActive,
             Balance = player.Balance,
             CreatedAt = player.CreatedAt,
