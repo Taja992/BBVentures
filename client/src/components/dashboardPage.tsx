@@ -7,6 +7,7 @@ import UserHistory from "./player/UserHistory";
 import AllHistory from "./admin/AllHistory";
 import GamesHistory from "./admin/gamesHistoryComponent";
 import GetAllUsers from "./admin/allUsersComponent";
+import BoardGameComponent from "./player/BoardGameComponent";
 
 
 
@@ -35,6 +36,8 @@ const DashboardPage = () => {
             {userInfo?.isAdmin && <GetAllUsers />}
             <GamesHistory />
             <h3>{userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}</h3>
+            <h4>Game</h4>
+            <BoardGameComponent />
             
         </>
     );
