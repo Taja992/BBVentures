@@ -6,5 +6,6 @@
         public Guid GameId { get; set; }
         public List<int> Numbers { get; set; } = new();
         public bool IsAutoplay { get; set; }
+        public int FieldCount { get; set; }
     }
 }

@@ -21,6 +21,11 @@ const BoardGameComponent = () => {
     };
 
     const handleSubmit = async () => {
+        if (selectedNumbers.length !== fieldCount) {
+            alert(`Please select exactly ${fieldCount} numbers.`);
+            return;
+        }
+
         console.log('Submitted numbers:', selectedNumbers);
         try {
             const response = await http.boardCreateCreate({
