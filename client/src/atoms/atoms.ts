@@ -1,32 +1,30 @@
 import {atom} from "jotai";
-import {BBVenturesApiAuthUserInfo, BBVenturesApiGameDto} from "../services/Api.ts";
+import {BBVenturesApiAuthUserInfo, BBVenturesApiGameDto, BBVenturesApiPlayerDto} from "../services/Api.ts";
 import {atomWithStorage, createJSONStorage } from "jotai/utils";
 import { http } from "../http.ts";
 
 
-export const loadingAtom = atom(false);
-export const errorAtom = atom<string | null>(null);
-export const successAtom = atom<string | null>(null);
-export const allUsersAtom = atom<BBVenturesApiAuthUserInfo[]>([]);
 
-export const userIdAtom = atom<string | null>(null);
-export const userRoleAtom = atom<string | null>(null);
-
-
-
+//Store all Users
+export const allUsersAtomWrong = atom<BBVenturesApiAuthUserInfo[]>([]);
+//Store all Users
+export const allUsersAtom = atom<BBVenturesApiPlayerDto[]>([]);
 //This is to keep track of winning numbers and end dates per game
 export const gamesAtom = atom<BBVenturesApiGameDto[]>([]);
 
 
 
+
+
+
+
+//////////Auth Stuff////////////////////
 // Storage key for JWT
 export const TOKEN_KEY = "token";
-
 // Create a storage mechanism for JWT using sessionStorage
 export const tokenStorage = createJSONStorage<string | null>(
     () => sessionStorage,
 );
-
 // Create an atom to store JWT, initialized with the value from sessionStorage
 export const jwtAtom = atomWithStorage<string | null>(TOKEN_KEY, null, tokenStorage);
 

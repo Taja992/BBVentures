@@ -2,10 +2,11 @@
 import { http } from "../http";
 import { userInfoAtom } from "../atoms/atoms";
 import { useAtom } from "jotai";
-import AdminComponent from "./admin/exampleAdminComponent";
 import RegisterUser from "./admin/registerUser";
 import UserHistory from "./player/UserHistory";
 import AllHistory from "./admin/AllHistory";
+import GamesHistory from "./admin/gamesHistoryComponent";
+import GetAllUsers from "./admin/allUsersComponent";
 
 
 
@@ -30,8 +31,9 @@ const DashboardPage = () => {
 
     return (<>
             <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
-            <h2>{userInfo?.isAdmin && <AdminComponent />}</h2>
                 {userInfo?.isAdmin && <RegisterUser />}
+            {userInfo?.isAdmin && <GetAllUsers />}
+            <GamesHistory />
             <h3>{userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}</h3>
             
         </>
