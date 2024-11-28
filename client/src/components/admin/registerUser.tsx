@@ -1,14 +1,13 @@
 ﻿import React, { useState } from 'react';
-import {BBVenturesApiAuthUserInfo, BBVenturesApiRegisterRequest } from '../../services/Api';
+import {BBVenturesApiRegisterRequest } from '../../services/Api';
 import { http } from '../../http';
 import toast from 'react-hot-toast';
-import { useAtom } from 'jotai';
-import { allUsersAtom } from '../../atoms/atoms';
+
 
 const RegisterUser: React.FC = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [, setAllUsers] = useAtom(allUsersAtom);
+
 
     const handleRegister = async () => {
         const data: BBVenturesApiRegisterRequest = {
@@ -17,9 +16,10 @@ const RegisterUser: React.FC = () => {
         };
         
         try {
-            const response = await http.authRegisterCreate(data)
+            //There is a little conflict here with the way users are added versus shown, will need to figure it out later
+            // const response = await http.authRegisterCreate(data)
+            await http.authRegisterCreate(data)
             toast.success("Registration successful!");
-            setAllUsers((prevUsers) => [...prevUsers, response.data as BBVenturesApiAuthUserInfo])
         } catch {
             toast.error("Registration Failed!")
         }
