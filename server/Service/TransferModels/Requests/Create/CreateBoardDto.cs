@@ -4,7 +4,7 @@
     {
         public string PlayerId { get; set; } = null!;
         public Guid GameId { get; set; }
-        public List<string> Numbers { get; set; } = new();
+        public List<int> Numbers { get; set; } = new();
         public bool IsAutoplay { get; set; }
     }
 }

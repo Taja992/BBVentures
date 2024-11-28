@@ -2,7 +2,7 @@
 {
     public class UpdateBoardDto
     {
-        public List<string> Numbers { get; set; } = new();
+        public List<int> Numbers { get; set; } = new();
         public bool IsAutoplay { get; set; }
     }
 }

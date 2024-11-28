@@ -5,6 +5,7 @@ import { http } from '../../http';
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { useAuth } from '../../atoms/auth';
 import { BBVenturesApiTransaction } from '../../services/Api';
+import BoardForm from './Forms/BoardForm';
 
 export async function playerLoader({ params }: LoaderFunctionArgs) {
     const response = await http.transactionTransactionsFromUserList({ guid: params.id! })
@@ -47,8 +48,8 @@ const PlayerPage: React.FC = () => {
             </header>
             <main className="player-main">
                 <section className="player-section">
-                    <h2>My Boards</h2>
-                    {/!* Placeholder for player's boards component *!/}
+                    <h2>My Board</h2>
+                    <BoardForm />
                 </section>
                 <section className="player-section">
                     <h2>Current Games</h2>

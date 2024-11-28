@@ -29,7 +29,7 @@ export interface BBVenturesApiBoard {
   playerId?: string | null;
   /** @format uuid */
   gameId?: string;
-  numbers?: string[] | null;
+  numbers?: number[] | null;
   isAutoplay?: boolean;
   /** @format date-time */
   createdAt?: string | null;
@@ -45,7 +45,7 @@ export interface BBVenturesApiBoardDto {
   playerId?: string | null;
   /** @format uuid */
   gameId?: string;
-  numbers?: string[] | null;
+  numbers?: number[] | null;
   isAutoplay?: boolean;
   /** @format date-time */
   createdAt?: string | null;
@@ -57,14 +57,14 @@ export interface BBVenturesApiCreateBoardDto {
   playerId?: string | null;
   /** @format uuid */
   gameId?: string;
-  numbers?: string[] | null;
+  numbers?: number[] | null;
   isAutoplay?: boolean;
 }
 
 export interface BBVenturesApiGame {
   /** @format uuid */
   id?: string;
-  winnerNumbers?: string[] | null;
+  winnerNumbers?: number[] | null;
   /** @format double */
   totalRevenue?: number;
   isActive?: boolean;
@@ -76,7 +76,7 @@ export interface BBVenturesApiGame {
 export interface BBVenturesApiGameDto {
   /** @format uuid */
   id?: string;
-  winnerNumbers?: string[] | null;
+  winnerNumbers?: number[] | null;
   /** @format double */
   totalRevenue?: number;
   isActive?: boolean;
