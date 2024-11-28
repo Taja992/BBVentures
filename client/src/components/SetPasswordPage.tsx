@@ -1,7 +1,7 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useState} from "react";
-import {BBVenturesApiSetPasswordRequest} from "../../services/Api.ts";
-import {http} from "../../http.ts";
+import {BBVenturesApiSetPasswordRequest} from "../services/Api.ts";
+import {http} from "../http.ts";
 import toast from "react-hot-toast";
 
 

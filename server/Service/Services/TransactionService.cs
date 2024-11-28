@@ -33,6 +33,7 @@ public class TransactionService(AppDbContext context)
         //use validator to validate and throw if we want
         Transaction trans = dto.ToTransaction();
         trans.CreatedAt = DateTime.UtcNow;
+        trans.isPending = true;
         Transaction newTrans = await repo.AddTransaction(trans);
         return new TransactionDto().FromEntity(newTrans);
     }

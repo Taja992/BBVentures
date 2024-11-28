@@ -133,6 +133,20 @@ export interface BBVenturesApiPlayer {
   transactions?: BBVenturesApiTransaction[] | null;
 }
 
+export interface BBVenturesApiPlayerDto {
+  id?: string | null;
+  isActive?: boolean;
+  /** @format double */
+  balance?: number;
+  /** @format date-time */
+  createdAt?: string | null;
+  /** @format date-time */
+  updatedAt?: string | null;
+  userName?: string | null;
+  email?: string | null;
+  emailConfirmed?: boolean;
+}
+
 export interface BBVenturesApiRegisterRequest {
   email?: string | null;
   name?: string | null;
@@ -159,6 +173,7 @@ export interface BBVenturesApiTransaction {
   /** @format date-time */
   createdAt?: string | null;
   mobilePayTransactionNumber?: string | null;
+  isPending?: boolean;
   player?: BBVenturesApiPlayer;
 }
 
@@ -648,6 +663,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags Auth
+     * @name AuthMeList
+     * @request GET:/api/Auth/me
+     */
+    authMeList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiPlayer, any>({
+        path: `/api/Auth/me`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Board
      * @name BoardList
      * @request GET:/api/Board
@@ -748,16 +778,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name TransactionTransactionsFromUserList
      * @request GET:/api/Transaction/transactionsFromUser
      */
-    transactionTransactionsFromUserList: (
-      query?: {
-        guid?: string;
-      },
-      params: RequestParams = {},
-    ) =>
+    transactionTransactionsFromUserList: (params: RequestParams = {}) =>
       this.request<BBVenturesApiTransactionResponseDto[], any>({
         path: `/api/Transaction/transactionsFromUser`,
         method: "GET",
-        query: query,
         format: "json",
         ...params,
       }),
@@ -793,6 +817,37 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserGetallList
+     * @request GET:/api/User/getall
+     */
+    userGetallList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiPlayerDto[], any>({
+        path: `/api/User/getall`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserUpdateUpdate
+     * @request PUT:/api/User/update
+     */
+    userUpdateUpdate: (data: BBVenturesApiPlayerDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/User/update`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

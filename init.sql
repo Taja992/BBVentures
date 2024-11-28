@@ -166,7 +166,8 @@ create table "Transactions"
             on delete cascade,
     "Amount"                     numeric not null,
     "CreatedAt"                  timestamp with time zone,
-    "MobilePayTransactionNumber" text
+    "MobilePayTransactionNumber" text,
+    "isPending"                  boolean not null
 );
 
 alter table "Transactions"
@@ -202,3 +203,4 @@ create index "IX_Boards_GameId"
 
 create index "IX_Boards_PlayerId"
     on "Boards" ("PlayerId");
+
