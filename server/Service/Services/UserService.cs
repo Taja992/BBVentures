@@ -32,6 +32,7 @@ public class UserService(IUserRepository userRepository) : IUserService
         player.Balance = playerDto.Balance;
         player.Email = playerDto.Email;
         player.UserName = playerDto.UserName;
+        player.UpdatedAt = DateTime.UtcNow;
 
         return await userRepository.UpdatePlayer(player);
     }

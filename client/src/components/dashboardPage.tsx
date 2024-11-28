@@ -2,7 +2,7 @@
 import { http } from "../http";
 import { userInfoAtom } from "../atoms/atoms";
 import { useAtom } from "jotai";
-import RegisterUser from "./admin/registerUser";
+import RegisterUser from "./admin/registerUserComponent";
 import UserHistory from "./player/UserHistory";
 import AllHistory from "./admin/AllHistory";
 import GamesHistory from "./admin/gamesHistoryComponent";
