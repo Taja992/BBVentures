@@ -1,5 +1,7 @@
-﻿using DataAccess.Models;
+﻿using DataAccess;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Service;
@@ -9,24 +11,54 @@ public class DbSeeder
     private readonly ILogger<DbSeeder> logger;
     private readonly UserManager<Player> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
+    private readonly AppDbContext context;
 
     public DbSeeder(
         ILogger<DbSeeder> logger,
         UserManager<Player> userManager,
-        RoleManager<IdentityRole> roleManager
+        RoleManager<IdentityRole> roleManager,
+        AppDbContext context
     )
     {
         this.logger = logger;
         this.userManager = userManager;
         this.roleManager = roleManager;
+        this.context = context;
     }
 
     public async Task SeedAsync()
     {
         await CreateRoles(Role.Admin, Role.Player);
-        await CreateUser(username: "admin@example.com", password: "S3cret!!", role: Role.Admin);
-        await CreateUser(username: "player@example.com", password: "S3cret!!", role: Role.Player);
+        var adminId = await CreateUser(username: "admin@example.com", password: "S3cret!!", role: Role.Admin);
+        var playerId = await CreateUser(username: "player@example.com", password: "S3cret!!", role: Role.Player);
+        await CreateGame(
+            id: new Guid("11111111-1111-1111-1111-111111111111"),
+            winnerNumbers: new List<int> { 1, 2, 3 },
+            totalRevenue: 1000.00m,
+            isActive: false,
+            weekNumber: 1
+        );
+        await CreateGame(
+            id: new Guid("22222222-2222-2222-2222-222222222222"),
+            winnerNumbers: null,
+            totalRevenue: 2000.00m,
+            isActive: true,
+            weekNumber: 2
+        );
+        
+        await CreateBoards(
+            new List<(Guid Id, string PlayerId, Guid GameId, List<int> Numbers, bool IsAutoplay)>
+            {
+                (Guid.NewGuid(), playerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 1, 2, 3 }, false),
+                (Guid.NewGuid(), playerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10 }, true),
+                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 6, 7, 8 }, true),
+                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10 }, false),
+                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9 }, true)
+            }
+        );
     }
+    
+    
 
     private async Task CreateRoles(params string[] roles)
     {
@@ -39,10 +71,12 @@ public class DbSeeder
         }
     }
     
-    private async Task CreateUser(string username, string password, string role)
+    private async Task<string> CreateUser(string username, string password, string role)
     {
-        if (await userManager.FindByNameAsync(username) != null) return;
-        var player = new Player
+        var player = await userManager.FindByNameAsync(username);
+        if (player != null) return player.Id;
+        
+        player = new Player
         {
             UserName = username,
             Email = username,
@@ -57,6 +91,45 @@ public class DbSeeder
             }
         }
         await userManager.AddToRoleAsync(player!, role!);
+        return player.Id;
+    }
+
+    private async Task CreateGame(Guid id, List<int>? winnerNumbers, decimal totalRevenue, bool isActive, int weekNumber)
+    {
+        if (await context.Games.AnyAsync(g => g.Id == id)) return;
+
+        var game = new Game
+        {
+            Id = id,
+            WinnerNumbers = winnerNumbers,
+            TotalRevenue = totalRevenue,
+            IsActive = isActive,
+            WeekNumber = weekNumber
+        };
+
+        context.Games.Add(game);
+        await context.SaveChangesAsync();
+    }
+    
+    private async Task CreateBoards(List<(Guid Id, string PlayerId, Guid GameId, List<int> Numbers, bool IsAutoplay)> boards)
+    {
+        foreach (var (id, playerId, gameId, numbers, isAutoplay) in boards)
+        {
+            var board = new Board
+            {
+                Id = id,
+                PlayerId = playerId,
+                GameId = gameId,
+                Numbers = numbers,
+                IsAutoplay = isAutoplay,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            context.Boards.Add(board);
+        }
+
+        await context.SaveChangesAsync();
     }
     
 }
