@@ -8,7 +8,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController(IUserService service) : ControllerBase
+public class UserController(IUserService userService) : ControllerBase
 
 {
     [HttpGet]
@@ -16,7 +16,7 @@ public class UserController(IUserService service) : ControllerBase
     [Route("getall")]
     public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAllPlayers()
     {
-        var players = await service.GetAllPlayers();
+        var players = await userService.GetAllPlayers();
         return Ok(players);
     }
 
@@ -30,7 +30,7 @@ public class UserController(IUserService service) : ControllerBase
             return BadRequest("Invalid player data.");
         }
 
-        var result = await service.UpdatePlayer(playerDto);
+        var result = await userService.UpdatePlayer(playerDto, isAdmin: true);
         if (result)
         {
             return NoContent();
@@ -39,6 +39,29 @@ public class UserController(IUserService service) : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "Error updating player");
         }
+    }
+
+    [HttpPut]
+    [Authorize]
+    [Route("update-self")]
+    public async Task<ActionResult> UpdateSelf([FromBody] PlayerDto playerDto)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null || userId != playerDto.Id)
+        {
+            return BadRequest("Invalid User Data");
+        }
+
+        var result = await userService.UpdatePlayer(playerDto, isAdmin: false);
+        if (result)
+        {
+            return NoContent();
+        }
+        else
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error updating user");
+        }
+        
     }
     
 }

@@ -28,9 +28,10 @@ const GetAllUsers: React.FC = () => {
     }, [setAllUsers]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, userId: string) => {
+        //These are nodes from HTMLInputElement
         const { name, value, type, checked } = event.target;
-        // converted these 2 to boolean and float so they were the right format
-        const newValue = type === 'checkbox' ? checked : (name === 'balance' ? parseFloat(value) : value);
+        // Ensures we get a boolean from checkbox
+        const newValue = type === 'checkbox' ? checked : value;
         //using prevData to make sure it doesnt overwrite other users data
         setFormData((prevData) => ({
             ...prevData,
@@ -68,10 +69,12 @@ const GetAllUsers: React.FC = () => {
         {
             label: "Username",
             renderCell: (item: BBVenturesApiPlayerDto) => (
+                //This toggles editing mode, controlled by a button below that sets EditingUserId <button onClick={() => setEditingUserId(item.id!)}>Edit</button>
                 editingUserId === item.id ? (
                     <input
                         type="text"
                         name="userName"
+                        //this is a bunch of null checks and fallbacks
                         value={formData[item.id!]?.userName || item.userName || ''}
                         onChange={(event) => handleInputChange(event, item.id!)}
                     />
@@ -96,20 +99,22 @@ const GetAllUsers: React.FC = () => {
             ),
         },
         {
-            label: "Balance",
+            label: "Phone Number",
             renderCell: (item: BBVenturesApiPlayerDto) => (
                 editingUserId === item.id ? (
                     <input
-                        type="number"
-                        name="balance"
-                        value={formData[item.id!]?.balance || item.balance || 0}
+                        type="phoneNumber"
+                        name="phoneNumber"
+                        value={formData[item.id!]?.phoneNumber || item.phoneNumber || ''}
                         onChange={(event) => handleInputChange(event, item.id!)}
                     />
                 ) : (
-                    item.balance
+                    item.phoneNumber
                 )
             ),
         },
+        { label: "Balance", renderCell: (item: BBVenturesApiPlayerDto) => item.balance },
+        
         {
             label: "Created At",
             renderCell: (item: BBVenturesApiPlayerDto) =>

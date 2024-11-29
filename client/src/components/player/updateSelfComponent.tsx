@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { BBVenturesApiPlayerDto } from "./services/Api";
+﻿import { useState } from "react";
+import { BBVenturesApiPlayerDto } from "../../services/Api";
 // import { useAtom } from "jotai";
 // import { allUsersAtom } from "./atoms/atoms";
-import { http } from "./http";
+import { http } from "../../http";
 import toast from "react-hot-toast";
 
 
 
-const UpdateSelf2: React.FC = () => {
+const UpdateSelf: React.FC = () => {
     // const [allUsers, setAllUsers] = useAtom(allUsersAtom);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -95,4 +95,4 @@ const UpdateSelf2: React.FC = () => {
         </>
     );
 };
-export default UpdateSelf2;
+export default UpdateSelf;
