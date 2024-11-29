@@ -23,6 +23,7 @@ function AllHistory(){
                 <>Id: {t.id}</> <br/>
                 <>playerId: {t.playerId}</> <br/>
                 <>amount: {t.amount}</> <br/>
+                <>is pending: {t.isPending ? "true" : "false"}</> <br/>
                 <br/>
             </div>
             })
