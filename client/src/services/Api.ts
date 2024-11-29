@@ -172,6 +172,7 @@ export interface BBVenturesApiTransaction {
   /** @format date-time */
   createdAt?: string | null;
   mobilePayTransactionNumber?: string | null;
+  isPending?: boolean;
   player?: BBVenturesApiPlayer;
 }
 
