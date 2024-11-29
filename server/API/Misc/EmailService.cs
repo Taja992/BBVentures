@@ -7,7 +7,7 @@ namespace API.Misc;
 
 public interface IEmailService
 {
-    Task<Player?> CreateUserAsync(string email, string name);
+    Task<Player?> CreateUserAsync(string email, string name, string phoneNumber);
     Task<(string emailConfirmationToken, string passwordResetToken)> GenerateTokensAsync(Player player);
     Task SendConfirmationEmailAsync(Player player, string emailConfirmationToken, string passwordResetToken);
 }
@@ -17,12 +17,13 @@ public class EmailService(UserManager<Player> userManager, IOptions<AppOptions> 
     ILogger<EmailService> logger) : IEmailService
 
 {
-    public async Task<Player?> CreateUserAsync(string email, string name)
+    public async Task<Player?> CreateUserAsync(string email, string name, string phoneNumber)
     {
         var player = new Player
         {
             UserName = name,
-            Email = email
+            Email = email,
+            PhoneNumber = phoneNumber
         };
 
         var defaultPassword = "DefaultPassword123!";

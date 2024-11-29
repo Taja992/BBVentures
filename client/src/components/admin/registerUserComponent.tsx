@@ -7,12 +7,14 @@ import toast from 'react-hot-toast';
 const RegisterUser: React.FC = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
+    const [phonenumber, setPhoneNumber] = useState('')
 
 
     const handleRegister = async () => {
         const data: BBVenturesApiRegisterRequest = {
             email: email,
             name: username,
+            phoneNumber: phonenumber,
         };
         
         try {
@@ -36,6 +38,15 @@ const RegisterUser: React.FC = () => {
                         className="w-full px-3 py-2 border border-gray-300 rounded"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-left mb-2">Phone #</label>
+                    <input
+                        type="text"
+                        className="w-full px-3 py-2 border border-gray-300 rounded"
+                        value={phonenumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
                     />
                 </div>
                 <div className="mb-4">

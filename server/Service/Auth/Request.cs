@@ -2,7 +2,7 @@
 
 namespace Service.Auth;
 
-public record RegisterRequest(string Email, string Name);
+public record RegisterRequest(string Email, string Name, string PhoneNumber);
 
 public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {

@@ -1,12 +1,11 @@
 import {atom} from "jotai";
-import {BBVenturesApiAuthUserInfo, BBVenturesApiGameDto, BBVenturesApiPlayerDto} from "../services/Api.ts";
+import {BBVenturesApiGameDto, BBVenturesApiPlayerDto} from "../services/Api.ts";
 import {atomWithStorage, createJSONStorage } from "jotai/utils";
 import { http } from "../http.ts";
 
 
 
-//Store all Users
-export const allUsersAtomWrong = atom<BBVenturesApiAuthUserInfo[]>([]);
+
 //Store all Users
 export const allUsersAtom = atom<BBVenturesApiPlayerDto[]>([]);
 //This is to keep track of winning numbers and end dates per game

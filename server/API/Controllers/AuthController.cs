@@ -48,12 +48,12 @@ public class AuthController(
         
 [HttpPost]
 [Route("register")]
-[AllowAnonymous]
+[Authorize(Roles = "Admin")]
 public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterRequest data)
 {
     await registerValidator.ValidateAndThrowAsync(data);
 
-    var player = await emailService.CreateUserAsync(data.Email, data.Name);
+    var player = await emailService.CreateUserAsync(data.Email, data.Name, data.PhoneNumber);
     if (player == null)
     {
         return BadRequest("User creation failed.");
@@ -62,7 +62,7 @@ public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterRe
     var tokens = await emailService.GenerateTokensAsync(player);
     await emailService.SendConfirmationEmailAsync(player, tokens.emailConfirmationToken, tokens.passwordResetToken);
 
-    return Ok(new RegisterResponse(Email: player.Email ?? string.Empty, Name: player.UserName ?? string.Empty));
+    return Ok(new RegisterResponse(Email: player.Email ?? string.Empty, Name: player.UserName ?? string.Empty, player.PhoneNumber ?? string.Empty));
 }
 
 [HttpPost]
