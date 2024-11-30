@@ -44,6 +44,9 @@ namespace Service.Services
                 throw new ArgumentException("Exactly 3 winning numbers must be provided.");
             }
 
+            // Sort the winning numbers in ascending order
+            winningNumbers.Sort();
+
             // Get the current active game
             var currentGame = _repository.GetAllGames().FirstOrDefault(g => g.IsActive);
             if (currentGame == null)
@@ -61,6 +64,9 @@ namespace Service.Services
                 // Example: winningBoard.IsWinner = true;
                 boardsToUpdate.Add(winningBoard);
             }
+
+            // Set the winning numbers for the current game
+            currentGame.WinnerNumbers = winningNumbers;
 
             // Set the current game to inactive
             currentGame.IsActive = false;
