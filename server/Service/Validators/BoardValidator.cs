@@ -12,8 +12,8 @@ namespace Service.Validators
                 .WithMessage("Numbers must be unique.");
 
             RuleFor(x => x.Numbers)
-                .Must((dto, numbers) => numbers.Count <= 16)
-                .WithMessage("You can only select up to 16 numbers.");
+                .Must((dto, numbers) => numbers.Count == dto.FieldCount)
+                .WithMessage("The number of selected numbers must match the field count.");
         }
     }
 }
