@@ -1,6 +1,6 @@
 ﻿import {useEffect, useState } from "react";
 import { http } from "../http";
-import { userInfoAtom } from "../atoms/atoms";
+import {userInfoAtom } from "../atoms/atoms";
 import { useAtom } from "jotai";
 import RegisterUser from "./admin/registerUserComponent";
 import UserHistory from "./player/UserHistory";
@@ -14,6 +14,7 @@ import UpdateSelf from "./player/updateSelfComponent";
 const DashboardPage = () => {
     const [userInfo] = useAtom(userInfoAtom);
     const [username, setUsername] = useState<string | null>(null);
+    //const [Balance, setBalance] = useAtom(userBalance);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -27,6 +28,10 @@ const DashboardPage = () => {
 
         fetchUserInfo();
     }, []);
+
+    /*useEffect(() => {
+        setBalance()
+    }, []);*/
 
     
 
