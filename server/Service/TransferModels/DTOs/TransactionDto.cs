@@ -61,8 +61,10 @@ public class TransactionResponseDto
     {
         return new Transaction()
         {
+            Id = Id,
             PlayerId = PlayerId,
             Amount = Amount,
+            CreatedAt = CreatedAt,
             MobilePayTransactionNumber = MobilePayTransactionNumber,
             isPending = isPending
         };

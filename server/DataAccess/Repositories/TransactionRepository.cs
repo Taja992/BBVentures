@@ -33,10 +33,12 @@ public class TransactionRepository(AppDbContext context) : ITransactionRepositor
         return trans;
     }
     
-    public async Task<Transaction> UpdateTransaction(Transaction trans)
+    public Transaction UpdateTransaction(Transaction trans)
     {
+        Console.WriteLine("ID in repository down below");
+        Console.WriteLine(trans.Id);
         context.Transactions.Update(trans);
-        await context.SaveChangesAsync();
+        context.SaveChanges();
         return trans;
     }
     

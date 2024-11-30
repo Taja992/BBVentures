@@ -51,11 +51,15 @@ public class TransactionController(AppDbContext context) : ControllerBase
         return Ok(trans); //lol
     }
     
-    [HttpPut]
+    [HttpPatch]
     [Route("updateTransaction")]
     [AllowAnonymous]
     public ActionResult<TransactionDto> UpdateTransaction([FromBody] TransactionResponseDto dto)
     {
+        Console.WriteLine(dto.Id);
+        Console.WriteLine(dto.Id);
+        Console.WriteLine(dto.Id);
+        Console.WriteLine(dto.Id);
         var trans = service.UpdateTransaction(dto);
         return Ok(trans); 
     }

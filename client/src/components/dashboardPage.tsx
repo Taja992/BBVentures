@@ -41,6 +41,7 @@ const DashboardPage = () => {
             <UpdateSelf />
             <GamesHistory />
             <h3>{userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}</h3>
+            <></>
             
         </>
     );
