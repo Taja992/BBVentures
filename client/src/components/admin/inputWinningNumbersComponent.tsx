@@ -1,11 +1,10 @@
 ﻿import { useState } from "react";
 import { useAtom } from "jotai";
-import { gamesAtom, userInfoAtom } from "../../atoms/atoms";
+import { userInfoAtom } from "../../atoms/atoms";
 import { http } from "../../http";
 
 const InputWinningNumbersComponent = () => {
     const [winningNumbers, setWinningNumbers] = useState<number[]>([]);
-    const [games, setGames] = useAtom(gamesAtom);
     const [userInfo] = useAtom(userInfoAtom);
 
     const handleInputChange = (index: number, value: string) => {
