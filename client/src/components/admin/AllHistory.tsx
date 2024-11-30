@@ -14,6 +14,15 @@ function AllHistory(){
         setAllTrans(response.data);
         console.log(response.data);
     }
+    
+    function approveTransaction(trans: BBVenturesApiTransaction){
+        trans.isPending = false;
+        
+        // @ts-ignore
+        const otherTrans : Partial<BBVenturesApiTransaction> = trans;
+        
+        http.transactionUpdateTransactionUpdate(trans);
+    }
 
     return <>
 
@@ -31,7 +40,7 @@ function AllHistory(){
                     <br/>
                     <>{t.isPending ? "pending" : "approved"}</>
                     <br/>
-                    {t.isPending ? <button>approve</button> : <></>}
+                    {t.isPending ? <button onClick={() => approveTransaction(t)}>approve</button> : <></>}
                     <br/>
                     <br/>
                 </div>
