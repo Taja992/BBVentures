@@ -145,16 +145,19 @@ export interface BBVenturesApiPlayerDto {
   userName?: string | null;
   email?: string | null;
   emailConfirmed?: boolean;
+  phoneNumber?: string | null;
 }
 
 export interface BBVenturesApiRegisterRequest {
   email?: string | null;
   name?: string | null;
+  phoneNumber?: string | null;
 }
 
 export interface BBVenturesApiRegisterResponse {
   email?: string | null;
   name?: string | null;
+  phoneNumber?: string | null;
 }
 
 export interface BBVenturesApiSetPasswordRequest {
@@ -845,6 +848,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     userUpdateUpdate: (data: BBVenturesApiPlayerDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/User/update`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserUpdateSelfUpdate
+     * @request PUT:/api/User/update-self
+     */
+    userUpdateSelfUpdate: (data: BBVenturesApiPlayerDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/User/update-self`,
         method: "PUT",
         body: data,
         type: ContentType.Json,

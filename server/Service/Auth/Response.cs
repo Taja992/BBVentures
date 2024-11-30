@@ -1,6 +1,6 @@
 ﻿namespace Service.Auth;
 
-public record RegisterResponse(string Email, string Name);
+public record RegisterResponse(string Email, string Name, string PhoneNumber);
 
 public record LoginResponse(string Jwt);
 

@@ -7,6 +7,7 @@ import UserHistory from "./player/UserHistory";
 import AllHistory from "./admin/AllHistory";
 import GamesHistory from "./admin/gamesHistoryComponent";
 import GetAllUsers from "./admin/allUsersComponent";
+import UpdateSelf from "./player/updateSelfComponent";
 import BoardGameComponent from "./player/BoardGameComponent";
 
 
@@ -34,11 +35,12 @@ const DashboardPage = () => {
             <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
                 {userInfo?.isAdmin && <RegisterUser />}
             {userInfo?.isAdmin && <GetAllUsers />}
+            <UpdateSelf />
             <GamesHistory />
             <h3>{userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}</h3>
             <h4>Game</h4>
             <BoardGameComponent />
-            
+
         </>
     );
 };
