@@ -1,9 +1,12 @@
 ﻿import { Outlet, Link } from 'react-router-dom';
+import LoginForm from './components/loginComponent';
 
 const MainLayout = () => {
     return (
         <div>
-            <header>Header content here</header>
+            <header>Header content here
+                <LoginForm />
+            </header>
             <div style={{ display: 'flex' }}>
                 <nav style={{ width: '200px', padding: '1rem', background: '#f0f0f0' }}>
                     <ul>

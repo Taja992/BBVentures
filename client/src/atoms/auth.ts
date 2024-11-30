@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { http } from "../http";
 import { BBVenturesApiAuthUserInfo } from "../services/Api.ts";
 import { jwtAtom, userInfoAtom } from "./atoms.ts";
+import { startTransition } from "react";
 
 
 // Define the shape of the credentials object
@@ -37,10 +38,13 @@ export const useAuth = (): AuthHook => {
         }
     };
 
-    // Function to handle logout
+// Function to handle logout
     const logout = async () => {
-        setJwt(null); // Clear the JWT in the atom
-        navigate("/login"); // Navigate to the login page
+        //without start transition was getting sent to Error page, The error said to add this and it worked!
+        startTransition(() => {
+            setJwt(null); // Clear the JWT in the atom
+            navigate("/"); // Navigate to the login page
+        });
     };
 
     return {
