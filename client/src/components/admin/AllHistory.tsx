@@ -12,6 +12,7 @@ function AllHistory(){
     async function getAllTrans(){
         const response = await http.transactionList();
         setAllTrans(response.data);
+        console.log(response.data);
     }
 
     return <>
@@ -23,7 +24,8 @@ function AllHistory(){
                 <>Id: {t.id}</> <br/>
                 <>playerId: {t.playerId}</> <br/>
                 <>amount: {t.amount}</> <br/>
-                <>is pending: {t.isPending ? "true" : "false"}</> <br/>
+                <>{t.isPending ? "pending" : "approved"}</> <br/>
+                {t.isPending ? <button>approve</button> : <></>}
                 <br/>
             </div>
             })
