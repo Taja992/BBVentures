@@ -19,13 +19,15 @@ function AllHistory(){
 
         <button onClick={getAllTrans}>this is a test button</button>
         {
-            allTrans.map((t) => {return <div>
+            allTrans.map((t) => {
+                return <div>
                 <>detected transaction</> <br/>
                 <>Id: {t.id}</> <br/>
                 <>playerId: {t.playerId}</> <br/>
                 <>amount: {t.amount}</> <br/>
                 <>{t.isPending ? "pending" : "approved"}</> <br/>
                 {t.isPending ? <button>approve</button> : <></>}
+                
                 <br/>
             </div>
             })
