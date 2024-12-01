@@ -11,7 +11,8 @@ export const allUsersAtom = atom<BBVenturesApiPlayerDto[]>([]);
 //This is to keep track of winning numbers and end dates per game
 export const gamesAtom = atom<BBVenturesApiGameDto[]>([]);
 
-
+// to keep track of user balance
+export const userBalance = atom<number>();
 
 
 

@@ -126,6 +126,7 @@ public async Task<IActionResult> SetPassword([FromBody] SetPasswordRequest data)
         }
         
         var roles = await userManager.GetRolesAsync(user);
+        decimal balance = user.Balance;
         var isAdmin = roles.Contains(Role.Admin);
         var isPlayer = roles.Contains(Role.Player) || isAdmin;
         return Ok (new AuthUserInfo(username, isAdmin, isPlayer));

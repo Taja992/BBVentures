@@ -16,6 +16,15 @@ public class TransactionRepository(AppDbContext context) : ITransactionRepositor
         var transFromUser = from i in context.Transactions.ToList() where i.PlayerId == Id select i;
         return transFromUser.ToList();
     }
+
+    public decimal GetSumOfUserTransactions(string Id)
+    {
+        var transFromUser = from i in context.Transactions.ToList() where i.PlayerId == Id select i;
+        List<Transaction> userTransBalance = transFromUser.ToList();
+        
+        //gets all that are not pending
+        return userTransBalance.Where(trans => !trans.isPending).Sum(transaction => transaction.Amount);
+    }
     
     public async Task<Transaction> AddTransaction(Transaction trans)
     {
@@ -24,10 +33,12 @@ public class TransactionRepository(AppDbContext context) : ITransactionRepositor
         return trans;
     }
     
-    public async Task<Transaction> UpdateTransaction(Transaction trans)
+    public Transaction UpdateTransaction(Transaction trans)
     {
+        Console.WriteLine("ID in repository down below");
+        Console.WriteLine(trans.Id);
         context.Transactions.Update(trans);
-        await context.SaveChangesAsync();
+        context.SaveChanges();
         return trans;
     }
     

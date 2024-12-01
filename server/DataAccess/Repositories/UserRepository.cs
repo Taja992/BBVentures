@@ -22,4 +22,5 @@ public class UserRepository(AppDbContext context) : IUserRepository
         context.Players.Update(player);
         return await context.SaveChangesAsync() > 0;
     }
+    
 }

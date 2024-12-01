@@ -56,6 +56,7 @@ public class TransactionController(AppDbContext context) : ControllerBase
     [AllowAnonymous]
     public ActionResult<TransactionDto> UpdateTransaction([FromBody] TransactionResponseDto dto)
     {
+        
         var trans = service.UpdateTransaction(dto);
         return Ok(trans); 
     }

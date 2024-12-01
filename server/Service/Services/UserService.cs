@@ -1,4 +1,5 @@
 ﻿using DataAccess.Interfaces;
+using DataAccess.Models;
 using Microsoft.Extensions.Logging;
 using Service.TransferModels.DTOs;
 
@@ -9,6 +10,7 @@ public interface IUserService
 {
     Task<IEnumerable<PlayerDto>> GetAllPlayers();
     Task<bool> UpdatePlayer(PlayerDto playerDto, bool isAdmin);
+    Task<PlayerDto> GetPlayerById(string id);
 }
 
 public class UserService(IUserRepository userRepository) : IUserService
@@ -18,6 +20,12 @@ public class UserService(IUserRepository userRepository) : IUserService
     {
         var players = await userRepository.GetAllPlayers();
         return players.Select(PlayerDto.FromEntity);
+    }
+
+    public async Task<PlayerDto> GetPlayerById(string id)
+    {
+        var player = await userRepository.GetPlayerById(id);
+        return PlayerDto.FromEntity(player);
     }
 
     public async Task<bool> UpdatePlayer(PlayerDto playerDto, bool isAdmin)
@@ -33,6 +41,7 @@ public class UserService(IUserRepository userRepository) : IUserService
             player.IsActive = playerDto.IsActive;
         }
         player.Email = playerDto.Email;
+        player.Balance = playerDto.Balance;
         player.UserName = playerDto.UserName;
         player.UpdatedAt = DateTime.UtcNow;
         player.PhoneNumber = playerDto.PhoneNumber;

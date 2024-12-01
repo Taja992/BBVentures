@@ -9,6 +9,8 @@ public class TransactionDto
     public decimal Amount { get; set; }
     
     public string? MobilePayTransactionNumber { get; set; }
+    
+    public bool isPending { get; set; }
 
     public Transaction ToTransaction()
     {
@@ -16,7 +18,8 @@ public class TransactionDto
         {
             PlayerId = PlayerId,
             Amount = Amount,
-            MobilePayTransactionNumber = MobilePayTransactionNumber
+            MobilePayTransactionNumber = MobilePayTransactionNumber,
+            isPending = isPending,
         };
     }
 
@@ -26,7 +29,8 @@ public class TransactionDto
         {
             PlayerId = trans.PlayerId,
             Amount = trans.Amount,
-            MobilePayTransactionNumber = trans.MobilePayTransactionNumber
+            MobilePayTransactionNumber = trans.MobilePayTransactionNumber,
+            isPending = trans.isPending,
         };
     }
     
@@ -51,13 +55,18 @@ public class TransactionResponseDto
 
     public string? MobilePayTransactionNumber { get; set; }
     
+    public bool isPending { get; set; }
+    
     public Transaction ToTransaction()
     {
         return new Transaction()
         {
+            Id = Id,
             PlayerId = PlayerId,
             Amount = Amount,
-            MobilePayTransactionNumber = MobilePayTransactionNumber
+            CreatedAt = CreatedAt,
+            MobilePayTransactionNumber = MobilePayTransactionNumber,
+            isPending = isPending
         };
     }
 
@@ -69,7 +78,9 @@ public class TransactionResponseDto
             PlayerId = trans.PlayerId,
             Amount = trans.Amount,
             MobilePayTransactionNumber = trans.MobilePayTransactionNumber,
-            CreatedAt = trans.CreatedAt
+            CreatedAt = trans.CreatedAt,
+            isPending = trans.isPending,
+            
         };
     }
     

@@ -187,6 +187,7 @@ export interface BBVenturesApiTransactionDto {
   /** @format double */
   amount?: number;
   mobilePayTransactionNumber?: string | null;
+  isPending?: boolean;
 }
 
 export interface BBVenturesApiTransactionResponseDto {
@@ -198,6 +199,7 @@ export interface BBVenturesApiTransactionResponseDto {
   /** @format date-time */
   createdAt?: string | null;
   mobilePayTransactionNumber?: string | null;
+  isPending?: boolean;
 }
 
 export interface MicrosoftIdentityForgotPasswordRequest {
@@ -852,6 +854,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<BBVenturesApiPlayerDto[], any>({
         path: `/api/User/getall`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserGetByIdList
+     * @request GET:/api/User/getById
+     */
+    userGetByIdList: (
+      query?: {
+        id?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BBVenturesApiPlayerDto, any>({
+        path: `/api/User/getById`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
