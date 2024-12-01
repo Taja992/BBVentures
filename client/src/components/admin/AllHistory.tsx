@@ -1,14 +1,12 @@
 import {useEffect, useState} from "react";
 import { http } from "../../http";
-import { BBVenturesApiTransaction } from "../../services/Api";
-import {useAtom} from "jotai";
-import { userBalance } from "../../atoms/atoms";
+import {BBVenturesApiPlayerDto, BBVenturesApiTransaction} from "../../services/Api";
 
 
 function AllHistory(){
 
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
-    const [balance, setBalance] = useAtom(userBalance);
+    //const [balance, setBalance] = useAtom(userBalance);
 
     useEffect(() => {getAllTrans()}, [])
     async function getAllTrans(){
@@ -17,14 +15,25 @@ function AllHistory(){
         console.log(response.data);
     }
     
-    function approveTransaction(trans: BBVenturesApiTransaction){
+    async function approveTransaction(trans: BBVenturesApiTransaction) {
         trans.isPending = false;
-        
+
         http.transactionUpdateTransactionUpdate(trans);
+
+        //updating that players balance now that the transaction has gone through
+        let id : string  = trans.playerId!
         
-        const newBalance = balance! - trans.amount!;
+        const response = await http.userGetByIdList({id});
+        let player = response.data
         
-        setBalance(newBalance);
+        const newBalance = player.balance! - trans.amount!;
+        player.balance = newBalance;
+        console.log(player);
+        
+        console.log("about to update player")
+        await http.userUpdateUpdate(player)
+        
+        //setBalance(newBalance);
     }
 
     return <>

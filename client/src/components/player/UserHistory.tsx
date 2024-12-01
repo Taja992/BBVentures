@@ -11,8 +11,8 @@ function UserHistory(){
     useEffect(() => {getAllTrans()}, [])
     async function getAllTrans(){
         
-        const response2 = await http.transactionTransactionsFromUserList();
-        setAllTrans(response2.data);
+        const response = await http.transactionTransactionsFromUserList();
+        setAllTrans(response.data);
     }
     
     

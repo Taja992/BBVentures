@@ -41,6 +41,7 @@ public class UserService(IUserRepository userRepository) : IUserService
             player.IsActive = playerDto.IsActive;
         }
         player.Email = playerDto.Email;
+        player.Balance = playerDto.Balance;
         player.UserName = playerDto.UserName;
         player.UpdatedAt = DateTime.UtcNow;
         player.PhoneNumber = playerDto.PhoneNumber;

@@ -31,7 +31,8 @@ public class UserController(IUserService userService) : ControllerBase
     
 
     [HttpPut]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
+    [AllowAnonymous]
     [Route("update")]
     public async Task<ActionResult> UpdatePlayer([FromBody] PlayerDto playerDto)
     {
