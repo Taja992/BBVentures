@@ -59,6 +59,8 @@ export interface BBVenturesApiCreateBoardDto {
   gameId?: string;
   numbers?: number[] | null;
   isAutoplay?: boolean;
+  /** @format int32 */
+  fieldCount?: number;
 }
 
 export interface BBVenturesApiGame {
@@ -756,6 +758,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Game
+     * @name GameProcessWinningNumbersCreate
+     * @request POST:/api/Game/processWinningNumbers
+     */
+    gameProcessWinningNumbersCreate: (data: number[], params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/Game/processWinningNumbers`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
 
