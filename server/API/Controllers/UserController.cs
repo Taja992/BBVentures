@@ -20,6 +20,16 @@ public class UserController(IUserService userService) : ControllerBase
         return Ok(players);
     }
 
+    
+    [HttpGet]
+    [AllowAnonymous]
+    [Route("getById")]
+    public async Task<ActionResult<PlayerDto>> GetPlayerById(string id)
+    {
+        return Ok(await userService.GetPlayerById(id));
+    }
+    
+
     [HttpPut]
     [Authorize(Roles = "Admin")]
     [Route("update")]
