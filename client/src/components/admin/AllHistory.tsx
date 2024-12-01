@@ -1,12 +1,11 @@
 import {useEffect, useState} from "react";
 import { http } from "../../http";
-import {BBVenturesApiPlayerDto, BBVenturesApiTransaction} from "../../services/Api";
+import {BBVenturesApiTransaction} from "../../services/Api";
 
 
 function AllHistory(){
 
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
-    //const [balance, setBalance] = useAtom(userBalance);
 
     useEffect(() => {getAllTrans()}, [])
     async function getAllTrans(){
