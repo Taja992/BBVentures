@@ -1,12 +1,49 @@
-﻿import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+﻿import { useState, useEffect } from 'react';
+import { useAtom } from 'jotai';
 import { http } from '../../http';
+import { userInfoAtom } from '../../atoms/atoms';
 import './BoardGameComponent.css';
 
 const BoardGameComponent = () => {
-    const { userId } = useParams<{ userId: string }>();
     const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
     const [fieldCount, setFieldCount] = useState<number>(4);
+    const [gameId, setGameId] = useState<string | null>(null);
+    const [playerId, setPlayerId] = useState<string | null>(null);
+    const [] = useAtom(userInfoAtom);
+
+    useEffect(() => {
+        const fetchActiveGame = async () => {
+            try {
+                const response = await http.gameList();
+                const activeGame = response.data.find((game: any) => game.isActive);
+                if (activeGame && activeGame.id) {
+                    setGameId(activeGame.id);
+                    console.log('Active game found:', activeGame);
+                } else {
+                    console.error('No active game found');
+                }
+            } catch (error) {
+                console.error('Failed to fetch games:', error);
+            }
+        };
+
+        const fetchPlayerId = async () => {
+            try {
+                const response = await http.authMeList();
+                if (response.data && response.data.id) {
+                    setPlayerId(response.data.id);
+                    console.log('Player ID:', response.data.id);
+                } else {
+                    console.error('Player ID not found in response');
+                }
+            } catch (error) {
+                console.error('Failed to fetch player ID:', error);
+            }
+        };
+
+        fetchActiveGame();
+        fetchPlayerId();
+    }, []);
 
     const toggleNumber = (number: number) => {
         setSelectedNumbers(prevSelectedNumbers => {
@@ -26,14 +63,28 @@ const BoardGameComponent = () => {
             return;
         }
 
-        console.log('Submitted numbers:', selectedNumbers);
+        if (!gameId) {
+            alert('No active game found.');
+            return;
+        }
+
+        if (!playerId) {
+            alert('Player ID not found.');
+            return;
+        }
+
+        const requestBody = {
+            playerId: playerId,
+            gameId: gameId,
+            numbers: selectedNumbers,
+            isAutoplay: false,
+            fieldCount: fieldCount
+        };
+
+        console.log('Request body:', requestBody);
+
         try {
-            const response = await http.boardCreateCreate({
-                playerId: userId,
-                gameId: '6e980638-fed3-4742-a1de-08b177eb98d0', // Replace with actual game ID
-                numbers: selectedNumbers,
-                isAutoplay: false
-            });
+            const response = await http.boardCreateCreate(requestBody);
             console.log('Board created:', response.data);
         } catch (error) {
             console.error('Error creating board:', error);
