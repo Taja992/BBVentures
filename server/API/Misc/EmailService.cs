@@ -10,6 +10,7 @@ public interface IEmailService
     Task<User?> CreateUserAsync(string email, string name, string phoneNumber);
     Task<(string emailConfirmationToken, string passwordResetToken)> GenerateTokensAsync(User user);
     Task SendConfirmationEmailAsync(User user, string emailConfirmationToken, string passwordResetToken);
+    Task SendPasswordResetEmailAsync(User user, string passwordResetToken);
 }
 
 public class EmailService(UserManager<User> userManager, IOptions<AppOptions> options,
@@ -67,6 +68,24 @@ public class EmailService(UserManager<User> userManager, IOptions<AppOptions> op
         }.Uri.ToString();
 
         await emailSender.SendConfirmationLinkAsync(user, email, confirmationLink);
+    }
+
+    public async Task SendPasswordResetEmailAsync(User user, string resetCode)
+    {
+        var email = user.Email ?? throw new InvalidOperationException("Invalid Email");
+        var qs = new Dictionary<string, string?>
+        {
+            { "resetCode", resetCode },
+            { "email", email }
+        };
+
+        var resetLink = new UriBuilder(options.Value.FrontendAddress)
+        {
+            Path = "/reset-password",
+            Query = QueryString.Create(qs).Value
+        }.Uri.ToString();
+
+        await emailSender.SendPasswordResetLinkAsync(user, email, resetLink);
     }
     
 }

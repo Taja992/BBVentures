@@ -26,6 +26,8 @@ public class LoginRequestValidator : AbstractValidator<LoginRequest>
 
 public record RegisterPasswordRequest(string Email, string EmailConfirmationToken, string PasswordResetToken, string NewPassword);
 
+public record PasswordResetRequest(string Email);
+
 public class RegisterPasswordRequestValidator : AbstractValidator<RegisterPasswordRequest>
 {
     public RegisterPasswordRequestValidator()
