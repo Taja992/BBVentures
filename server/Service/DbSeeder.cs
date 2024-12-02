@@ -29,8 +29,8 @@ public class DbSeeder
     public async Task SeedAsync()
     {
         await CreateRoles(Role.Admin, Role.Player);
-        var adminId = await CreateUser(username: "admin@example.com", password: "S3cret!!", role: Role.Admin);
-        var playerId = await CreateUser(username: "player@example.com", password: "S3cret!!", role: Role.Player);
+        var adminId = await CreateUser(username: "Admin", email: "admin@example.com", password: "S3cret!!", role: Role.Admin);
+        var playerId = await CreateUser(username: "Player",email: "player@example.com", password: "S3cret!!", role: Role.Player);
         await CreateGame(
             id: new Guid("11111111-1111-1111-1111-111111111111"),
             winnerNumbers: new List<int> { 1, 2, 3 },
@@ -71,7 +71,7 @@ public class DbSeeder
         }
     }
     
-    private async Task<string> CreateUser(string username, string password, string role)
+    private async Task<string> CreateUser(string username, string email, string password, string role)
     {
         var player = await userManager.FindByNameAsync(username);
         if (player != null) return player.Id;
@@ -79,7 +79,7 @@ public class DbSeeder
         player = new User
         {
             UserName = username,
-            Email = username,
+            Email = email,
             EmailConfirmed = true
         };
         var result = await userManager.CreateAsync(player, password);

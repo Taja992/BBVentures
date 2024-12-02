@@ -33,9 +33,9 @@ public class AuthController(
     {
         await validator.ValidateAndThrowAsync(data);
 
-        var player = await userManager.FindByEmailAsync(data.Email);
+        var user = await userManager.FindByEmailAsync(data.Email);
 
-        if (player == null || !await userManager.CheckPasswordAsync(player, data.Password))
+        if (user == null || !await userManager.CheckPasswordAsync(user, data.Password))
             throw new AuthenticationError();
 
         var token = await tokenClaimsService.GetTokenAsync(data.Email);
@@ -134,17 +134,17 @@ public class AuthController(
     [Route("userinfo")]
     public async Task<ActionResult<AuthUserInfo>> UserInfo()
     {
-        var username = HttpContext.User.Identity?.Name;
-        if (username == null) throw new AuthenticationError();
+        var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        if (email == null) throw new AuthenticationError();
 
-        var user = await userManager.FindByNameAsync(username);
+        var user = await userManager.FindByEmailAsync(email);
         if (user == null) throw new UserNotFoundError();
 
         var roles = await userManager.GetRolesAsync(user);
         var balance = user.Balance;
         var isAdmin = roles.Contains(Role.Admin);
         var isPlayer = roles.Contains(Role.Player) || isAdmin;
-        return Ok(new AuthUserInfo(username, isAdmin, isPlayer));
+        return Ok(new AuthUserInfo(user.UserName ?? string.Empty, isAdmin, isPlayer));
     }
 
     [HttpGet]

@@ -22,10 +22,10 @@ public class JwtTokenClaimService : ITokenClaimsService
         _userManager = userManager;
     }
 
-    public async Task<string> GetTokenAsync(string userName)
+    public async Task<string> GetTokenAsync(string email)
     {
-        var user = await _userManager.FindByNameAsync(userName)
-            ?? throw new NotFoundError(nameof(IdentityUser), new { Username = userName });
+        var user = await _userManager.FindByEmailAsync(email)
+            ?? throw new NotFoundError(nameof(IdentityUser), new { Email = email });
         var roles = await _userManager.GetRolesAsync(user);
 
         var key = Convert.FromBase64String(_options.JwtSecret);

@@ -12,6 +12,7 @@ public static class ClaimExtensions
     [
         new(ClaimTypes.Name, identityUser.UserName!),
         new(ClaimTypes.NameIdentifier, identityUser.Id.ToString()),
+        new(ClaimTypes.Email, identityUser.Email!),
         .. roles.Select(role => new Claim(ClaimTypes.Role, role))
     ];
 
