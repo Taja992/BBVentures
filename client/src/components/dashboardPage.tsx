@@ -10,6 +10,7 @@ import GetAllUsers from "./admin/allUsersComponent";
 import UpdateSelf from "./player/updateSelfComponent";
 import BoardGameComponent from "./player/BoardGameComponent";
 import InputWinningNumbersComponent from "./admin/inputWinningNumbersComponent";
+import TopUp from "./player/TopUpComponent";
 
 
 
@@ -60,6 +61,10 @@ const DashboardPage = () => {
             <div className="border border-black p-4 mb-4">
                 {userInfo?.isAdmin && <InputWinningNumbersComponent/>}
             </div>
+            <div className="border border-black p-4 mb-4">
+                {userInfo?.isPlayer && <TopUp/>}
+            </div>
+
         </>
     );
 };
