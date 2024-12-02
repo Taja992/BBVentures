@@ -72,9 +72,9 @@ namespace Service.Services
 
             return boards.Select(board => new BoardHistoryDto
             {
-                Numbers = board.Numbers,
+                Numbers = board.Numbers ?? new List<int>(), // Ensure Numbers is not null
                 CreatedAt = board.CreatedAt,
-                WeekNumber = board.Game.WeekNumber // Accessing weekNumber from the related game entity
+                WeekNumber = board.Game?.WeekNumber ?? 0 // Ensure Game is not null
             }).ToList();
         }
     }
