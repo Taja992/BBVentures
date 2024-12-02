@@ -4,7 +4,7 @@ namespace Service.TransferModels.DTOs;
 
 public class TransactionDto
 {
-    public string PlayerId { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     public decimal Amount { get; set; }
     
@@ -16,7 +16,7 @@ public class TransactionDto
     {
         return new Transaction()
         {
-            PlayerId = PlayerId,
+            UserId = UserId,
             Amount = Amount,
             MobilePayTransactionNumber = MobilePayTransactionNumber,
             isPending = isPending,
@@ -27,7 +27,7 @@ public class TransactionDto
     {
         return new TransactionDto()
         {
-            PlayerId = trans.PlayerId,
+            UserId = trans.UserId,
             Amount = trans.Amount,
             MobilePayTransactionNumber = trans.MobilePayTransactionNumber,
             isPending = trans.isPending,
@@ -47,7 +47,7 @@ public class TransactionResponseDto
 {
     public Guid Id { get; set; }
 
-    public string PlayerId { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     public decimal Amount { get; set; }
 
@@ -62,7 +62,7 @@ public class TransactionResponseDto
         return new Transaction()
         {
             Id = Id,
-            PlayerId = PlayerId,
+            UserId = UserId,
             Amount = Amount,
             CreatedAt = CreatedAt,
             MobilePayTransactionNumber = MobilePayTransactionNumber,
@@ -75,7 +75,7 @@ public class TransactionResponseDto
         return new TransactionResponseDto()
         {
             Id = trans.Id,
-            PlayerId = trans.PlayerId,
+            UserId = trans.UserId,
             Amount = trans.Amount,
             MobilePayTransactionNumber = trans.MobilePayTransactionNumber,
             CreatedAt = trans.CreatedAt,

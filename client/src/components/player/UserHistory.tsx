@@ -31,7 +31,7 @@ function UserHistory(){
                     <br/>
                     <>Id: {t.id}</>
                     <br/>
-                    <>playerId: {t.playerId}</>
+                    <>playerId: {t.userId}</>
                     <br/>
                     <>amount: {t.amount}</>
                     <br/>

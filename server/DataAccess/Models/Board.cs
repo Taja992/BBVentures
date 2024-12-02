@@ -11,7 +11,7 @@ public partial class Board
     [Key]
     public Guid Id { get; set; }
 
-    public string PlayerId { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     public Guid GameId { get; set; }
 
@@ -27,7 +27,7 @@ public partial class Board
     [InverseProperty("Boards")]
     public virtual Game Game { get; set; } = null!;
 
-    [ForeignKey("PlayerId")]
+    [ForeignKey("UserId")]
     [InverseProperty("Boards")]
-    public virtual Player Player { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

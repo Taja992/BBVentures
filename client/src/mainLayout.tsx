@@ -10,7 +10,7 @@ const MainLayout = () => {
             <div style={{ display: 'flex' }}>
                 <nav style={{ width: '200px', padding: '1rem', background: '#f0f0f0' }}>
                     <ul>
-                        <li><Link to="/set-password">Set Password</Link></li>
+                        <li><Link to="/set-password">Example link to Register Password Page</Link></li>
                         <li><Link to="/test">Test Page</Link></li>
                         <li><Link to="/dashboard">Dashboard</Link></li>
                     </ul>

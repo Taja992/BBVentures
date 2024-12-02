@@ -18,11 +18,11 @@ namespace API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController(
-    UserManager<Player> userManager,
+    UserManager<User> userManager,
     IValidator<LoginRequest> validator,
     ITokenClaimsService tokenClaimsService,
     IValidator<RegisterRequest> registerValidator,
-    IValidator<SetPasswordRequest> setPasswordValidator,
+    IValidator<RegisterPasswordRequest> registerPasswordValidator,
     IEmailService emailService,
     IPasswordService passwordService) : ControllerBase
 {
@@ -66,11 +66,11 @@ public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterRe
 }
 
 [HttpPost]
-[Route("set-password")]
+[Route("register-password")]
 [AllowAnonymous]
-public async Task<IActionResult> SetPassword([FromBody] SetPasswordRequest data)
+public async Task<IActionResult> RegisterPassword([FromBody] RegisterPasswordRequest data)
 {
-    await setPasswordValidator.ValidateAndThrowAsync(data);
+    await registerPasswordValidator.ValidateAndThrowAsync(data);
 
     var player = await userManager.FindByEmailAsync(data.Email);
     if (player == null)
@@ -96,13 +96,13 @@ public async Task<IActionResult> SetPassword([FromBody] SetPasswordRequest data)
         return BadRequest(updateResult.Errors);
     }
 
-    return Ok("Password set successfully");
+    return Ok("Password registered successfully");
 }
 
     [HttpPost]
     [Route("logout")]
     [AllowAnonymous]
-    public async Task<IResult> Logout([FromServices] SignInManager<Player> signInManager)
+    public async Task<IResult> Logout([FromServices] SignInManager<User> signInManager)
     {
         await signInManager.SignOutAsync();
         return Results.Ok();
@@ -135,7 +135,7 @@ public async Task<IActionResult> SetPassword([FromBody] SetPasswordRequest data)
     [HttpGet]
     [Route("me")]
     [Authorize]
-    public async  Task<ActionResult<Player>> GetCurrentUser()
+    public async  Task<ActionResult<User>> GetCurrentUser()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 

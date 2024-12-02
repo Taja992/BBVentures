@@ -13,13 +13,13 @@ public class TransactionRepository(AppDbContext context) : ITransactionRepositor
     
     public List<Transaction> GetAllTransactionsFromUser(string Id)
     {
-        var transFromUser = from i in context.Transactions.ToList() where i.PlayerId == Id select i;
+        var transFromUser = from i in context.Transactions.ToList() where i.UserId == Id select i;
         return transFromUser.ToList();
     }
 
     public decimal GetSumOfUserTransactions(string Id)
     {
-        var transFromUser = from i in context.Transactions.ToList() where i.PlayerId == Id select i;
+        var transFromUser = from i in context.Transactions.ToList() where i.UserId == Id select i;
         List<Transaction> userTransBalance = transFromUser.ToList();
         
         //gets all that are not pending

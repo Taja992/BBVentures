@@ -9,13 +9,13 @@ namespace Service;
 public class DbSeeder
 {
     private readonly ILogger<DbSeeder> logger;
-    private readonly UserManager<Player> userManager;
+    private readonly UserManager<User> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly AppDbContext context;
 
     public DbSeeder(
         ILogger<DbSeeder> logger,
-        UserManager<Player> userManager,
+        UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
         AppDbContext context
     )
@@ -47,7 +47,7 @@ public class DbSeeder
         );
         
         await CreateBoards(
-            new List<(Guid Id, string PlayerId, Guid GameId, List<int> Numbers, bool IsAutoplay)>
+            new List<(Guid Id, string UserId, Guid GameId, List<int> Numbers, bool IsAutoplay)>
             {
                 (Guid.NewGuid(), playerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 1, 2, 3 }, false),
                 (Guid.NewGuid(), playerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10 }, true),
@@ -76,7 +76,7 @@ public class DbSeeder
         var player = await userManager.FindByNameAsync(username);
         if (player != null) return player.Id;
         
-        player = new Player
+        player = new User
         {
             UserName = username,
             Email = username,
@@ -111,14 +111,14 @@ public class DbSeeder
         await context.SaveChangesAsync();
     }
     
-    private async Task CreateBoards(List<(Guid Id, string PlayerId, Guid GameId, List<int> Numbers, bool IsAutoplay)> boards)
+    private async Task CreateBoards(List<(Guid Id, string UserId, Guid GameId, List<int> Numbers, bool IsAutoplay)> boards)
     {
-        foreach (var (id, playerId, gameId, numbers, isAutoplay) in boards)
+        foreach (var (id, userId, gameId, numbers, isAutoplay) in boards)
         {
             var board = new Board
             {
                 Id = id,
-                PlayerId = playerId,
+                UserId = userId,
                 GameId = gameId,
                 Numbers = numbers,
                 IsAutoplay = isAutoplay,

@@ -28,7 +28,7 @@ namespace Service.Services
 
             var board = new Board
             {
-                PlayerId = createBoardDto.PlayerId,
+                UserId = createBoardDto.UserId,
                 GameId = createBoardDto.GameId,
                 Numbers = createBoardDto.Numbers,
                 IsAutoplay = createBoardDto.IsAutoplay,
@@ -41,7 +41,7 @@ namespace Service.Services
             return new BoardDto
             {
                 Id = newBoard.Id,
-                PlayerId = newBoard.PlayerId,
+                UserId = newBoard.UserId,
                 GameId = newBoard.GameId,
                 Numbers = newBoard.Numbers,
                 IsAutoplay = newBoard.IsAutoplay,
@@ -57,7 +57,7 @@ namespace Service.Services
             return boards.Select(board => new BoardDto
             {
                 Id = board.Id,
-                PlayerId = board.PlayerId,
+                UserId = board.UserId,
                 GameId = board.GameId,
                 Numbers = board.Numbers,
                 IsAutoplay = board.IsAutoplay,

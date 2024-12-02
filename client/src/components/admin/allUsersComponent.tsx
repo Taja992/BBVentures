@@ -2,7 +2,7 @@
 import { allUsersAtom } from "../../atoms/atoms";
 import { http } from "../../http";
 import { useEffect, useState } from "react";
-import { BBVenturesApiPlayerDto } from "../../services/Api";
+import { BBVenturesApiUserDto } from "../../services/Api";
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { getTheme } from "@table-library/react-table-library/baseline";
@@ -12,7 +12,7 @@ const GetAllUsers: React.FC = () => {
     const [allUsers, setAllUsers] = useAtom(allUsersAtom);
     const theme = useTheme(getTheme());
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
-    const [formData, setFormData] = useState<{ [key: string]: BBVenturesApiPlayerDto }>({});
+    const [formData, setFormData] = useState<{ [key: string]: BBVenturesApiUserDto }>({});
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -43,7 +43,7 @@ const GetAllUsers: React.FC = () => {
         }));
     };
 
-    const handleUpdate = async (user: BBVenturesApiPlayerDto) => {
+    const handleUpdate = async (user: BBVenturesApiUserDto) => {
         try {
             const updatedUser = {
                 ...user,
@@ -68,7 +68,7 @@ const GetAllUsers: React.FC = () => {
     const columns = [
         {
             label: "Username",
-            renderCell: (item: BBVenturesApiPlayerDto) => (
+            renderCell: (item: BBVenturesApiUserDto) => (
                 //This toggles editing mode, controlled by a button below that sets EditingUserId <button onClick={() => setEditingUserId(item.id!)}>Edit</button>
                 editingUserId === item.id ? (
                     <input
@@ -85,7 +85,7 @@ const GetAllUsers: React.FC = () => {
         },
         {
             label: "Email",
-            renderCell: (item: BBVenturesApiPlayerDto) => (
+            renderCell: (item: BBVenturesApiUserDto) => (
                 editingUserId === item.id ? (
                     <input
                         type="email"
@@ -100,7 +100,7 @@ const GetAllUsers: React.FC = () => {
         },
         {
             label: "Phone Number",
-            renderCell: (item: BBVenturesApiPlayerDto) => (
+            renderCell: (item: BBVenturesApiUserDto) => (
                 editingUserId === item.id ? (
                     <input
                         type="phoneNumber"
@@ -113,21 +113,21 @@ const GetAllUsers: React.FC = () => {
                 )
             ),
         },
-        { label: "Balance", renderCell: (item: BBVenturesApiPlayerDto) => item.balance },
+        { label: "Balance", renderCell: (item: BBVenturesApiUserDto) => item.balance },
         
         {
             label: "Created At",
-            renderCell: (item: BBVenturesApiPlayerDto) =>
+            renderCell: (item: BBVenturesApiUserDto) =>
                 item.createdAt ? new Date(item.createdAt).toLocaleString() : 'N/A',
         },
         {
             label: "Updated At",
-            renderCell: (item: BBVenturesApiPlayerDto) =>
+            renderCell: (item: BBVenturesApiUserDto) =>
                 item.updatedAt ? new Date(item.updatedAt).toLocaleString() : 'N/A',
         },
         {
             label: "Active",
-            renderCell: (item: BBVenturesApiPlayerDto) => (
+            renderCell: (item: BBVenturesApiUserDto) => (
                 editingUserId === item.id ? (
                     <input
                         type="checkbox"
@@ -142,7 +142,7 @@ const GetAllUsers: React.FC = () => {
         },
         {
             label: "Actions",
-            renderCell: (item: BBVenturesApiPlayerDto) => (
+            renderCell: (item: BBVenturesApiUserDto) => (
                 editingUserId === item.id ? (
                     <button onClick={() => handleUpdate(item)}>Save</button>
                 ) : (

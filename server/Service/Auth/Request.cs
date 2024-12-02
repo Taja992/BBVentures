@@ -24,11 +24,11 @@ public class LoginRequestValidator : AbstractValidator<LoginRequest>
     }
 }
 
-public record SetPasswordRequest(string Email, string EmailConfirmationToken, string PasswordResetToken, string NewPassword);
+public record RegisterPasswordRequest(string Email, string EmailConfirmationToken, string PasswordResetToken, string NewPassword);
 
-public class SetPasswordRequestValidator : AbstractValidator<SetPasswordRequest>
+public class RegisterPasswordRequestValidator : AbstractValidator<RegisterPasswordRequest>
 {
-    public SetPasswordRequestValidator()
+    public RegisterPasswordRequestValidator()
     {
         RuleFor(x => x.Email).EmailAddress().NotEmpty();
         RuleFor(x => x.EmailConfirmationToken).NotEmpty();

@@ -5,18 +5,18 @@ namespace API.Misc;
 
 public interface IPasswordService
 {
-    Task<IdentityResult> ConfirmEmailAsync(Player player, string emailConfirmationToken);
-    Task<IdentityResult> ResetPasswordAsync(Player player, string passwordResetToken, string newPassword);
-    Task<IdentityResult> UpdateUserAsync(Player player);
+    Task<IdentityResult> ConfirmEmailAsync(User user, string emailConfirmationToken);
+    Task<IdentityResult> ResetPasswordAsync(User user, string passwordResetToken, string newPassword);
+    Task<IdentityResult> UpdateUserAsync(User user);
 }
 
-public class PasswordService(UserManager<Player> userManager, ILogger<PasswordService> logger) : IPasswordService
+public class PasswordService(UserManager<User> userManager, ILogger<PasswordService> logger) : IPasswordService
 
 {
     
-    public async Task<IdentityResult> ConfirmEmailAsync(Player player, string emailConfirmationToken)
+    public async Task<IdentityResult> ConfirmEmailAsync(User user, string emailConfirmationToken)
     {
-        var result = await userManager.ConfirmEmailAsync(player, emailConfirmationToken);
+        var result = await userManager.ConfirmEmailAsync(user, emailConfirmationToken);
         if (!result.Succeeded)
         {
             foreach (var error in result.Errors)
@@ -27,9 +27,9 @@ public class PasswordService(UserManager<Player> userManager, ILogger<PasswordSe
         return result;
     }
 
-    public async Task<IdentityResult> ResetPasswordAsync(Player player, string passwordResetToken, string newPassword)
+    public async Task<IdentityResult> ResetPasswordAsync(User user, string passwordResetToken, string newPassword)
     {
-        var result = await userManager.ResetPasswordAsync(player, passwordResetToken, newPassword);
+        var result = await userManager.ResetPasswordAsync(user, passwordResetToken, newPassword);
         if (!result.Succeeded)
         {
             foreach (var error in result.Errors)
@@ -40,10 +40,10 @@ public class PasswordService(UserManager<Player> userManager, ILogger<PasswordSe
         return result;
     }
 
-    public async Task<IdentityResult> UpdateUserAsync(Player player)
+    public async Task<IdentityResult> UpdateUserAsync(User user)
     {
-        player.IsActive = true;
-        var result = await userManager.UpdateAsync(player);
+        user.IsActive = true;
+        var result = await userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
             foreach (var error in result.Errors)

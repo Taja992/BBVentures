@@ -1,5 +1,5 @@
 ﻿import { useState } from "react";
-import { BBVenturesApiPlayerDto } from "../../services/Api";
+import { BBVenturesApiUserDto } from "../../services/Api";
 // import { useAtom } from "jotai";
 // import { allUsersAtom } from "./atoms/atoms";
 import { http } from "../../http";
@@ -25,7 +25,7 @@ const UpdateSelf: React.FC = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
-            const updateUser: Partial<BBVenturesApiPlayerDto> = {
+            const updateUser: Partial<BBVenturesApiUserDto> = {
                 userName: username,
                 email: email,
                 phoneNumber: phoneNumber,

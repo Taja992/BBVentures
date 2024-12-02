@@ -11,7 +11,7 @@ public partial class Transaction
     [Key]
     public Guid Id { get; set; }
 
-    public string PlayerId { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     public decimal Amount { get; set; }
 
@@ -21,7 +21,7 @@ public partial class Transaction
 
     public bool isPending { get; set; }
 
-    [ForeignKey("PlayerId")]
+    [ForeignKey("UserId")]
     [InverseProperty("Transactions")]
-    public virtual Player Player { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

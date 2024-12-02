@@ -24,12 +24,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 #region Configuration
 
+//set up options pattern ensuring options are validated
 builder
     .Services.AddOptionsWithValidateOnStart<AppOptions>()
+    //binds the AppOptions setting with appsettings.json
     .Bind(builder.Configuration.GetSection(nameof(AppOptions)))
+    //enforces things like [required]
     .ValidateDataAnnotations();
 
-// builder.Services.AddSingleton(_ => TimeProvider.System);
 #endregion
 
 #region Data Access
@@ -49,12 +51,12 @@ builder.Services.AddScoped<DbSeeder>();
 
 
 builder
-    .Services.AddIdentityApiEndpoints<Player>()
+    .Services.AddIdentityApiEndpoints<User>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<SetPasswordRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterPasswordRequestValidator>();
 
 
 //Setting up Authorization using AppOptions class to store secrets and JwtTokenClaimService to add a way to customize the tokens to what we want
@@ -84,14 +86,14 @@ builder.Services.AddAuthorization(options =>
         .Build();
 });
 
-builder.Services.AddSingleton<IEmailSender<Player>, AppEmailSender>();
+builder.Services.AddSingleton<IEmailSender<User>, AppEmailSender>();
 
 
 #endregion
 
 #region Services
 
-// Stuff like builder.Services.AddScoped<IBlogService, BlogService>();
+
 
 // builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
 
@@ -111,7 +113,7 @@ builder.Services.AddScoped<IGameRepository, GameRepository>();
 
 
 builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
-// builder.Services.AddScoped<IBoardService, BoardService>();
+
 
 #endregion
 
@@ -152,10 +154,16 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(b =>
+    options.AddPolicy("DevelopmentCorsPolicy", corsBuilder =>
     {
-        b.AllowAnyOrigin()
-        // b.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
+        corsBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+
+    options.AddPolicy("ProductionCorsPolicy", corsBuilder =>
+    {
+        corsBuilder.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -180,12 +188,6 @@ if (app.Environment.IsDevelopment())
     }
 }
 
-// //using a seeder to add our roles
-// using (var scope = app.Services.CreateScope())
-// {
-//     var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-//     dbSeeder.SeedAsync().Wait();
-// }
 
 
 // Configure the HTTP request pipeline.
@@ -209,10 +211,12 @@ app.UseForwardedHeaders(
 //UseRouting adds routing middleware to match incoming HTTP requests to endpoints.
 // app.UseRouting();
 
-app.UseCors();
+
+app.UseCors(app.Environment.IsDevelopment() ? "DevelopmentCorsPolicy" : "ProductionCorsPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapIdentityApi<Player>().AllowAnonymous();
+//app.MapIdentityApi<Player>().AllowAnonymous();
 app.MapControllers();
 
 app.Run();

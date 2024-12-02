@@ -6,20 +6,20 @@ namespace DataAccess.Repositories;
 
 public class UserRepository(AppDbContext context) : IUserRepository
 {
-    public async Task<IEnumerable<Player>> GetAllPlayers()
+    public async Task<IEnumerable<User>> GetAllUsers()
     {
-        return await context.Players
+        return await context.Users
             .ToListAsync();
     }
 
-    public async Task<Player?> GetPlayerById(string id)
+    public async Task<User?> GetUserById(string id)
     {
-        return await context.Players.FindAsync(id);
+        return await context.Users.FindAsync(id);
     }
 
-    public async Task<bool> UpdatePlayer(Player player)
+    public async Task<bool> UpdateUser(User user)
     {
-        context.Players.Update(player);
+        context.Users.Update(user);
         return await context.SaveChangesAsync() > 0;
     }
     

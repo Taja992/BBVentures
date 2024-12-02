@@ -8,45 +8,45 @@ namespace Service.Services;
 
 public interface IUserService
 {
-    Task<IEnumerable<PlayerDto>> GetAllPlayers();
-    Task<bool> UpdatePlayer(PlayerDto playerDto, bool isAdmin);
-    Task<PlayerDto> GetPlayerById(string id);
+    Task<IEnumerable<UserDto>> GetAllUsers();
+    Task<bool> UpdateUser(UserDto userDto, bool isAdmin);
+    Task<UserDto> GetUserById(string id);
 }
 
 public class UserService(IUserRepository userRepository) : IUserService
 {
     
-    public async Task<IEnumerable<PlayerDto>> GetAllPlayers()
+    public async Task<IEnumerable<UserDto>> GetAllUsers()
     {
-        var players = await userRepository.GetAllPlayers();
-        return players.Select(PlayerDto.FromEntity);
+        var users = await userRepository.GetAllUsers();
+        return users.Select(UserDto.FromEntity);
     }
 
-    public async Task<PlayerDto> GetPlayerById(string id)
+    public async Task<UserDto> GetUserById(string id)
     {
-        var player = await userRepository.GetPlayerById(id);
-        return PlayerDto.FromEntity(player);
+        var user = await userRepository.GetUserById(id);
+        return UserDto.FromEntity(user);
     }
 
-    public async Task<bool> UpdatePlayer(PlayerDto playerDto, bool isAdmin)
+    public async Task<bool> UpdateUser(UserDto userDto, bool isAdmin)
     {
-        var player = await userRepository.GetPlayerById(playerDto.Id);
-        if (player == null)
+        var user = await userRepository.GetUserById(userDto.Id);
+        if (user == null)
         {
             return false;
         }
 
         if (isAdmin)
         {
-            player.IsActive = playerDto.IsActive;
+            user.IsActive = userDto.IsActive;
         }
-        player.Email = playerDto.Email;
-        player.Balance = playerDto.Balance;
-        player.UserName = playerDto.UserName;
-        player.UpdatedAt = DateTime.UtcNow;
-        player.PhoneNumber = playerDto.PhoneNumber;
+        user.Email = userDto.Email;
+        user.Balance = userDto.Balance;
+        user.UserName = userDto.UserName;
+        user.UpdatedAt = DateTime.UtcNow;
+        user.PhoneNumber = userDto.PhoneNumber;
 
-        return await userRepository.UpdatePlayer(player);
+        return await userRepository.UpdateUser(user);
     }
     
     

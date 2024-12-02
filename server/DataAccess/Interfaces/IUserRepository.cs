@@ -4,7 +4,7 @@ namespace DataAccess.Interfaces;
 
 public interface IUserRepository
 {
-    Task<IEnumerable<Player>> GetAllPlayers();
-    Task<Player?> GetPlayerById(string id);
-    Task<bool> UpdatePlayer(Player player);
+    Task<IEnumerable<User>> GetAllUsers();
+    Task<User?> GetUserById(string id);
+    Task<bool> UpdateUser(User user);
 }

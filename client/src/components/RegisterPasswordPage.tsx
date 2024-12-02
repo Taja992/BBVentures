@@ -1,11 +1,11 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useState} from "react";
-import {BBVenturesApiSetPasswordRequest} from "../services/Api.ts";
+import {BBVenturesApiRegisterPasswordRequest} from "../services/Api.ts";
 import {http} from "../http.ts";
 import toast from "react-hot-toast";
 
 
-const SetPasswordPage: React.FC = () => {
+const RegisterPasswordPage: React.FC = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const [newPassword, setNewPassword] = useState('');
@@ -26,7 +26,7 @@ const SetPasswordPage: React.FC = () => {
             return;
         }
 
-        const requestData: BBVenturesApiSetPasswordRequest = {
+        const requestData: BBVenturesApiRegisterPasswordRequest = {
             email,
             emailConfirmationToken,
             passwordResetToken,
@@ -34,7 +34,7 @@ const SetPasswordPage: React.FC = () => {
         };
 
         try {
-            await http.authSetPasswordCreate(requestData);
+            await http.authRegisterPasswordCreate(requestData);
             setSuccess(true);
             toast.success('Password set successfully! Redirecting to login...');
             setTimeout(() => navigate('/'), 3000);
@@ -66,5 +66,5 @@ const SetPasswordPage: React.FC = () => {
     );
 };
 
-export default SetPasswordPage;
+export default RegisterPasswordPage;
 
