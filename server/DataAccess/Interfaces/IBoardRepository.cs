@@ -16,5 +16,7 @@
      public void DeleteBoard(Board b);
      
      Task<List<Board>> GetBoardsByUserId(string userId);
+     
+     Task<bool> IsUserActive(string userId);
  }
 

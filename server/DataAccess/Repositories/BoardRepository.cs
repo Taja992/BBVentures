@@ -43,5 +43,11 @@
       {
           return await context.Boards.Where(board => board.UserId == userId).ToListAsync();
       }
+      
+      public async Task<bool> IsUserActive(string userId)
+      {
+          var user = await context.Users.FindAsync(userId);
+          return user?.IsActive ?? false;
+      }
  }
 
