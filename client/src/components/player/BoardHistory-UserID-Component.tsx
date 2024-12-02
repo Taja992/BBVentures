@@ -52,26 +52,28 @@ const BoardHistoryComponent = () => {
     const sortedBoards = [...boards].sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
 
     return (
-        <div className="board-history"> 
+        <div className="board-history">
             <h2 className="text-2xl font-bold mb-4">Board History</h2>
-            <table className="table-auto min-w-full bg-white border border-black">
-                <thead>
-                <tr>
-                    <th className="py-2 px-4 border border-black">Week Number</th>
-                    <th className="py-2 px-4 border border-black">Numbers</th>
-                    <th className="py-2 px-4 border border-black">Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                {sortedBoards.map((board) => (
-                    <tr key={board.createdAt} className="text-center">
-                        <td className="py-2 px-4 border border-black">{getWeekNumber(board.gameId)}</td>
-                        <td className="py-2 px-4 border border-black">{board.numbers?.join(', ') || 'N/A'}</td>
-                        <td className="py-2 px-4 border border-black">{board.createdAt ? new Date(board.createdAt).toLocaleString() : 'N/A'}</td>
+            <div className="table-container">
+                <table className="table-auto min-w-full bg-white border border-black">
+                    <thead>
+                    <tr>
+                        <th className="py-2 px-4 border border-black">Week Number</th>
+                        <th className="py-2 px-4 border border-black">Numbers</th>
+                        <th className="py-2 px-4 border border-black">Date</th>
                     </tr>
-                ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {sortedBoards.map((board) => (
+                        <tr key={board.createdAt} className="text-center">
+                            <td className="py-2 px-4 border border-black">{getWeekNumber(board.gameId)}</td>
+                            <td className="py-2 px-4 border border-black">{board.numbers?.join(', ') || 'N/A'}</td>
+                            <td className="py-2 px-4 border border-black">{board.createdAt ? new Date(board.createdAt).toLocaleString() : 'N/A'}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
