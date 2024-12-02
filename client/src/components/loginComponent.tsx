@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import toast from "react-hot-toast";
+import { Link } from 'react-router-dom';
 
 // Defining the validation schema using yup
 const schema: yup.ObjectSchema<Credentials> = yup
@@ -46,32 +47,34 @@ const LoginForm: React.FC = () => {
                 <button onClick={logout} className="logout-button">Log Out</button>
             ) :
                 (
-                    <div  className="login-container">
-            <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-                <h1>Jerne IF</h1>
-                <h2>Login to Dead Pigeons</h2>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        {...register("email")} // Registering email input field
-                        required
-                    />
-                    {errors.email && <p className="error-message">{errors.email.message}</p>}
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        {...register("password")} // Registering password input field
-                        required
-                    />
-                    {errors.password && <p className="error-message">{errors.password.message}</p>}
-                </div>
-                <button type="submit" className="login-button">Login</button>
-            </form>
+                    <div className="login-container">
+                        <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
+                            <h1>Jerne IF</h1>
+                            <h2>Login to Dead Pigeons</h2>
+                            <div className="form-group">
+                                <label htmlFor="email">Email</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    {...register("email")} // Registering email input field
+                                    required
+                                />
+                                {errors.email && <p className="error-message">{errors.email.message}</p>}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="password">Password</label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    {...register("password")} // Registering password input field
+                                    required
+                                />
+                                {errors.password && <p className="error-message">{errors.password.message}</p>}
+                            </div>
+                            <button type="submit" className="login-button">Login</button>
+                            <Link to="/request-password">Forgot Password</Link>
+                        </form>
+
                     </div>
                 )}
         </div>
