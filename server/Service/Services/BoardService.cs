@@ -65,5 +65,17 @@ namespace Service.Services
                 UpdatedAt = board.UpdatedAt
             }).ToList();
         }
+        
+        public async Task<List<BoardHistoryDto>> GetBoardHistoryByUserId(string userId)
+        {
+            var boards = await _boardRepository.GetBoardsByUserId(userId);
+
+            return boards.Select(board => new BoardHistoryDto
+            {
+                Numbers = board.Numbers,
+                CreatedAt = board.CreatedAt,
+                WeekNumber = board.Game.WeekNumber // Accessing weekNumber from the related game entity
+            }).ToList();
+        }
     }
 }

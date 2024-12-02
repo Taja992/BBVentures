@@ -38,5 +38,10 @@
           context.Boards.Remove(board);
           context.SaveChanges();
       }
+      
+      public async Task<List<Board>> GetBoardsByUserId(string userId) // New method
+      {
+          return await context.Boards.Where(board => board.UserId == userId).ToListAsync();
+      }
  }
 

@@ -182,7 +182,9 @@ export interface BBVenturesApiUserDto {
   /** @format date-time */
   updatedAt?: string | null;
   userName?: string | null;
+  normalizedUserName?: string | null;
   email?: string | null;
+  normalizedEmail?: string | null;
   emailConfirmed?: boolean;
   phoneNumber?: string | null;
 }
@@ -487,6 +489,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Board
+     * @name BoardUserBoardsList
+     * @request GET:/api/Board/user-boards
+     */
+    boardUserBoardsList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiBoardDto[], any>({
+        path: `/api/Board/user-boards`,
+        method: "GET",
         format: "json",
         ...params,
       }),

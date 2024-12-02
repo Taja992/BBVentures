@@ -78,3 +78,10 @@
 .field-button.selected {
     background-color: #28a745;
 }
+
+/* New CSS for scrollable table container */
+.table-container {
+    max-height: 300px; /* Adjust the height as needed */
+    overflow-y: auto;
+    width: 100%;
+}

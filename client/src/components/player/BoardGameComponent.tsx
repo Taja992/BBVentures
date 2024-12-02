@@ -5,13 +5,14 @@ import { userInfoAtom } from '../../atoms/atoms';
 import './BoardGameComponent.css';
 import { BBVenturesApiCreateBoardDto } from '../../services/Api';
 import toast from 'react-hot-toast';
+import BoardHistoryComponent from './BoardHistory-UserID-Component';
 
 const BoardGameComponent = () => {
     const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
     const [fieldCount, setFieldCount] = useState<number>(4);
     const [gameId, setGameId] = useState<string | null>(null);
-    const [userId, setUserId] = useState<string | null>(null);
     const [] = useAtom(userInfoAtom);
+    const [refreshHistory, setRefreshHistory] = useState<number>(0); // Use a number instead of boolean
 
     useEffect(() => {
         const fetchActiveGame = async () => {
@@ -29,22 +30,7 @@ const BoardGameComponent = () => {
             }
         };
 
-        const fetchPlayerId = async () => {
-            try {
-                const response = await http.authMeList();
-                if (response.data && response.data.id) {
-                    setUserId(response.data.id);
-                    console.log('Player ID:', response.data.id);
-                } else {
-                    console.error('Player ID not found in response');
-                }
-            } catch (error) {
-                console.error('Failed to fetch player ID:', error);
-            }
-        };
-
         fetchActiveGame();
-        fetchPlayerId();
     }, []);
 
     const toggleNumber = (number: number) => {
@@ -70,15 +56,13 @@ const BoardGameComponent = () => {
             return;
         }
 
-        if (!userId) {
-            alert('Player ID not found.');
-            return;
-        }
+        // Sort the selected numbers in ascending order
+        const sortedNumbers = [...selectedNumbers].sort((a, b) => a - b);
 
         const requestBody: BBVenturesApiCreateBoardDto  = {
-            userId: userId,
+            userId: "",
             gameId: gameId,
-            numbers: selectedNumbers,
+            numbers: sortedNumbers,
             isAutoplay: false,
             fieldCount: fieldCount
         };
@@ -88,10 +72,11 @@ const BoardGameComponent = () => {
         try {
             const response = await http.boardCreateCreate(requestBody);
             console.log('Board created:', response.data);
-            toast.success("Board bought!")
+            toast.success("Board bought!");
+            setRefreshHistory(prev => prev + 1); // Increment to trigger history refresh
         } catch (error) {
             console.error('Error creating board:', error);
-            toast.error("Error buying board :(")
+            toast.error("Error buying board :(");
         }
     };
 
@@ -120,6 +105,7 @@ const BoardGameComponent = () => {
                 ))}
             </div>
             <button className="submit-button" onClick={handleSubmit}>Play these numbers</button>
+            <BoardHistoryComponent key={refreshHistory} /> {/* Refresh history */}
         </div>
     );
 };
