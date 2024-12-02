@@ -64,9 +64,9 @@ public class BoardController : ControllerBase
     }
     
     [HttpGet]
-    [Route("user-boards")]
+    [Route("user-board-history")]
     [Authorize]
-    public async Task<ActionResult<List<BoardDto>>> GetBoardsByUserId()
+    public async Task<ActionResult<List<BoardHistoryDto>>> GetBoardHistoryByUserId()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (userId == null)
@@ -74,7 +74,7 @@ public class BoardController : ControllerBase
             return Unauthorized("User ID is not available.");
         }
 
-        var boards = await _boardService.GetBoardsByUserId(userId);
+        var boards = await _boardService.GetBoardHistoryByUserId(userId);
         return Ok(boards);
     }
 }

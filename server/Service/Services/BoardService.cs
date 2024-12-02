@@ -66,19 +66,15 @@ namespace Service.Services
             }).ToList();
         }
         
-        public async Task<List<BoardDto>> GetBoardsByUserId(string userId) // New method
+        public async Task<List<BoardHistoryDto>> GetBoardHistoryByUserId(string userId)
         {
             var boards = await _boardRepository.GetBoardsByUserId(userId);
 
-            return boards.Select(board => new BoardDto
+            return boards.Select(board => new BoardHistoryDto
             {
-                Id = board.Id,
-                UserId = board.UserId,
-                GameId = board.GameId,
                 Numbers = board.Numbers,
-                IsAutoplay = board.IsAutoplay,
                 CreatedAt = board.CreatedAt,
-                UpdatedAt = board.UpdatedAt
+                WeekNumber = board.Game.WeekNumber // Accessing weekNumber from the related game entity
             }).ToList();
         }
     }

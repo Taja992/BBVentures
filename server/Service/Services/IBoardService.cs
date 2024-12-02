@@ -7,6 +7,6 @@ namespace Service.Services
     {
         Task<BoardDto> CreateBoard(CreateBoardDto createBoardDto);
         Task<List<BoardDto>> GetAllBoards();
-        Task<List<BoardDto>> GetBoardsByUserId(string userId);
+        Task<List<BoardHistoryDto>> GetBoardHistoryByUserId(string userId);
     }
 }
