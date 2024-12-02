@@ -40,7 +40,21 @@ public class UserService(IUserRepository userRepository) : IUserService
         {
             user.IsActive = userDto.IsActive;
         }
-        user.Email = userDto.Email;
+        
+        
+        //normalized is something in the aspnetuser table that needs to be updated when these other fields are
+        //toupperinvariant converts it to all capital letters
+        if (userDto.Email != null)
+        {
+            user.Email = userDto.Email;
+            user.NormalizedEmail = userDto.Email.ToUpperInvariant();
+        }
+
+        if (userDto.UserName != null)
+        {
+            user.UserName = userDto.UserName;
+            user.NormalizedUserName = userDto.UserName.ToUpperInvariant();
+        }
         user.Balance = userDto.Balance;
         user.UserName = userDto.UserName;
         user.UpdatedAt = DateTime.UtcNow;

@@ -14,7 +14,7 @@ public partial class AppDbContext : IdentityDbContext<User>
 
     public virtual DbSet<Board> Boards { get; set; }
     public virtual DbSet<Game> Games { get; set; }
-    public virtual DbSet<User> Users { get; set; }
+    public new virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Transaction> Transactions { get; set; }
     
 }

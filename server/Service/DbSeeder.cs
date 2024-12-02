@@ -29,8 +29,8 @@ public class DbSeeder
     public async Task SeedAsync()
     {
         await CreateRoles(Role.Admin, Role.Player);
-        var adminId = await CreateUser(username: "admin@example.com", password: "S3cret!!", role: Role.Admin);
-        var playerId = await CreateUser(username: "player@example.com", password: "S3cret!!", role: Role.Player);
+        var adminId = await CreateUser(username: "Admin", email: "admin@example.com", password: "S3cret!!", role: Role.Admin);
+        var playerId = await CreateUser(username: "Player",email: "player@example.com", password: "S3cret!!", role: Role.Player);
         await CreateGame(
             id: new Guid("11111111-1111-1111-1111-111111111111"),
             winnerNumbers: new List<int> { 1, 2, 3 },
@@ -56,6 +56,16 @@ public class DbSeeder
                 (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9 }, true)
             }
         );
+        
+        await CreateTransactions(
+            new List<(Guid Id, string UserId, decimal Amount, string TransactionNumber, bool IsPending, DateTime transactions)>
+            {
+                (Guid.NewGuid(), playerId, 100, "Transaction001", true, DateTime.UtcNow),
+                (Guid.NewGuid(), adminId, 200, "Transaction002", true, DateTime.UtcNow),
+                (Guid.NewGuid(), playerId, 300, "Transaction003", false, DateTime.UtcNow),
+                (Guid.NewGuid(), adminId, 400, "Transaction004", false, DateTime.UtcNow)
+            }
+        );
     }
     
     
@@ -71,7 +81,7 @@ public class DbSeeder
         }
     }
     
-    private async Task<string> CreateUser(string username, string password, string role)
+    private async Task<string> CreateUser(string username, string email, string password, string role)
     {
         var player = await userManager.FindByNameAsync(username);
         if (player != null) return player.Id;
@@ -79,7 +89,7 @@ public class DbSeeder
         player = new User
         {
             UserName = username,
-            Email = username,
+            Email = email,
             EmailConfirmed = true
         };
         var result = await userManager.CreateAsync(player, password);
@@ -127,6 +137,26 @@ public class DbSeeder
             };
 
             context.Boards.Add(board);
+        }
+
+        await context.SaveChangesAsync();
+    }
+
+    private async Task CreateTransactions(List<(Guid Id, string UserId, decimal Amount, string TransactionNumber, bool IsPending, DateTime CreatedAt)> transactions)
+    {
+        foreach (var (id, userId, amount, transactionNumber, isPending, createdAt) in transactions)
+        {
+            var transaction = new Transaction
+            {
+                Id = id,
+                UserId = userId,
+                Amount = amount,
+                CreatedAt = createdAt,
+                MobilePayTransactionNumber = transactionNumber,
+                isPending = isPending
+            };
+
+            context.Transactions.Add(transaction);
         }
 
         await context.SaveChangesAsync();

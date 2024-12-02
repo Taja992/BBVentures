@@ -2,6 +2,6 @@
 
 public interface ITokenClaimsService
 {
-    Task<string> GetTokenAsync(string userName);
+    Task<string> GetTokenAsync(string email);
 }
 
