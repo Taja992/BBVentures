@@ -26,6 +26,12 @@ namespace Service.Services
         {
             await _createValidator.ValidateAndThrowAsync(createBoardDto);
 
+            if (!await _boardRepository.IsUserActive(createBoardDto.UserId))
+            {
+                Console.WriteLine("User is not active.");
+                throw new UnauthorizedAccessException("User is not active.");
+            }
+
             var board = new Board
             {
                 UserId = createBoardDto.UserId,
