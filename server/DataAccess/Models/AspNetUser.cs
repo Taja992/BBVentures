@@ -55,7 +55,7 @@ public partial class AspNetUser
     public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; } = new List<AspNetUserToken>();
 
     [InverseProperty("IdNavigation")]
-    public virtual Player? Player { get; set; }
+    public virtual User? Player { get; set; }
 
     [ForeignKey("UserId")]
     [InverseProperty("Users")]

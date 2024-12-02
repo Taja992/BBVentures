@@ -45,7 +45,7 @@ public class BoardController : ControllerBase
             Console.WriteLine($"Authenticated User ID: {userId}");
 
             // Add the PlayerId to the DTO
-            createBoardDto.PlayerId = userId;
+            createBoardDto.UserId = userId;
 
             if (createBoardDto == null)
             {

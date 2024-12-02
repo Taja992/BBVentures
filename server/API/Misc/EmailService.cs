@@ -7,19 +7,19 @@ namespace API.Misc;
 
 public interface IEmailService
 {
-    Task<Player?> CreateUserAsync(string email, string name, string phoneNumber);
-    Task<(string emailConfirmationToken, string passwordResetToken)> GenerateTokensAsync(Player player);
-    Task SendConfirmationEmailAsync(Player player, string emailConfirmationToken, string passwordResetToken);
+    Task<User?> CreateUserAsync(string email, string name, string phoneNumber);
+    Task<(string emailConfirmationToken, string passwordResetToken)> GenerateTokensAsync(User user);
+    Task SendConfirmationEmailAsync(User user, string emailConfirmationToken, string passwordResetToken);
 }
 
-public class EmailService(UserManager<Player> userManager, IOptions<AppOptions> options,
-    IEmailSender<Player> emailSender,
+public class EmailService(UserManager<User> userManager, IOptions<AppOptions> options,
+    IEmailSender<User> emailSender,
     ILogger<EmailService> logger) : IEmailService
 
 {
-    public async Task<Player?> CreateUserAsync(string email, string name, string phoneNumber)
+    public async Task<User?> CreateUserAsync(string email, string name, string phoneNumber)
     {
-        var player = new Player
+        var player = new User
         {
             UserName = name,
             Email = email,
@@ -43,16 +43,16 @@ public class EmailService(UserManager<Player> userManager, IOptions<AppOptions> 
         return player;
     }
     
-    public async Task<(string emailConfirmationToken, string passwordResetToken)> GenerateTokensAsync(Player player)
+    public async Task<(string emailConfirmationToken, string passwordResetToken)> GenerateTokensAsync(User user)
     {
-        var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(player);
-        var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(player);
+        var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+        var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(user);
         return (emailConfirmationToken, passwordResetToken);
     }
 
-    public async Task SendConfirmationEmailAsync(Player player, string emailConfirmationToken, string passwordResetToken)
+    public async Task SendConfirmationEmailAsync(User user, string emailConfirmationToken, string passwordResetToken)
     {
-        var email = player.Email ?? throw new InvalidOperationException("Player email is null");
+        var email = user.Email ?? throw new InvalidOperationException("Player email is null");
         var qs = new Dictionary<string, string?>
         {
             { "emailConfirmationToken", emailConfirmationToken },
@@ -62,11 +62,11 @@ public class EmailService(UserManager<Player> userManager, IOptions<AppOptions> 
 
         var confirmationLink = new UriBuilder(options.Value.FrontendAddress)
         {
-            Path = "/set-password",
+            Path = "/register-password",
             Query = QueryString.Create(qs).Value
         }.Uri.ToString();
 
-        await emailSender.SendConfirmationLinkAsync(player, email, confirmationLink);
+        await emailSender.SendConfirmationLinkAsync(user, email, confirmationLink);
     }
     
 }

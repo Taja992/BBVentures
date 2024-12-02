@@ -8,10 +8,10 @@ using Service;
 
 namespace API.Misc;
 
-public record EmailModel(Player Player, string Email, string CodeOrLink);
+public record EmailModel(User User, string Email, string CodeOrLink);
 
 public class AppEmailSender(IOptions<AppOptions> options, ILogger<AppEmailSender> logger)
-    : IEmailSender<Player>
+    : IEmailSender<User>
 {
     private readonly AppOptions _options = options.Value;
     private readonly ILogger _logger = logger;
@@ -73,27 +73,27 @@ public class AppEmailSender(IOptions<AppOptions> options, ILogger<AppEmailSender
         }
     }
     
-    public async Task SendConfirmationLinkAsync(Player player, string email, string confirmationLink) =>
+    public async Task SendConfirmationLinkAsync(User user, string email, string confirmationLink) =>
         await RenderAndSend(
             email,
             "Confirm your email",
             "ConfirmationLink",
-            new EmailModel(player, email, confirmationLink)
+            new EmailModel(user, email, confirmationLink)
         );
 
-    public async Task SendPasswordResetCodeAsync(Player player, string email, string resetCode) =>
+    public async Task SendPasswordResetCodeAsync(User user, string email, string resetCode) =>
         await RenderAndSend(
             email,
             "Password reset",
             "PasswordResetCode",
-            new EmailModel(player, email, resetCode)
+            new EmailModel(user, email, resetCode)
         );
 
-    public async Task SendPasswordResetLinkAsync(Player player, string email, string resetLink) =>
+    public async Task SendPasswordResetLinkAsync(User user, string email, string resetLink) =>
         await RenderAndSend(
             email,
             "Password reset",
             "PasswordResetLink",
-            new EmailModel(player, email, resetLink)
+            new EmailModel(user, email, resetLink)
         );
 }

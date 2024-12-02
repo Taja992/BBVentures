@@ -3,7 +3,7 @@
 namespace Service.TransferModels.DTOs;
 
 
-public class PlayerDto
+public class UserDto
 {
     public required string Id { get; set; }
     public bool IsActive { get; set; }
@@ -15,19 +15,19 @@ public class PlayerDto
     public bool EmailConfirmed { get; set; }
     public string? PhoneNumber { get; set; }
 
-    public static PlayerDto FromEntity(Player player)
+    public static UserDto FromEntity(User user)
     {
-        return new PlayerDto()
+        return new UserDto()
         {
-            Id = player.Id,
-            IsActive = player.IsActive,
-            Balance = player.Balance,
-            CreatedAt = player.CreatedAt,
-            UpdatedAt = player.UpdatedAt,
-            UserName = player.UserName,
-            Email = player.Email,
-            EmailConfirmed = player.EmailConfirmed,
-            PhoneNumber = player.PhoneNumber
+            Id = user.Id,
+            IsActive = user.IsActive,
+            Balance = user.Balance,
+            CreatedAt = user.CreatedAt,
+            UpdatedAt = user.UpdatedAt,
+            UserName = user.UserName,
+            Email = user.Email,
+            EmailConfirmed = user.EmailConfirmed,
+            PhoneNumber = user.PhoneNumber
         };
     }
 }

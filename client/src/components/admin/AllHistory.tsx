@@ -20,7 +20,7 @@ function AllHistory(){
         http.transactionUpdateTransactionUpdate(trans);
 
         //updating that players balance now that the transaction has gone through
-        let id : string  = trans.playerId!
+        let id : string  = trans.userId!
         
         const response = await http.userGetByIdList({id});
         let player = response.data
@@ -48,7 +48,7 @@ function AllHistory(){
                     <br/>
                     <>Id: {t.id}</>
                     <br/>
-                    <>playerId: {t.playerId}</>
+                    <>playerId: {t.userId}</>
                     <br/>
                     <>amount: {t.amount}</>
                     <br/>

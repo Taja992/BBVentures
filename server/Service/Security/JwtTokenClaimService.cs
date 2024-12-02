@@ -14,9 +14,9 @@ public class JwtTokenClaimService : ITokenClaimsService
     public const string SignatureAlgorithm = SecurityAlgorithms.HmacSha512;
 
     private readonly AppOptions _options;
-    private readonly UserManager<Player> _userManager;
+    private readonly UserManager<User> _userManager;
 
-    public JwtTokenClaimService(IOptions<AppOptions> options, UserManager<Player> userManager)
+    public JwtTokenClaimService(IOptions<AppOptions> options, UserManager<User> userManager)
     {
         _options = options.Value;
         _userManager = userManager;

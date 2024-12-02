@@ -14,9 +14,9 @@ public class UserController(IUserService userService) : ControllerBase
     [HttpGet]
     [AllowAnonymous]
     [Route("getall")]
-    public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAllPlayers()
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
     {
-        var players = await userService.GetAllPlayers();
+        var players = await userService.GetAllUsers();
         return Ok(players);
     }
 
@@ -24,9 +24,9 @@ public class UserController(IUserService userService) : ControllerBase
     [HttpGet]
     [AllowAnonymous]
     [Route("getById")]
-    public async Task<ActionResult<PlayerDto>> GetPlayerById(string id)
+    public async Task<ActionResult<UserDto>> GetUserById(string id)
     {
-        return Ok(await userService.GetPlayerById(id));
+        return Ok(await userService.GetUserById(id));
     }
     
 
@@ -34,14 +34,14 @@ public class UserController(IUserService userService) : ControllerBase
     //[Authorize(Roles = "Admin")]
     [AllowAnonymous]
     [Route("update")]
-    public async Task<ActionResult> UpdatePlayer([FromBody] PlayerDto playerDto)
+    public async Task<ActionResult> UpdateUser([FromBody] UserDto userDto)
     {
-        if (string.IsNullOrEmpty(playerDto.Id))
+        if (string.IsNullOrEmpty(userDto.Id))
         {
             return BadRequest("Invalid player data.");
         }
 
-        var result = await userService.UpdatePlayer(playerDto, isAdmin: true);
+        var result = await userService.UpdateUser(userDto, isAdmin: true);
         if (result)
         {
             return NoContent();
@@ -55,15 +55,17 @@ public class UserController(IUserService userService) : ControllerBase
     [HttpPut]
     [Authorize]
     [Route("update-self")]
-    public async Task<ActionResult> UpdateSelf([FromBody] PlayerDto playerDto)
+    public async Task<ActionResult> UpdateSelf([FromBody] UserDto userDto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId == null || userId != playerDto.Id)
+        if (userId == null)
         {
             return BadRequest("Invalid User Data");
         }
+        
+        userDto.Id = userId;
 
-        var result = await userService.UpdatePlayer(playerDto, isAdmin: false);
+        var result = await userService.UpdateUser(userDto, isAdmin: false);
         if (result)
         {
             return NoContent();

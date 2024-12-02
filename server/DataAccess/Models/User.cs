@@ -7,10 +7,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Models;
 
-[Keyless]
-[Table("User")]
 public partial class User : IdentityUser
 {
-    [Column("balance")]
+    
+    public bool IsActive { get; set; }
+
     public decimal Balance { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
+    [InverseProperty("User")]
+    public virtual ICollection<Board> Boards { get; set; } = new List<Board>();
+    
+    [InverseProperty("User")]
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

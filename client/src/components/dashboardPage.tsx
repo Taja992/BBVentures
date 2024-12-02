@@ -38,17 +38,28 @@ const DashboardPage = () => {
     return (<>
             <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
             <h2>Balance: {Balance}</h2>
-            {userInfo?.isAdmin && <RegisterUser />}
-            {userInfo?.isAdmin && <GetAllUsers />}
-            <UpdateSelf />
-            <GamesHistory />
-            <h3>{userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}</h3>
-            <></>
-            
-            <h4>Game</h4>
-            <BoardGameComponent />
-            {userInfo?.isAdmin && <InputWinningNumbersComponent />}
-
+            <div className="border border-black p-4 mb-4">
+                {userInfo?.isAdmin && <RegisterUser/>}
+            </div>
+            <div className="border border-black p-4 mb-4">
+                {userInfo?.isAdmin && <GetAllUsers/>}
+            </div>
+            <div className="border border-black p-4 mb-4">
+                <UpdateSelf/>
+            </div>
+            <div className="border border-black p-4 mb-4">
+                <GamesHistory/>
+            </div>
+            <div className="border border-black p-4 mb-4">
+                <h3>{userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}</h3>
+            </div>
+            <div className="border border-black p-4 mb-4">
+                <h4>Game</h4>
+                <BoardGameComponent/>
+            </div>
+            <div className="border border-black p-4 mb-4">
+                {userInfo?.isAdmin && <InputWinningNumbersComponent/>}
+            </div>
         </>
     );
 };

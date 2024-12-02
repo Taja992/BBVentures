@@ -9,14 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export interface BBVenturesApiAccessTokenResponse {
-  tokenType?: string | null;
-  accessToken?: string | null;
-  /** @format int64 */
-  expiresIn?: number;
-  refreshToken?: string | null;
-}
-
 export interface BBVenturesApiAuthUserInfo {
   username?: string | null;
   isAdmin?: boolean;
@@ -26,7 +18,7 @@ export interface BBVenturesApiAuthUserInfo {
 export interface BBVenturesApiBoard {
   /** @format uuid */
   id?: string;
-  playerId?: string | null;
+  userId?: string | null;
   /** @format uuid */
   gameId?: string;
   numbers?: number[] | null;
@@ -36,13 +28,13 @@ export interface BBVenturesApiBoard {
   /** @format date-time */
   updatedAt?: string | null;
   game?: BBVenturesApiGame;
-  player?: BBVenturesApiPlayer;
+  user?: BBVenturesApiUser;
 }
 
 export interface BBVenturesApiBoardDto {
   /** @format uuid */
   id?: string;
-  playerId?: string | null;
+  userId?: string | null;
   /** @format uuid */
   gameId?: string;
   numbers?: number[] | null;
@@ -54,7 +46,7 @@ export interface BBVenturesApiBoardDto {
 }
 
 export interface BBVenturesApiCreateBoardDto {
-  playerId?: string | null;
+  userId?: string | null;
   /** @format uuid */
   gameId?: string;
   numbers?: number[] | null;
@@ -86,17 +78,6 @@ export interface BBVenturesApiGameDto {
   weekNumber?: number;
 }
 
-export interface BBVenturesApiHttpValidationProblemDetails {
-  type?: string | null;
-  title?: string | null;
-  /** @format int32 */
-  status?: number | null;
-  detail?: string | null;
-  instance?: string | null;
-  errors?: Record<string, string[]>;
-  [key: string]: any;
-}
-
 export interface BBVenturesApiLoginRequest {
   email?: string | null;
   password?: string | null;
@@ -106,7 +87,59 @@ export interface BBVenturesApiLoginResponse {
   jwt?: string | null;
 }
 
-export interface BBVenturesApiPlayer {
+export interface BBVenturesApiRegisterPasswordRequest {
+  email?: string | null;
+  emailConfirmationToken?: string | null;
+  passwordResetToken?: string | null;
+  newPassword?: string | null;
+}
+
+export interface BBVenturesApiRegisterRequest {
+  email?: string | null;
+  name?: string | null;
+  phoneNumber?: string | null;
+}
+
+export interface BBVenturesApiRegisterResponse {
+  email?: string | null;
+  name?: string | null;
+  phoneNumber?: string | null;
+}
+
+export interface BBVenturesApiTransaction {
+  /** @format uuid */
+  id?: string;
+  userId?: string | null;
+  /** @format double */
+  amount?: number;
+  /** @format date-time */
+  createdAt?: string | null;
+  mobilePayTransactionNumber?: string | null;
+  isPending?: boolean;
+  user?: BBVenturesApiUser;
+}
+
+export interface BBVenturesApiTransactionDto {
+  userId?: string | null;
+  /** @format double */
+  amount?: number;
+  mobilePayTransactionNumber?: string | null;
+  isPending?: boolean;
+}
+
+export interface BBVenturesApiTransactionResponseDto {
+  /** @format uuid */
+  id?: string;
+  userId?: string | null;
+  /** @format double */
+  amount?: number;
+  /** @format date-time */
+  createdAt?: string | null;
+  mobilePayTransactionNumber?: string | null;
+  isPending?: boolean;
+}
+
+export interface BBVenturesApiUser {
   id?: string | null;
   userName?: string | null;
   normalizedUserName?: string | null;
@@ -135,7 +168,7 @@ export interface BBVenturesApiPlayer {
   transactions?: BBVenturesApiTransaction[] | null;
 }
 
-export interface BBVenturesApiPlayerDto {
+export interface BBVenturesApiUserDto {
   id?: string | null;
   isActive?: boolean;
   /** @format double */
@@ -148,116 +181,6 @@ export interface BBVenturesApiPlayerDto {
   email?: string | null;
   emailConfirmed?: boolean;
   phoneNumber?: string | null;
-}
-
-export interface BBVenturesApiRegisterRequest {
-  email?: string | null;
-  name?: string | null;
-  phoneNumber?: string | null;
-}
-
-export interface BBVenturesApiRegisterResponse {
-  email?: string | null;
-  name?: string | null;
-  phoneNumber?: string | null;
-}
-
-export interface BBVenturesApiSetPasswordRequest {
-  email?: string | null;
-  emailConfirmationToken?: string | null;
-  passwordResetToken?: string | null;
-  newPassword?: string | null;
-}
-
-export interface BBVenturesApiTransaction {
-  /** @format uuid */
-  id?: string;
-  playerId?: string | null;
-  /** @format double */
-  amount?: number;
-  /** @format date-time */
-  createdAt?: string | null;
-  mobilePayTransactionNumber?: string | null;
-  isPending?: boolean;
-  player?: BBVenturesApiPlayer;
-}
-
-export interface BBVenturesApiTransactionDto {
-  playerId?: string | null;
-  /** @format double */
-  amount?: number;
-  mobilePayTransactionNumber?: string | null;
-  isPending?: boolean;
-}
-
-export interface BBVenturesApiTransactionResponseDto {
-  /** @format uuid */
-  id?: string;
-  playerId?: string | null;
-  /** @format double */
-  amount?: number;
-  /** @format date-time */
-  createdAt?: string | null;
-  mobilePayTransactionNumber?: string | null;
-  isPending?: boolean;
-}
-
-export interface MicrosoftIdentityForgotPasswordRequest {
-  email?: string | null;
-}
-
-export interface MicrosoftIdentityInfoRequest {
-  newEmail?: string | null;
-  newPassword?: string | null;
-  oldPassword?: string | null;
-}
-
-export interface MicrosoftIdentityInfoResponse {
-  email?: string | null;
-  isEmailConfirmed?: boolean;
-}
-
-export interface MicrosoftIdentityLoginRequest {
-  email?: string | null;
-  password?: string | null;
-  twoFactorCode?: string | null;
-  twoFactorRecoveryCode?: string | null;
-}
-
-export interface MicrosoftIdentityRefreshRequest {
-  refreshToken?: string | null;
-}
-
-export interface MicrosoftIdentityRegisterRequest {
-  email?: string | null;
-  password?: string | null;
-}
-
-export interface MicrosoftIdentityResendConfirmationEmailRequest {
-  email?: string | null;
-}
-
-export interface MicrosoftIdentityResetPasswordRequest {
-  email?: string | null;
-  resetCode?: string | null;
-  newPassword?: string | null;
-}
-
-export interface MicrosoftIdentityTwoFactorRequest {
-  enable?: boolean | null;
-  twoFactorCode?: string | null;
-  resetSharedKey?: boolean;
-  resetRecoveryCodes?: boolean;
-  forgetMachine?: boolean;
-}
-
-export interface MicrosoftIdentityTwoFactorResponse {
-  sharedKey?: string | null;
-  /** @format int32 */
-  recoveryCodesLeft?: number;
-  recoveryCodes?: string[] | null;
-  isTwoFactorEnabled?: boolean;
-  isMachineRemembered?: boolean;
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -399,194 +322,6 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version 1.0
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  register = {
-    /**
-     * No description
-     *
-     * @tags API
-     * @name RegisterCreate
-     * @request POST:/register
-     */
-    registerCreate: (data: MicrosoftIdentityRegisterRequest, params: RequestParams = {}) =>
-      this.request<void, BBVenturesApiHttpValidationProblemDetails>({
-        path: `/register`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-  };
-  login = {
-    /**
-     * No description
-     *
-     * @tags API
-     * @name LoginCreate
-     * @request POST:/login
-     */
-    loginCreate: (
-      data: MicrosoftIdentityLoginRequest,
-      query?: {
-        useCookies?: boolean;
-        useSessionCookies?: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<BBVenturesApiAccessTokenResponse, any>({
-        path: `/login`,
-        method: "POST",
-        query: query,
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
-  refresh = {
-    /**
-     * No description
-     *
-     * @tags API
-     * @name RefreshCreate
-     * @request POST:/refresh
-     */
-    refreshCreate: (data: MicrosoftIdentityRefreshRequest, params: RequestParams = {}) =>
-      this.request<BBVenturesApiAccessTokenResponse, any>({
-        path: `/refresh`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
-  confirmEmail = {
-    /**
-     * No description
-     *
-     * @tags API
-     * @name MapIdentityApiConfirmEmail
-     * @request GET:/confirmEmail
-     */
-    mapIdentityApiConfirmEmail: (
-      query?: {
-        userId?: string;
-        code?: string;
-        changedEmail?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/confirmEmail`,
-        method: "GET",
-        query: query,
-        ...params,
-      }),
-  };
-  resendConfirmationEmail = {
-    /**
-     * No description
-     *
-     * @tags API
-     * @name ResendConfirmationEmailCreate
-     * @request POST:/resendConfirmationEmail
-     */
-    resendConfirmationEmailCreate: (
-      data: MicrosoftIdentityResendConfirmationEmailRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/resendConfirmationEmail`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-  };
-  forgotPassword = {
-    /**
-     * No description
-     *
-     * @tags API
-     * @name ForgotPasswordCreate
-     * @request POST:/forgotPassword
-     */
-    forgotPasswordCreate: (data: MicrosoftIdentityForgotPasswordRequest, params: RequestParams = {}) =>
-      this.request<void, BBVenturesApiHttpValidationProblemDetails>({
-        path: `/forgotPassword`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-  };
-  resetPassword = {
-    /**
-     * No description
-     *
-     * @tags API
-     * @name ResetPasswordCreate
-     * @request POST:/resetPassword
-     */
-    resetPasswordCreate: (data: MicrosoftIdentityResetPasswordRequest, params: RequestParams = {}) =>
-      this.request<void, BBVenturesApiHttpValidationProblemDetails>({
-        path: `/resetPassword`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-  };
-  manage = {
-    /**
-     * No description
-     *
-     * @tags API
-     * @name PostManage
-     * @request POST:/manage/2fa
-     */
-    postManage: (data: MicrosoftIdentityTwoFactorRequest, params: RequestParams = {}) =>
-      this.request<MicrosoftIdentityTwoFactorResponse, BBVenturesApiHttpValidationProblemDetails | void>({
-        path: `/manage/2fa`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags API
-     * @name InfoList
-     * @request GET:/manage/info
-     */
-    infoList: (params: RequestParams = {}) =>
-      this.request<MicrosoftIdentityInfoResponse, BBVenturesApiHttpValidationProblemDetails | void>({
-        path: `/manage/info`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags API
-     * @name InfoCreate
-     * @request POST:/manage/info
-     */
-    infoCreate: (data: MicrosoftIdentityInfoRequest, params: RequestParams = {}) =>
-      this.request<MicrosoftIdentityInfoResponse, BBVenturesApiHttpValidationProblemDetails | void>({
-        path: `/manage/info`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
   api = {
     /**
      * No description
@@ -626,12 +361,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Auth
-     * @name AuthSetPasswordCreate
-     * @request POST:/api/Auth/set-password
+     * @name AuthRegisterPasswordCreate
+     * @request POST:/api/Auth/register-password
      */
-    authSetPasswordCreate: (data: BBVenturesApiSetPasswordRequest, params: RequestParams = {}) =>
+    authRegisterPasswordCreate: (data: BBVenturesApiRegisterPasswordRequest, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/Auth/set-password`,
+        path: `/api/Auth/register-password`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -675,7 +410,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Auth/me
      */
     authMeList: (params: RequestParams = {}) =>
-      this.request<BBVenturesApiPlayer, any>({
+      this.request<BBVenturesApiUser, any>({
         path: `/api/Auth/me`,
         method: "GET",
         format: "json",
@@ -851,7 +586,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/User/getall
      */
     userGetallList: (params: RequestParams = {}) =>
-      this.request<BBVenturesApiPlayerDto[], any>({
+      this.request<BBVenturesApiUserDto[], any>({
         path: `/api/User/getall`,
         method: "GET",
         format: "json",
@@ -871,7 +606,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<BBVenturesApiPlayerDto, any>({
+      this.request<BBVenturesApiUserDto, any>({
         path: `/api/User/getById`,
         method: "GET",
         query: query,
@@ -886,7 +621,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserUpdateUpdate
      * @request PUT:/api/User/update
      */
-    userUpdateUpdate: (data: BBVenturesApiPlayerDto, params: RequestParams = {}) =>
+    userUpdateUpdate: (data: BBVenturesApiUserDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/User/update`,
         method: "PUT",
@@ -902,7 +637,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserUpdateSelfUpdate
      * @request PUT:/api/User/update-self
      */
-    userUpdateSelfUpdate: (data: BBVenturesApiPlayerDto, params: RequestParams = {}) =>
+    userUpdateSelfUpdate: (data: BBVenturesApiUserDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/User/update-self`,
         method: "PUT",
