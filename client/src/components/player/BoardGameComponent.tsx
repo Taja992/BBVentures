@@ -10,7 +10,6 @@ const BoardGameComponent = () => {
     const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
     const [fieldCount, setFieldCount] = useState<number>(4);
     const [gameId, setGameId] = useState<string | null>(null);
-    const [userId, setUserId] = useState<string | null>(null);
     const [] = useAtom(userInfoAtom);
 
     useEffect(() => {
@@ -28,23 +27,8 @@ const BoardGameComponent = () => {
                 console.error('Failed to fetch games:', error);
             }
         };
-
-        const fetchPlayerId = async () => {
-            try {
-                const response = await http.authMeList();
-                if (response.data && response.data.id) {
-                    setUserId(response.data.id);
-                    console.log('Player ID:', response.data.id);
-                } else {
-                    console.error('Player ID not found in response');
-                }
-            } catch (error) {
-                console.error('Failed to fetch player ID:', error);
-            }
-        };
-
+        
         fetchActiveGame();
-        fetchPlayerId();
     }, []);
 
     const toggleNumber = (number: number) => {
@@ -70,13 +54,13 @@ const BoardGameComponent = () => {
             return;
         }
 
-        if (!userId) {
-            alert('Player ID not found.');
-            return;
-        }
+        //if (!userId) {
+        //    alert('Player ID not found.');
+        //    return;
+        //}
 
         const requestBody: BBVenturesApiCreateBoardDto  = {
-            userId: userId,
+            userId: "",
             gameId: gameId,
             numbers: selectedNumbers,
             isAutoplay: false,
