@@ -45,6 +45,14 @@ export interface BBVenturesApiBoardDto {
   updatedAt?: string | null;
 }
 
+export interface BBVenturesApiBoardHistoryDto {
+  numbers?: number[] | null;
+  /** @format date-time */
+  createdAt?: string | null;
+  /** @format int32 */
+  weekNumber?: number;
+}
+
 export interface BBVenturesApiCreateBoardDto {
   userId?: string | null;
   /** @format uuid */
@@ -497,12 +505,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Board
-     * @name BoardUserBoardsList
-     * @request GET:/api/Board/user-boards
+     * @name BoardUserBoardHistoryList
+     * @request GET:/api/Board/user-board-history
      */
-    boardUserBoardsList: (params: RequestParams = {}) =>
-      this.request<BBVenturesApiBoardDto[], any>({
-        path: `/api/Board/user-boards`,
+    boardUserBoardHistoryList: (params: RequestParams = {}) =>
+      this.request<BBVenturesApiBoardHistoryDto[], any>({
+        path: `/api/Board/user-board-history`,
         method: "GET",
         format: "json",
         ...params,
