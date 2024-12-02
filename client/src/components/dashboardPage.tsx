@@ -11,6 +11,7 @@ import UpdateSelf from "./player/updateSelfComponent";
 import BoardGameComponent from "./player/BoardGameComponent";
 import InputWinningNumbersComponent from "./admin/inputWinningNumbersComponent";
 import TopUp from "./player/TopUpComponent";
+import BoardHistoryComponent from "./player/BoardHistory-UserID-Component";
 
 
 
@@ -37,35 +38,38 @@ const DashboardPage = () => {
     
 
     return (<>
-            <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
-            <h2>Balance: {Balance}</h2>
-            <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <RegisterUser/>}
-            </div>
-            <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <GetAllUsers/>}
-            </div>
-            <div className="border border-black p-4 mb-4">
-                <UpdateSelf/>
-            </div>
-            <div className="border border-black p-4 mb-4">
-                <GamesHistory/>
-            </div>
-            <div className="border border-black p-4 mb-4">
-                <h3>{userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}</h3>
-            </div>
-            <div className="border border-black p-4 mb-4">
-                <h4>Game</h4>
-                <BoardGameComponent/>
-            </div>
-            <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <InputWinningNumbersComponent/>}
-            </div>
-            <div className="border border-black p-4 mb-4">
-                {userInfo?.isPlayer && <TopUp/>}
-            </div>
+        <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
+        <h2>Balance: {Balance}</h2>
+        <div className="border border-black p-4 mb-4">
+            {userInfo?.isAdmin && <RegisterUser/>}
+        </div>
+        <div className="border border-black p-4 mb-4">
+            {userInfo?.isAdmin && <GetAllUsers/>}
+        </div>
+        <div className="border border-black p-4 mb-4">
+            <UpdateSelf/>
+        </div>
+        <div className="border border-black p-4 mb-4">
+            <GamesHistory/>
+        </div>
+        <div className="border border-black p-4 mb-4">
+            <h3>{userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}</h3>
+        </div>
+        <div className="border border-black p-4 mb-4">
+            <h4>Game</h4>
+            <BoardGameComponent/>
+        </div>
+        <div className="border border-black p-4 mb-4">
+            {userInfo?.isAdmin && <InputWinningNumbersComponent/>}
+        </div>
+        <div className="border border-black p-4 mb-4">
+            {userInfo?.isPlayer && <TopUp/>}
+        </div>
+        <div className="border border-black p-4 mb-4">
+            <BoardHistoryComponent/>
+        </div>
 
         </>
-    );
-};
-export default DashboardPage;
+        );
+        };
+        export default DashboardPage;

@@ -63,4 +63,18 @@ public class BoardController : ControllerBase
         }
     }
     
+    [HttpGet]
+    [Route("user-boards")]
+    [Authorize]
+    public async Task<ActionResult<List<BoardDto>>> GetBoardsByUserId()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+        {
+            return Unauthorized("User ID is not available.");
+        }
+
+        var boards = await _boardService.GetBoardsByUserId(userId);
+        return Ok(boards);
+    }
 }

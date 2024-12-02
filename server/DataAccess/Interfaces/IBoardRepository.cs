@@ -14,5 +14,7 @@
      public Task<Board> UpdateBoard(Board b);
 
      public void DeleteBoard(Board b);
+     
+     Task<List<Board>> GetBoardsByUserId(string userId);
  }
 
