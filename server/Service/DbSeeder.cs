@@ -56,6 +56,16 @@ public class DbSeeder
                 (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9 }, true)
             }
         );
+        
+        await CreateTransactions(
+            new List<(Guid Id, string UserId, decimal Amount, string TransactionNumber, bool IsPending, DateTime transactions)>
+            {
+                (Guid.NewGuid(), playerId, 100, "Transaction001", true, DateTime.UtcNow),
+                (Guid.NewGuid(), adminId, 200, "Transaction002", true, DateTime.UtcNow),
+                (Guid.NewGuid(), playerId, 300, "Transaction003", false, DateTime.UtcNow),
+                (Guid.NewGuid(), adminId, 400, "Transaction004", false, DateTime.UtcNow)
+            }
+        );
     }
     
     
@@ -127,6 +137,26 @@ public class DbSeeder
             };
 
             context.Boards.Add(board);
+        }
+
+        await context.SaveChangesAsync();
+    }
+
+    private async Task CreateTransactions(List<(Guid Id, string UserId, decimal Amount, string TransactionNumber, bool IsPending, DateTime CreatedAt)> transactions)
+    {
+        foreach (var (id, userId, amount, transactionNumber, isPending, createdAt) in transactions)
+        {
+            var transaction = new Transaction
+            {
+                Id = id,
+                UserId = userId,
+                Amount = amount,
+                CreatedAt = createdAt,
+                MobilePayTransactionNumber = transactionNumber,
+                isPending = isPending
+            };
+
+            context.Transactions.Add(transaction);
         }
 
         await context.SaveChangesAsync();
