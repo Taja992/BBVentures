@@ -26,6 +26,7 @@ const UpdateSelf: React.FC = () => {
         event.preventDefault();
         try {
             const updateUser: Partial<BBVenturesApiUserDto> = {
+                id: "",
                 userName: username,
                 email: email,
                 phoneNumber: phoneNumber,
