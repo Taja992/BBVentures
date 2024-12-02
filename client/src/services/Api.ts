@@ -87,6 +87,10 @@ export interface BBVenturesApiLoginResponse {
   jwt?: string | null;
 }
 
+export interface BBVenturesApiPasswordResetRequest {
+  email?: string | null;
+}
+
 export interface BBVenturesApiRegisterPasswordRequest {
   email?: string | null;
   emailConfirmationToken?: string | null;
@@ -181,6 +185,12 @@ export interface BBVenturesApiUserDto {
   email?: string | null;
   emailConfirmed?: boolean;
   phoneNumber?: string | null;
+}
+
+export interface MicrosoftIdentityResetPasswordRequest {
+  email?: string | null;
+  resetCode?: string | null;
+  newPassword?: string | null;
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -367,6 +377,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     authRegisterPasswordCreate: (data: BBVenturesApiRegisterPasswordRequest, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/Auth/register-password`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthRequestResetPasswordCreate
+     * @request POST:/api/Auth/request-reset-password
+     */
+    authRequestResetPasswordCreate: (data: BBVenturesApiPasswordResetRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/Auth/request-reset-password`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthResetPasswordCreate
+     * @request POST:/api/Auth/reset-password
+     */
+    authResetPasswordCreate: (data: MicrosoftIdentityResetPasswordRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/Auth/reset-password`,
         method: "POST",
         body: data,
         type: ContentType.Json,
