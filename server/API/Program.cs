@@ -100,7 +100,7 @@ builder.Services.AddSingleton<IEmailSender<User>, AppEmailSender>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBoardService, BoardService>();
-builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<IGameService, GameService>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
