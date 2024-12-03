@@ -54,7 +54,6 @@ create table "Games"
         constraint "PK_Games"
             primary key,
     "WinnerNumbers" int[],
-    "TotalRevenue"  numeric not null,
     "IsActive"      boolean not null,
     "WeekNumber"    integer not null
 );

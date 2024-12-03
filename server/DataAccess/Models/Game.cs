@@ -12,8 +12,7 @@ public partial class Game
     public Guid Id { get; set; }
 
     public List<int>? WinnerNumbers { get; set; }
-
-    public decimal TotalRevenue { get; set; }
+    
     
     public bool IsActive { get; set; }
     

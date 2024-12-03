@@ -13,9 +13,9 @@ public class GameRepository : IGameRepository
         _context = context;
     }
 
-    public List<Game> GetAllGames()
+    public async Task<List<Game>> GetAllGamesAsync()
     {
-        return _context.Games.Include(g => g.Boards).ToList();
+        return await _context.Games.ToListAsync();
     }
 
     public async Task<Game> AddGame(Game game)
@@ -49,5 +49,33 @@ public class GameRepository : IGameRepository
     private bool GameExists(Guid id)
     {
         return _context.Games.Any(e => e.Id == id);
+    }
+    
+    public async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
+    {
+        // Get all boards for the specified game
+        var boards = await _context.Boards.Where(b => b.GameId == gameId).ToListAsync();
+
+        // Calculate the total revenue
+        decimal totalRevenue = 0;
+        foreach (var board in boards)
+        {
+            if (board.Numbers == null)
+            {
+                throw new InvalidOperationException("Board numbers cannot be null.");
+            }
+            
+            int cost = board.Numbers.Count switch
+            {
+                5 => 20,
+                6 => 40,
+                7 => 80,
+                8 => 160,
+                _ => throw new ArgumentException("Invalid number of fields")
+            };
+            totalRevenue += cost;
+        }
+
+        return totalRevenue;
     }
 }

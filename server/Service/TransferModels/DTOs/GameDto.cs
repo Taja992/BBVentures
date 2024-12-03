@@ -15,7 +15,6 @@ public class GameDto
         return new Game
         {
             Id = Id,
-            TotalRevenue = TotalRevenue,
             WinnerNumbers = WinnerNumbers,
             IsActive = IsActive,
             WeekNumber = WeekNumber
@@ -27,7 +26,6 @@ public class GameDto
         return new GameDto
         {
             Id = game.Id,
-            TotalRevenue = game.TotalRevenue,
             WinnerNumbers = game.WinnerNumbers,
             IsActive = game.IsActive,
             WeekNumber = game.WeekNumber

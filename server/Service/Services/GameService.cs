@@ -3,23 +3,43 @@ using DataAccess.Models;
 using Service.TransferModels.DTOs;
 using System.Linq;
 
-namespace Service.Services
+namespace Service.Services;
+
+    
+public interface IGameService
 {
-    public class GameService
+    Task<List<GameDto>> GetAllGames();
+    Task<GameDto> CreateGame(GameDto dto);
+    Task<GameDto> UpdateGame(GameDto dto);
+    Task ProcessWinningNumbers(List<int> winningNumbers);
+    Task<decimal> CalculateTotalRevenueForGame(Guid gameId);
+}
+
+    public class GameService : IGameService
     {
         private readonly IGameRepository _repository;
         private readonly IBoardRepository _boardRepository;
 
-        public GameService(IGameRepository repository, IBoardRepository boardRepository)
+        public GameService(IGameRepository repository, IBoardRepository boardRepository) 
         {
             _repository = repository;
             _boardRepository = boardRepository;
         }
 
-        public List<GameDto> GetAllGames()
+        public async Task<List<GameDto>> GetAllGames()
         {
-            var games = _repository.GetAllGames();
-            return games.Select(GameDto.FromEntity).ToList();
+            var games = await _repository.GetAllGamesAsync(); // Ensure this method is async
+            var gameDtos = new List<GameDto>();
+
+            foreach (var game in games)
+            {
+                var totalRevenue = await CalculateTotalRevenueForGame(game.Id);
+                var gameDto = GameDto.FromEntity(game);
+                gameDto.TotalRevenue = totalRevenue;
+                gameDtos.Add(gameDto);
+            }
+
+            return gameDtos;
         }
 
         public async Task<GameDto> CreateGame(GameDto dto)
@@ -47,8 +67,8 @@ namespace Service.Services
             // Sort the winning numbers in ascending order
             winningNumbers.Sort();
 
-            // Get the current active game
-            var currentGame = _repository.GetAllGames().FirstOrDefault(g => g.IsActive);
+            var games = await _repository.GetAllGamesAsync();
+            var currentGame = games.FirstOrDefault(g => g.IsActive);
             if (currentGame == null)
             {
                 throw new InvalidOperationException("No active game found.");
@@ -78,7 +98,6 @@ namespace Service.Services
                 Id = Guid.NewGuid(),
                 IsActive = true,
                 WeekNumber = currentGame.WeekNumber + 1,
-                TotalRevenue = 0,
                 WinnerNumbers = null
             };
             await _repository.AddGame(newGame);
@@ -98,5 +117,9 @@ namespace Service.Services
                 await _boardRepository.UpdateBoard(board);
             }
         }
+        
+        public async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
+        {
+            return await _repository.CalculateTotalRevenueForGame(gameId);
+        }
     }
-}

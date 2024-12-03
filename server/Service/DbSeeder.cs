@@ -29,19 +29,17 @@ public class DbSeeder
     public async Task SeedAsync()
     {
         await CreateRoles(Role.Admin, Role.Player);
-        var adminId = await CreateUser(username: "Admin", email: "admin@example.com", password: "S3cret!!", role: Role.Admin);
-        var playerId = await CreateUser(username: "Player",email: "player@example.com", password: "S3cret!!", role: Role.Player);
+        var adminId = await CreateUser(username: "Admin", email: "admin@example.com",balance: 10000, isActive: true, password: "S3cret!!", role: Role.Admin);
+        var playerId = await CreateUser(username: "Player",email: "player@example.com", balance: 15000, isActive: false, password: "S3cret!!", role: Role.Player);
         await CreateGame(
             id: new Guid("11111111-1111-1111-1111-111111111111"),
             winnerNumbers: new List<int> { 1, 2, 3 },
-            totalRevenue: 1000.00m,
             isActive: false,
             weekNumber: 1
         );
         await CreateGame(
             id: new Guid("22222222-2222-2222-2222-222222222222"),
             winnerNumbers: null,
-            totalRevenue: 2000.00m,
             isActive: true,
             weekNumber: 2
         );
@@ -49,11 +47,14 @@ public class DbSeeder
         await CreateBoards(
             new List<(Guid Id, string UserId, Guid GameId, List<int> Numbers, bool IsAutoplay)>
             {
-                (Guid.NewGuid(), playerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 1, 2, 3 }, false),
-                (Guid.NewGuid(), playerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10 }, true),
-                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 6, 7, 8 }, true),
-                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10 }, false),
-                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9 }, true)
+                (Guid.NewGuid(), playerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 1, 2, 3, 4, 5 }, false),
+                (Guid.NewGuid(), adminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
+                (Guid.NewGuid(), playerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
+                (Guid.NewGuid(), adminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
+                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 6, 7, 8, 11, 2, 6 }, true),
+                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, false),
+                (Guid.NewGuid(), adminId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, false),
+                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9, 1, 2 }, true)
             }
         );
         
@@ -81,7 +82,7 @@ public class DbSeeder
         }
     }
     
-    private async Task<string> CreateUser(string username, string email, string password, string role)
+    private async Task<string> CreateUser(string username, string email,int balance, bool isActive, string password, string role)
     {
         var player = await userManager.FindByNameAsync(username);
         if (player != null) return player.Id;
@@ -90,6 +91,8 @@ public class DbSeeder
         {
             UserName = username,
             Email = email,
+            Balance = balance,
+            IsActive = isActive,
             EmailConfirmed = true
         };
         var result = await userManager.CreateAsync(player, password);
@@ -104,7 +107,7 @@ public class DbSeeder
         return player.Id;
     }
 
-    private async Task CreateGame(Guid id, List<int>? winnerNumbers, decimal totalRevenue, bool isActive, int weekNumber)
+    private async Task CreateGame(Guid id, List<int>? winnerNumbers, bool isActive, int weekNumber)
     {
         if (await context.Games.AnyAsync(g => g.Id == id)) return;
 
@@ -112,7 +115,6 @@ public class DbSeeder
         {
             Id = id,
             WinnerNumbers = winnerNumbers,
-            TotalRevenue = totalRevenue,
             IsActive = isActive,
             WeekNumber = weekNumber
         };

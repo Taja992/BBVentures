@@ -10,18 +10,19 @@ namespace API.Controllers
     [ApiController]
     public class GameController : ControllerBase
     {
-        private readonly GameService _service;
+        private readonly IGameService _service;
 
-        public GameController(GameService service)
+        public GameController(IGameService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        [AllowAnonymous]
-        public ActionResult<List<GameDto>> GetAllGames()
+        [Authorize]
+        public async Task<ActionResult<List<GameDto>>> GetAllGames()
         {
-            return Ok(_service.GetAllGames());
+            var game = await _service.GetAllGames();
+            return Ok(game);
         }
 
         [HttpPost]
@@ -35,7 +36,7 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("updateGame")]
-        [AllowAnonymous]
+        [Authorize  (Roles = "Admin")]
         public async Task<ActionResult<GameDto>> UpdateGame([FromBody] GameDto dto)
         {
             var game = await _service.UpdateGame(dto);
@@ -45,11 +46,13 @@ namespace API.Controllers
         [HttpPost]
         [Route("processWinningNumbers")]
         [Authorize(Roles = "Admin")]
-        // [AllowAnonymous]
         public async Task<IActionResult> ProcessWinningNumbers([FromBody] List<int> winningNumbers)
         {
             await _service.ProcessWinningNumbers(winningNumbers);
             return Ok();
         }
+        
+  
+        
     }
 }

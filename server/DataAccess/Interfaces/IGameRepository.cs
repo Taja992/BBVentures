@@ -4,7 +4,8 @@ namespace DataAccess.Interfaces;
 
 public interface IGameRepository
 {
-    List<Game> GetAllGames();
+    Task<List<Game>> GetAllGamesAsync();
     Task<Game> AddGame(Game game);
     Task<Game> UpdateGame(Game game);
+    Task<decimal> CalculateTotalRevenueForGame(Guid gameId);
 }
