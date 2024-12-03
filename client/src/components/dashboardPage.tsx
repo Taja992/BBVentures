@@ -11,6 +11,7 @@ import UpdateSelf from "./player/updateSelfComponent";
 import BoardGameComponent from "./player/BoardGameComponent";
 import InputWinningNumbersComponent from "./admin/inputWinningNumbersComponent";
 import TopUp from "./player/TopUpComponent";
+import BoardsHistory from "./admin/boardsHistory";
 
 const DashboardPage = () => {
     const [userInfo] = useAtom(userInfoAtom);
@@ -59,6 +60,9 @@ const DashboardPage = () => {
             </div>
             <div className="border border-black p-4 mb-4">
                 {userInfo?.isPlayer && <TopUp />}
+            </div>
+            <div className={"border border-black p-4 mb-4"}>
+                <BoardsHistory />
             </div>
         </>
     );
