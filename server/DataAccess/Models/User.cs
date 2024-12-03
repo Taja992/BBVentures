@@ -17,6 +17,9 @@ public partial class User : IdentityUser
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
+    
+    [MaxLength(50)]
+    public string? Role { get; set; }
 
     [InverseProperty("User")]
     public virtual ICollection<Board> Boards { get; set; } = new List<Board>();
