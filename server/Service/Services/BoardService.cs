@@ -26,11 +26,28 @@ namespace Service.Services
         {
             await _createValidator.ValidateAndThrowAsync(createBoardDto);
 
-            if (!await _boardRepository.IsUserActive(createBoardDto.UserId))
+            int cost = createBoardDto.FieldCount switch
             {
-                Console.WriteLine("User is not active.");
-                throw new UnauthorizedAccessException("User is not active.");
+                5 => 20,
+                6 => 40,
+                7 => 80,
+                8 => 160,
+                _ => throw new ArgumentException("Invalid number of fields")
+            };
+
+            var user = await _boardRepository.FindUserById(createBoardDto.UserId);
+            if (user == null)
+            {
+                throw new Exception("User not found");
             }
+
+            if (user.Balance < cost)
+            {
+                throw new Exception("Insufficient balance");
+            }
+
+            user.Balance -= cost;
+            await _boardRepository.UpdateUser(user);
 
             var board = new Board
             {

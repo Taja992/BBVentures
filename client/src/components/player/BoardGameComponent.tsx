@@ -4,12 +4,14 @@ import './BoardGameComponent.css';
 import { BBVenturesApiCreateBoardDto } from '../../services/Api';
 import toast from 'react-hot-toast';
 import BoardHistoryComponent from './BoardHistory-UserID-Component';
+import { useAtom } from 'jotai';
+import { userBalance } from '../../atoms/atoms';
 
 const BoardGameComponent = () => {
     const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
     const [fieldCount, setFieldCount] = useState<number>(4);
     const [gameId, setGameId] = useState<string | null>(null);
-    
+    const [, setBalance] = useAtom(userBalance);
     const [refreshHistory, setRefreshHistory] = useState<number>(0);
     const [isActive, setIsActive] = useState<boolean | null>(null);
 
@@ -54,6 +56,16 @@ const BoardGameComponent = () => {
         });
     };
 
+    const calculateCost = (fieldCount: number): number => {
+        switch (fieldCount) {
+            case 5: return 20;
+            case 6: return 40;
+            case 7: return 80;
+            case 8: return 160;
+            default: throw new Error('Invalid number of fields');
+        }
+    };
+
     const handleSubmit = async () => {
         if (selectedNumbers.length !== fieldCount) {
             alert(`Please select exactly ${fieldCount} numbers.`);
@@ -81,6 +93,8 @@ const BoardGameComponent = () => {
             const response = await http.boardCreateCreate(requestBody);
             console.log('Board created:', response.data);
             toast.success("Board bought!");
+            const cost = calculateCost(fieldCount);
+            setBalance(prevBalance => (prevBalance ?? 0) - cost);
             setRefreshHistory(prev => prev + 1);
         } catch (error) {
             console.error('Error creating board:', error);

@@ -18,5 +18,9 @@
      Task<List<Board>> GetBoardsByUserId(string userId);
      
      Task<bool> IsUserActive(string userId);
+
+     Task<User?> FindUserById(string userId);
+     
+     Task UpdateUser(User user);
  }
 
