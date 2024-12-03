@@ -67,8 +67,6 @@ export interface BBVenturesApiGame {
   /** @format uuid */
   id?: string;
   winnerNumbers?: number[] | null;
-  /** @format double */
-  totalRevenue?: number;
   isActive?: boolean;
   /** @format int32 */
   weekNumber?: number;
@@ -116,6 +114,11 @@ export interface BBVenturesApiRegisterResponse {
   email?: string | null;
   name?: string | null;
   phoneNumber?: string | null;
+}
+
+export interface BBVenturesApiRoleAssignmentRequest {
+  userId?: string | null;
+  role?: string | null;
 }
 
 export interface BBVenturesApiTransaction {
@@ -176,6 +179,7 @@ export interface BBVenturesApiUser {
   createdAt?: string | null;
   /** @format date-time */
   updatedAt?: string | null;
+  role?: string | null;
   boards?: BBVenturesApiBoard[] | null;
   transactions?: BBVenturesApiTransaction[] | null;
 }
@@ -195,6 +199,7 @@ export interface BBVenturesApiUserDto {
   normalizedEmail?: string | null;
   emailConfirmed?: boolean;
   phoneNumber?: string | null;
+  role?: string | null;
 }
 
 export interface MicrosoftIdentityResetPasswordRequest {
@@ -477,7 +482,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Board
      */
     boardList: (params: RequestParams = {}) =>
-      this.request<BBVenturesApiBoard[], any>({
+      this.request<BBVenturesApiBoardDto[], any>({
         path: `/api/Board`,
         method: "GET",
         format: "json",
@@ -708,6 +713,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, any>({
         path: `/api/User/update-self`,
         method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserAssignRoleCreate
+     * @request POST:/api/User/assign-role
+     */
+    userAssignRoleCreate: (data: BBVenturesApiRoleAssignmentRequest, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/User/assign-role`,
+        method: "POST",
         body: data,
         type: ContentType.Json,
         ...params,

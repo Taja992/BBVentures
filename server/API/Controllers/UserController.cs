@@ -1,6 +1,9 @@
 ﻿using System.Security.Claims;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Service.Auth;
 using Service.Services;
 using Service.TransferModels.DTOs;
 
@@ -8,7 +11,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController(IUserService userService) : ControllerBase
+public class UserController(IUserService userService, UserManager<User> userManager) : ControllerBase
 
 {
     [HttpGet]
@@ -75,6 +78,33 @@ public class UserController(IUserService userService) : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, "Error updating user");
         }
         
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    [Route("assign-role")]
+    public async Task<IActionResult> AssignRole([FromBody] RoleAssignmentRequest request)
+    {
+        var user = await userManager.FindByIdAsync(request.UserId);
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+
+        var currentRoles = await userManager.GetRolesAsync(user);
+        var removeResult = await userManager.RemoveFromRolesAsync(user, currentRoles);
+        if (!removeResult.Succeeded)
+        {
+            return BadRequest(removeResult.Errors);
+        }
+        
+        var addResult = await userManager.AddToRoleAsync(user, request.Role);
+        if (!addResult.Succeeded)
+        {
+            return BadRequest(addResult.Errors);
+        }
+
+        return Ok("Role Assigned Successfully");
     }
     
 }

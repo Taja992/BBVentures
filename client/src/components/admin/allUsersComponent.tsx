@@ -43,6 +43,24 @@ const GetAllUsers: React.FC = () => {
         }));
     };
 
+    const handleRoleChange = async (userId: string, role: string) => {
+        try {
+            await http.userAssignRoleCreate({ userId, role });
+            toast.success('Role assigned successfully!');
+
+            // Update the formData state with the new role
+            setFormData((prevData) => ({
+                ...prevData,
+                [userId]: {
+                    ...prevData[userId],
+                    role: role,
+                },
+            }));
+        } catch (error) {
+            toast.error('Failed to assign role.');
+        }
+    };
+
     const handleUpdate = async (user: BBVenturesApiUserDto) => {
         try {
             const updatedUser = {
@@ -137,6 +155,23 @@ const GetAllUsers: React.FC = () => {
                     />
                 ) : (
                     item.isActive ? "Yes" : "No"
+                )
+            ),
+        },
+        {
+            label: "Role",
+            renderCell: (item: BBVenturesApiUserDto) => (
+                editingUserId === item.id ? (
+                    <select
+                        value={formData[item.id!]?.role || item.role || ''}
+                        onChange={(event) => handleRoleChange(item.id!, event.target.value)}
+                    >
+                        <option value="">Select Role</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Player">Player</option>
+                    </select>
+                ) : (
+                    item.role || "No role assigned"
                 )
             ),
         },

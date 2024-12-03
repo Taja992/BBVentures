@@ -16,6 +16,7 @@ public class UserDto
     public string? NormalizedEmail { get; set; }
     public bool EmailConfirmed { get; set; }
     public string? PhoneNumber { get; set; }
+    public string? Role { get; set; }
 
     public static UserDto FromEntity(User user)
     {
@@ -29,7 +30,8 @@ public class UserDto
             UserName = user.UserName,
             Email = user.Email,
             EmailConfirmed = user.EmailConfirmed,
-            PhoneNumber = user.PhoneNumber
+            PhoneNumber = user.PhoneNumber,
+            Role = user.Role
         };
     }
 }
