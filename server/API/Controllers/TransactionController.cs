@@ -34,7 +34,7 @@ public class TransactionController(AppDbContext context) : ControllerBase
         
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (userId == null)
+        if (string.IsNullOrEmpty(userId))
         {
             return Unauthorized();
         }
@@ -56,6 +56,14 @@ public class TransactionController(AppDbContext context) : ControllerBase
     [AllowAnonymous]
     public ActionResult<TransactionDto> UpdateTransaction([FromBody] TransactionResponseDto dto)
     {
+        if (string.IsNullOrEmpty(dto.Id.ToString()))
+        {
+            return NotFound("transaction not found");
+        }
+        if (string.IsNullOrEmpty(dto.UserId))
+        {
+            return NotFound("user not found");
+        }
         
         var trans = service.UpdateTransaction(dto);
         return Ok(trans); 

@@ -179,6 +179,7 @@ export interface BBVenturesApiUser {
   createdAt?: string | null;
   /** @format date-time */
   updatedAt?: string | null;
+  /** @maxLength 50 */
   role?: string | null;
   boards?: BBVenturesApiBoard[] | null;
   transactions?: BBVenturesApiTransaction[] | null;
@@ -713,6 +714,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, any>({
         path: `/api/User/update-self`,
         method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserUpdateBalanceUpdate
+     * @request PUT:/api/User/updateBalance
+     */
+    userUpdateBalanceUpdate: (
+      data: BBVenturesApiUserDto,
+      query?: {
+        /** @format double */
+        transactionAmount?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/User/updateBalance`,
+        method: "PUT",
+        query: query,
         body: data,
         type: ContentType.Json,
         ...params,

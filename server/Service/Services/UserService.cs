@@ -12,6 +12,7 @@ public interface IUserService
     Task<bool> UpdateUser(UserDto userDto, bool isAdmin);
     Task<UserDto?> GetUserById(string id);
     Task<bool> AssignRole(string userId, string role);
+    public Task<bool> UpdateBalance(UserDto dto, decimal transactionAmount, bool isAdmin);
 }
 
 public class UserService(IUserRepository userRepository) : IUserService
@@ -99,6 +100,16 @@ public class UserService(IUserRepository userRepository) : IUserService
         user.PhoneNumber = userDto.PhoneNumber;
 
         return await userRepository.UpdateUser(user);
+    }
+
+    public async Task<bool> UpdateBalance(UserDto dto, decimal transactionAmount, bool isAdmin)
+    {
+
+        dto.Balance += transactionAmount;
+
+        return await UpdateUser(dto, isAdmin);
+
+
     }
     
     

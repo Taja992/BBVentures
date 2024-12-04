@@ -21,7 +21,7 @@ function AllHistory(){
         console.log(response.data);
     }
     
-    async function approveTransaction(trans: BBVenturesApiTransaction) {
+    /*async function approveTransaction(trans: BBVenturesApiTransaction) {
         trans.isPending = false;
 
         http.transactionUpdateTransactionUpdate(trans);
@@ -39,6 +39,32 @@ function AllHistory(){
         console.log("about to update player")
         await http.userUpdateUpdate(player)
         
+        //setBalance(newBalance);
+    }*/
+
+    async function approveTransaction(trans: BBVenturesApiTransaction) {
+        trans.isPending = false;
+
+        http.transactionUpdateTransactionUpdate(trans);
+
+        //updating that players balance now that the transaction has gone through
+        let id : string  = trans.userId!
+
+        const response = await http.userGetByIdList({id});
+        let player = response.data
+        
+        const amount: number | undefined = trans.amount!;
+        
+        
+        await http.userUpdateBalanceUpdate(player, {transactionAmount: amount})
+        
+        const newBalance = player.balance! - trans.amount!;
+        player.balance = newBalance;
+        console.log(player);
+
+        console.log("about to update player")
+        await http.userUpdateUpdate(player)
+
         //setBalance(newBalance);
     }
     
