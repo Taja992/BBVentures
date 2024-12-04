@@ -58,14 +58,6 @@ function AllHistory(){
         
         await http.userUpdateBalanceUpdate(player, {transactionAmount: amount})
         
-        const newBalance = player.balance! - trans.amount!;
-        player.balance = newBalance;
-        console.log(player);
-
-        console.log("about to update player")
-        await http.userUpdateUpdate(player)
-
-        //setBalance(newBalance);
     }
     
     //below was an attempt at getting the user name via http request but theres not really a way to do it that isnt asynchronous,
