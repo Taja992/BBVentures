@@ -90,15 +90,13 @@ const BoardGameComponent = () => {
         console.log('Request body:', requestBody);
 
         try {
-            const response = await http.boardCreateCreate(requestBody);
-            console.log('Board created:', response.data);
+            await http.boardCreateCreate(requestBody);
             toast.success("Board bought!");
             const cost = calculateCost(fieldCount);
             setBalance(prevBalance => (prevBalance ?? 0) - cost);
             setBoardState(prevState => [...prevState, response.data]);
         } catch (error) {
-            console.error('Error creating board:', error);
-            toast.error("Error buying board :(");
+            toast.error("Error buying board :( Is balance sufficient?");
         }
     };
 
