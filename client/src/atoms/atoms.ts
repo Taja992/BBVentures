@@ -1,5 +1,5 @@
 import {atom} from "jotai";
-import {BBVenturesApiGameDto, BBVenturesApiUserDto} from "../services/Api.ts";
+import {BBVenturesApiBoardDto, BBVenturesApiGameDto, BBVenturesApiUserDto} from "../services/Api.ts";
 import {atomWithStorage, createJSONStorage } from "jotai/utils";
 import { http } from "../http.ts";
 
@@ -14,8 +14,8 @@ export const gamesAtom = atom<BBVenturesApiGameDto[]>([]);
 // to keep track of user balance
 export const userBalance = atom<number>();
 
-
-
+// to keep track of user board history
+export const boardStateAtom = atom<BBVenturesApiBoardDto[]>([]);
 
 
 //////////Auth Stuff////////////////////
