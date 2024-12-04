@@ -152,28 +152,18 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddControllers();
 
 
-// builder.Services.AddCors(options =>
-// {
-//     options.AddPolicy("DevelopmentCorsPolicy", corsBuilder =>
-//     {
-//         corsBuilder.AllowAnyOrigin()
-//             .AllowAnyMethod()
-//             .AllowAnyHeader();
-//     });
-//
-//     options.AddPolicy("ProductionCorsPolicy", corsBuilder =>
-//     {
-//         corsBuilder.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com", "https://server-792474364503.europe-west1.run.app")
-//             .AllowAnyMethod()
-//             .AllowAnyHeader();
-//     });
-// });
-
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAnyOriginPolicy", corsBuilder =>
+    options.AddPolicy("DevelopmentCorsPolicy", corsBuilder =>
     {
         corsBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+
+    options.AddPolicy("ProductionCorsPolicy", corsBuilder =>
+    {
+        corsBuilder.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -222,8 +212,8 @@ app.UseForwardedHeaders(
 // app.UseRouting();
 
 
-// app.UseCors(app.Environment.IsDevelopment() ? "DevelopmentCorsPolicy" : "ProductionCorsPolicy");
-app.UseCors("AllowAnyOriginPolicy");
+app.UseCors(app.Environment.IsDevelopment() ? "DevelopmentCorsPolicy" : "ProductionCorsPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
 //app.MapIdentityApi<Player>().AllowAnonymous();
