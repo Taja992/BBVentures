@@ -163,7 +163,7 @@ builder.Services.AddCors(options =>
 
     options.AddPolicy("ProductionCorsPolicy", corsBuilder =>
     {
-        corsBuilder.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
+        corsBuilder.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com", "https://server-792474364503.europe-west1.run.app")
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
