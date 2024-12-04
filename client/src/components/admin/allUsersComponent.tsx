@@ -13,6 +13,7 @@ const GetAllUsers: React.FC = () => {
     const theme = useTheme(getTheme());
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
     const [formData, setFormData] = useState<{ [key: string]: BBVenturesApiUserDto }>({});
+    const [searchTerm, setSearchTerm] = useState<string>('');
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -187,10 +188,25 @@ const GetAllUsers: React.FC = () => {
         },
     ];
 
+    const filteredUsers = allUsers.filter(user =>
+        (user.userName?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+        (user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false)
+    );
+
     return (
         <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">All Users</h1>
-            <CompactTable columns={columns} data={{nodes: allUsers}} theme={theme} className="w-full border-collapse"/>
+            <div className="flex items-center mb-4">
+                <h1 className="text-2xl font-bold">All Users</h1>
+                <input
+                    type="text"
+                    placeholder="Username or Email"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="border p-2 ml-4"
+                />
+            </div>
+            <CompactTable columns={columns} data={{nodes: filteredUsers}} theme={theme}
+                          className="w-full border-collapse"/>
         </div>
     );
 };
