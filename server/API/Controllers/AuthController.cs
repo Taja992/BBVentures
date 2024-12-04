@@ -18,12 +18,12 @@ namespace API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController(
-    UserManager<User> userManager,
-    IValidator<LoginRequest> validator,
-    ITokenClaimsService tokenClaimsService,
-    IValidator<RegisterRequest> registerValidator,
-    IValidator<RegisterPasswordRequest> registerPasswordValidator,
-    IEmailService emailService,
+    UserManager<User> userManager, //Data access
+    IValidator<LoginRequest> validator, //Service
+    ITokenClaimsService tokenClaimsService, // Service
+    IValidator<RegisterRequest> registerValidator, //Service
+    IValidator<RegisterPasswordRequest> registerPasswordValidator, //Service
+    IEmailService emailService, // Service
     IPasswordService passwordService) : ControllerBase
 {
     [HttpPost]

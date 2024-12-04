@@ -29,12 +29,12 @@ public class DbSeeder
     public async Task SeedAsync()
     {
         await CreateRoles(Role.Admin, Role.Player);
-        var adminId = await CreateUser(username: "Admin", email: "admin@example.com",balance: 10000, isActive: true, password: "S3cret!!", role: Role.Admin);
-        var playerId = await CreateUser(username: "Player",email: "player@example.com", balance: 15000, isActive: false, password: "S3cret!!", role: Role.Player);
-        var player2Id = await CreateUser(username: "Player2", email: "player2@example.com",balance: 10000, isActive: true, password: "S3cret!!", role: Role.Player);
-        var player3Id = await CreateUser(username: "Player3",email: "player3@example.com", balance: 15000, isActive: false, password: "S3cret!!", role: Role.Player);
-        var player4Id = await CreateUser(username: "Player4", email: "player4@example.com",balance: 10000, isActive: true, password: "S3cret!!", role: Role.Player);
-        var player5Id = await CreateUser(username: "Player5",email: "player5@example.com", balance: 15000, isActive: false, password: "S3cret!!", role: Role.Player);
+        var adminId = await CreateUser(username: "Admin", email: "admin@example.com",balance: 1000, isActive: true, password: "S3cret!!", role: Role.Admin);
+        var playerId = await CreateUser(username: "Player",email: "player@example.com", balance: 500, isActive: false, password: "S3cret!!", role: Role.Player);
+        var player2Id = await CreateUser(username: "Player2", email: "player2@example.com",balance: 1000, isActive: true, password: "S3cret!!", role: Role.Player);
+        var player3Id = await CreateUser(username: "Player3",email: "player3@example.com", balance: 1550, isActive: false, password: "S3cret!!", role: Role.Player);
+        var player4Id = await CreateUser(username: "Player4", email: "player4@example.com",balance: 1230, isActive: true, password: "S3cret!!", role: Role.Player);
+        var player5Id = await CreateUser(username: "Player5",email: "player5@example.com", balance: 1500, isActive: false, password: "S3cret!!", role: Role.Player);
         await CreateGame(
             id: new Guid("11111111-1111-1111-1111-111111111111"),
             winnerNumbers: new List<int> { 1, 2, 3 },
@@ -107,7 +107,7 @@ public class DbSeeder
                 logger.LogWarning("{Code}: {Description}", error.Code, error.Description);
             }
         }
-        await userManager.AddToRoleAsync(player!, role!);
+        await userManager.AddToRoleAsync(player, role);
         return player.Id;
     }
 
