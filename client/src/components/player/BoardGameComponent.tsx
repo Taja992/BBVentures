@@ -2,7 +2,7 @@
 import { useAtom } from 'jotai';
 import { http } from '../../http';
 import './BoardGameComponent.css';
-import { BBVenturesApiCreateBoardDto, BBVenturesApiBoardDto } from '../../services/Api';
+import { BBVenturesApiCreateBoardDto } from '../../services/Api';
 import toast from 'react-hot-toast';
 import { boardStateAtom } from '../../atoms/atoms';
 import { userBalance } from '../../atoms/atoms';
@@ -90,7 +90,7 @@ const BoardGameComponent = () => {
         console.log('Request body:', requestBody);
 
         try {
-            await http.boardCreateCreate(requestBody);
+            const response = await http.boardCreateCreate(requestBody);
             toast.success("Board bought!");
             const cost = calculateCost(fieldCount);
             setBalance(prevBalance => (prevBalance ?? 0) - cost);
