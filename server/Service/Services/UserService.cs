@@ -10,7 +10,7 @@ public interface IUserService
 {
     Task<IEnumerable<UserDto>> GetAllUsers();
     Task<bool> UpdateUser(UserDto userDto, bool isAdmin);
-    Task<UserDto> GetUserById(string id);
+    Task<UserDto?> GetUserById(string id);
     Task<bool> AssignRole(string userId, string role);
 }
 
@@ -33,9 +33,15 @@ public class UserService(IUserRepository userRepository) : IUserService
         return userDtos;
     }
 
-    public async Task<UserDto> GetUserById(string id)
+    public async Task<UserDto?> GetUserById(string id)
     {
         var user = await userRepository.GetUserById(id);
+        
+        if (user == null)
+        {
+            return null;
+        }
+        
         var userDto = UserDto.FromEntity(user);
         var roles = await userRepository.GetUserRoles(user);
         userDto.Role = roles.FirstOrDefault();

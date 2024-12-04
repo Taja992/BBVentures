@@ -40,11 +40,7 @@ namespace API.Controllers
                 }
 
                 createBoardDto.UserId = userId;
-
-                if (createBoardDto == null)
-                {
-                    return BadRequest("Request payload is null.");
-                }
+                
 
                 var boardDto = await _boardService.CreateBoard(createBoardDto);
                 return Ok(boardDto);
@@ -53,7 +49,7 @@ namespace API.Controllers
             {
                 return Unauthorized(new { message = ex.Message });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, "Internal server error");
             }

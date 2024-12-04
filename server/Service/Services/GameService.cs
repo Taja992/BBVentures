@@ -75,7 +75,7 @@ public interface IGameService
             }
 
             // Determine the winning boards
-            var winningBoards = currentGame.Boards.Where(b => !winningNumbers.Except(b.Numbers).Any()).ToList();
+            var winningBoards = currentGame.Boards.Where(b => b.Numbers != null && !winningNumbers.Except(b.Numbers).Any()).ToList();
             var boardsToUpdate = new List<Board>();
 
             foreach (var winningBoard in winningBoards)
@@ -105,7 +105,10 @@ public interface IGameService
             // Reset boards and related info for the new game
             foreach (var board in currentGame.Boards)
             {
-                board.Numbers.Clear();
+                if (board.Numbers != null)
+                {
+                    board.Numbers.Clear();
+                }
                 board.IsAutoplay = false;
                 board.GameId = newGame.Id;
                 boardsToUpdate.Add(board);
