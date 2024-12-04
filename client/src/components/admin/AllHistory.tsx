@@ -136,7 +136,7 @@ function AllHistory(){
                         <td className={"py-2 px-4 border border-black"}> {getUserEmailById(trans.userId!)} </td>
                         <td className={"py-2 px-4 border border-black"}>
                             <div>
-                                {trans.isPending ? "pending" : "approved"}
+                                {trans.isPending ? "pending" : "approved"} <br/>
                                 {trans.isPending ?
                                     <button className={"button"}
                                             onClick={() => approveTransaction(trans)}>approve</button> : <></>}
