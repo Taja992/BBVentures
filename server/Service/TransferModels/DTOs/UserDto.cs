@@ -31,7 +31,6 @@ public class UserDto
             Email = user.Email,
             EmailConfirmed = user.EmailConfirmed,
             PhoneNumber = user.PhoneNumber,
-            Role = user.Role
         };
     }
 }

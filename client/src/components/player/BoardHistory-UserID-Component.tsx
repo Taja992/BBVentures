@@ -12,7 +12,7 @@ const BoardHistoryComponent = () => {
         try {
             const response = await http.boardUserBoardHistoryList();
             setBoards(response.data);
-        } catch (err) {
+        } catch {
             setError('Failed to fetch boards.');
             toast.error('Failed to fetch boards.');
         } finally {

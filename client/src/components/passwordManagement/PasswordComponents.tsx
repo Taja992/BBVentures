@@ -4,7 +4,6 @@ import {BBVenturesApiRegisterPasswordRequest, MicrosoftIdentityResetPasswordRequ
 import {http} from "../../http.ts";
 import toast from "react-hot-toast";
 
-
 const RegisterPassword: React.FC = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
@@ -45,34 +44,28 @@ const RegisterPassword: React.FC = () => {
     };
 
     return (
-        <>
-            <div>
-                <h2>You must set a new password!</h2>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="newPassword">New Password:</label>
-                        <input
-                            type="password"
-                            id="newPassword"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit">Set Password</button>
-                </form>
-            </div>
-        </>
+        <div className="max-w-md mx-auto">
+            <h2 className="text-center text-gray-800">You must set a new password!</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="mb-4">
+                    <label htmlFor="newPassword" className="block mb-2">New Password:</label>
+                    <input
+                        type="password"
+                        id="newPassword"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        required
+                        className="w-full p-2 rounded border border-gray-300"
+                    />
+                </div>
+                <button type="submit" className="w-full p-2 rounded bg-blue-500 text-white">Set Password</button>
+            </form>
+        </div>
     );
 };
 
-
-
-
-
 const RequestPassword: React.FC = () => {
     const [email, setEmail] = useState<string>("");
-
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -86,28 +79,25 @@ const RequestPassword: React.FC = () => {
     }
 
     return (
-        <>
-            <div>
-                <h1>Reset Password</h1>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="email">Email:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit">Submit </button>
-                </form>
-            </div>
-        </>
+        <div className="max-w-md mx-auto">
+            <h1 className="text-center text-gray-800">Reset Password</h1>
+            <form onSubmit={handleSubmit}>
+                <div className="mb-4">
+                    <label htmlFor="email" className="block mb-2">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="w-full p-2 rounded border border-gray-300"
+                    />
+                </div>
+                <button type="submit" className="w-full p-2 rounded bg-blue-500 text-white">Submit</button>
+            </form>
+        </div>
     );
 };
-
-
 
 const ResetPassword: React.FC = () => {
     const [searchParams] = useSearchParams();
@@ -135,7 +125,6 @@ const ResetPassword: React.FC = () => {
             newPassword,
         };
 
-
         try {
             await http.authResetPasswordCreate(requestData);
             setSuccess(true);
@@ -147,26 +136,24 @@ const ResetPassword: React.FC = () => {
         }
     };
 
-
     return (
-        <>
-            <div>
-                <h2>Reset Password</h2>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="newPassword">New Password:</label>
-                        <input
-                            type="password"
-                            id="newPassword"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit">Reset Password</button>
-                </form>
-            </div>
-        </>
+        <div className="max-w-md mx-auto">
+            <h2 className="text-center text-gray-800">Reset Password</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="mb-4">
+                    <label htmlFor="newPassword" className="block mb-2">New Password:</label>
+                    <input
+                        type="password"
+                        id="newPassword"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        required
+                        className="w-full p-2 rounded border border-gray-300"
+                    />
+                </div>
+                <button type="submit" className="w-full p-2 rounded bg-blue-500 text-white">Reset Password</button>
+            </form>
+        </div>
     );
 };
 
