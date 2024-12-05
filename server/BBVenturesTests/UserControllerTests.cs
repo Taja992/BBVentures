@@ -21,7 +21,7 @@ public class UserControllerTests(ITestOutputHelper output) : ApiTestBase
         response.EnsureSuccessStatusCode();
         var responseString = await response.Content.ReadAsStringAsync();
 
-        // Print the response string to the console
+        // I just added this to see better what results I was getting
         output.WriteLine("Response from /api/user/getall:");
         output.WriteLine(responseString);
 
@@ -108,7 +108,7 @@ public class UserControllerTests(ITestOutputHelper output) : ApiTestBase
 
         var userDto = new UserDto
         {
-            Id = PlayerId, // Use the PlayerId from the seeder
+            Id = PlayerId, // from seeder
             UserName = "UpdatedPlayer",
             Email = "updatedplayer@example.com"
         };
@@ -130,7 +130,7 @@ public class UserControllerTests(ITestOutputHelper output) : ApiTestBase
 
         var userDto = new UserDto
         {
-            Id = PlayerId, // Use the PlayerId from the seeder
+            Id = PlayerId,
             UserName = "UpdatedPlayer",
             Email = "updatedplayer@example.com",
             IsActive = true
