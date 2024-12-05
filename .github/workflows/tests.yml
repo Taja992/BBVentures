@@ -1,0 +1,43 @@
+﻿name: API tests with .NET + TestContainers
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  local_development:
+    runs-on: ubuntu-22.04
+
+    services:
+      db:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: bbventure_db
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: docker build -t bbventure-api-tests .
+
+      - name: Run tests in Docker container
+        run: docker run --rm --network host bbventure-api-tests dotnet test
