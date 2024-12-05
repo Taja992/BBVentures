@@ -78,4 +78,9 @@ public class GameRepository : IGameRepository
 
         return totalRevenue;
     }
+    
+    public async Task<Game?> GetActiveGameAsync()
+    {
+        return await _context.Games.FirstOrDefaultAsync(g => g.IsActive);
+    }
 }
