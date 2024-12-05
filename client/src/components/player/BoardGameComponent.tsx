@@ -95,7 +95,7 @@ const BoardGameComponent = () => {
             const cost = calculateCost(fieldCount);
             setBalance(prevBalance => (prevBalance ?? 0) - cost);
             setBoardState(prevState => [...prevState, response.data]);
-        } catch (error) {
+        } catch {
             toast.error("Error buying board :( Is balance sufficient?");
         }
     };
