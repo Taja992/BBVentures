@@ -34,8 +34,8 @@ public class UserController(IUserService userService, UserManager<User> userMana
     
 
     [HttpPut]
-    //[Authorize(Roles = "Admin")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
+    //[AllowAnonymous]
     [Route("update")]
     public async Task<ActionResult> UpdateUser([FromBody] UserDto userDto)
     {
@@ -79,6 +79,29 @@ public class UserController(IUserService userService, UserManager<User> userMana
         }
         
     }
+    
+    
+    [HttpPut]
+    [Authorize(Roles = "Admin")]
+    [Route("updateBalance")]
+    public async Task<ActionResult> UpdateBalance([FromBody] UserDto dto, decimal transactionAmount)
+    {
+        if (string.IsNullOrEmpty(dto.Id))
+        {
+            return NotFound("user not found");
+        }
+
+        var response = await userService.UpdateBalance(dto, transactionAmount);
+        
+        if (response)
+        {
+            return NoContent();
+        }
+        else
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error updating player");
+        }
+    }
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
@@ -106,5 +129,8 @@ public class UserController(IUserService userService, UserManager<User> userMana
 
         return Ok("Role Assigned Successfully");
     }
+
+
+    
     
 }
