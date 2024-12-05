@@ -77,7 +77,14 @@ public class UserService(IUserRepository userRepository) : IUserService
         if (isAdmin)
         {
             user.IsActive = userDto.IsActive;
+            
         }
+        else if (userDto.IsActive != user.IsActive)
+        {
+            return false;
+        }
+ 
+        
         
         
         //normalized is something in the aspnetuser table that needs to be updated when these other fields are
@@ -93,6 +100,7 @@ public class UserService(IUserRepository userRepository) : IUserService
             user.UserName = userDto.UserName;
             user.NormalizedUserName = userDto.UserName.ToUpperInvariant();
         }
+        
         user.Balance = userDto.Balance;
         user.UserName = userDto.UserName;
         user.UpdatedAt = DateTime.UtcNow;
@@ -100,6 +108,8 @@ public class UserService(IUserRepository userRepository) : IUserService
 
         return await userRepository.UpdateUser(user);
     }
+    
+    
     
     
 }
