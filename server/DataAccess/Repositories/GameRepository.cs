@@ -35,22 +35,12 @@ public class GameRepository : IGameRepository
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!GameExists(game.Id))
-            {
-                throw new KeyNotFoundException("Game not found.");
-            }
-            else
-            {
-                throw;
-            }
+            if (!GameExists(game.Id)) throw new KeyNotFoundException("Game not found.");
+
+            throw;
         }
     }
 
-    private bool GameExists(Guid id)
-    {
-        return _context.Games.Any(e => e.Id == id);
-    }
-    
     public async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
     {
         // Get all boards for the specified game
@@ -60,12 +50,9 @@ public class GameRepository : IGameRepository
         decimal totalRevenue = 0;
         foreach (var board in boards)
         {
-            if (board.Numbers == null)
-            {
-                throw new InvalidOperationException("Board numbers cannot be null.");
-            }
-            
-            int cost = board.Numbers.Count switch
+            if (board.Numbers == null) throw new InvalidOperationException("Board numbers cannot be null.");
+
+            var cost = board.Numbers.Count switch
             {
                 5 => 20,
                 6 => 40,
@@ -78,9 +65,14 @@ public class GameRepository : IGameRepository
 
         return totalRevenue;
     }
-    
+
     public async Task<Game?> GetActiveGameAsync()
     {
         return await _context.Games.FirstOrDefaultAsync(g => g.IsActive);
+    }
+
+    private bool GameExists(Guid id)
+    {
+        return _context.Games.Any(e => e.Id == id);
     }
 }

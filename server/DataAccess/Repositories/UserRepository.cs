@@ -22,8 +22,8 @@ public class UserRepository(AppDbContext context, UserManager<User> userManager)
         context.Users.Update(user);
         return await context.SaveChangesAsync() > 0;
     }
-    
-    
+
+
     public async Task<IList<string>> GetUserRoles(User user)
     {
         return await userManager.GetRolesAsync(user);
@@ -40,5 +40,4 @@ public class UserRepository(AppDbContext context, UserManager<User> userManager)
         var result = await userManager.AddToRoleAsync(user, role);
         return result.Succeeded;
     }
-    
 }

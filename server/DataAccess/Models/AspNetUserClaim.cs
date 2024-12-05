@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Models;
 
 [Index("UserId", Name = "IX_AspNetUserClaims_UserId")]
-public partial class AspNetUserClaim
+public class AspNetUserClaim
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public string UserId { get; set; } = null!;
 

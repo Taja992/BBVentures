@@ -35,3 +35,8 @@ jobs:
 
       - name: Run tests
         run: dotnet test server/BBVenturesTests/BBVenturesTests.csproj --no-build --verbosity normal
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          ConnectionStrings__AppDb: ${{ secrets.CLOUD_RUN_DB_CONNECTION_STRING }}
+          AppOptions__JwtSecret: ${{ secrets.JWT_SECRET }}
+          AppOptions__SmtpPassword: ${{ secrets.SMTP_PASSWORD }}

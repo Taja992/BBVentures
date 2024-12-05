@@ -15,7 +15,7 @@ public class UserController(IUserService userService, UserManager<User> userMana
 
 {
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize]
     [Route("getall")]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
     {
@@ -25,7 +25,7 @@ public class UserController(IUserService userService, UserManager<User> userMana
 
     
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize]
     [Route("getById")]
     public async Task<ActionResult<UserDto>> GetUserById(string id)
     {
@@ -35,7 +35,6 @@ public class UserController(IUserService userService, UserManager<User> userMana
 
     [HttpPut]
     [Authorize(Roles = "Admin")]
-    //[AllowAnonymous]
     [Route("update")]
     public async Task<ActionResult> UpdateUser([FromBody] UserDto userDto)
     {
@@ -75,7 +74,7 @@ public class UserController(IUserService userService, UserManager<User> userMana
         }
         else
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error updating user");
+            return BadRequest("Error updating user");
         }
         
     }
@@ -129,8 +128,5 @@ public class UserController(IUserService userService, UserManager<User> userMana
 
         return Ok("Role Assigned Successfully");
     }
-
-
-    
     
 }

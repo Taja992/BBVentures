@@ -18,158 +18,189 @@ using Service.Services;
 using Service.TransferModels.Requests.Create;
 using Service.Validators;
 
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
+        ConfigureServices(builder);
 
-var builder = WebApplication.CreateBuilder(args);
+        var app = builder.Build();
 
-#region Configuration
+        Configure(app);
+
+        try
+        {
+            app.Run();
+        }
+        catch (OperationCanceledException)
+        {
+            var logger = app.Services.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation( "Application is shutting down...");
+        }
+    }
+
+    public static void ConfigureServices(WebApplicationBuilder builder)
+    {
+// var builder = WebApplication.CreateBuilder(args);
+
+        #region Configuration
 
 //set up options pattern ensuring options are validated
-builder
-    .Services.AddOptionsWithValidateOnStart<AppOptions>()
-    //binds the AppOptions setting with appsettings.json
-    .Bind(builder.Configuration.GetSection(nameof(AppOptions)))
-    //enforces things like [required]
-    .ValidateDataAnnotations();
+        builder
+            .Services.AddOptionsWithValidateOnStart<AppOptions>()
+            //binds the AppOptions setting with appsettings.json
+            .Bind(builder.Configuration.GetSection(nameof(AppOptions)))
+            //enforces things like [required]
+            .ValidateDataAnnotations();
 
-#endregion
+        #endregion
 
-#region Data Access
+        #region Data Access
 
-var connectionString = builder.Configuration.GetConnectionString("AppDb");
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options
-        .UseNpgsql(connectionString)
-        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-);
-
-
-builder.Services.AddScoped<DbSeeder>();
-#endregion
-
-#region Security
+        var connectionString = builder.Configuration.GetConnectionString("AppDb");
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options
+                .UseNpgsql(connectionString)
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+        );
 
 
-builder
-    .Services.AddIdentityApiEndpoints<User>()
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>();
+        builder.Services.AddScoped<DbSeeder>();
 
-builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<RegisterPasswordRequestValidator>();
+        #endregion
+
+        #region Security
+
+
+        builder
+            .Services.AddIdentityApiEndpoints<User>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>();
+
+        builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
+        builder.Services.AddValidatorsFromAssemblyContaining<RegisterPasswordRequestValidator>();
 
 
 //Setting up Authorization using AppOptions class to store secrets and JwtTokenClaimService to add a way to customize the tokens to what we want
-var appOptions = builder.Configuration.GetSection(nameof(AppOptions)).Get<AppOptions>()!;
+        var appOptions = builder.Configuration.GetSection(nameof(AppOptions)).Get<AppOptions>()!;
 
-builder
-    .Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(o =>
-    {
-        o.TokenValidationParameters = JwtTokenClaimService.ValidationParameters(appOptions);
-    });
+        builder
+            .Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(o =>
+            {
+                o.TokenValidationParameters = JwtTokenClaimService.ValidationParameters(appOptions);
+            });
 
-builder.Services.AddScoped<ITokenClaimsService, JwtTokenClaimService>();
+        builder.Services.AddScoped<ITokenClaimsService, JwtTokenClaimService>();
 
 
 //Adds authorization requiring all end points to define who accesses them
-builder.Services.AddAuthorization(options =>
-{
-    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
+        builder.Services.AddAuthorization(options =>
+        {
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+        });
 
-builder.Services.AddSingleton<IEmailSender<User>, AppEmailSender>();
+        builder.Services.AddSingleton<IEmailSender<User>, AppEmailSender>();
 
 
-#endregion
+        #endregion
 
-#region Services
+        #region Services
 
 
 
 // builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
 
 
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IBoardService, BoardService>();
-builder.Services.AddScoped<IGameService, GameService>();
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IBoardService, BoardService>();
+        builder.Services.AddScoped<IGameService, GameService>();
 
-builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IPasswordService, PasswordService>();
-
-
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-builder.Services.AddScoped<IBoardRepository, BoardRepository>();
-builder.Services.AddScoped<IGameRepository, GameRepository>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
+        builder.Services.AddScoped<IPasswordService, PasswordService>();
 
 
-builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+        builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+        builder.Services.AddScoped<IGameRepository, GameRepository>();
 
 
-#endregion
+        builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
 
-#region Swagger
+
+        #endregion
+
+        #region Swagger
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.CustomSchemaIds(type =>
-    {
-
-        var customPrefix = "BBVenturesApi";
-
-        var identityPrefix = "MicrosoftIdentity";
-
-        var typeNamespace = type.Namespace;
-
-        var simpleName = type.Name;
-
-        // Check if the type is from the Microsoft.AspNetCore.Identity namespace
-        if (typeNamespace?.StartsWith("Microsoft.AspNetCore.Identity") == true)
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
         {
-            return $"{identityPrefix}{simpleName}";
-        }
-        // For custom endpoints, use the BBVenturesApi prefix
-        return $"{customPrefix}{simpleName}";
-    });
-});
+            c.CustomSchemaIds(type =>
+            {
 
-#endregion
+                var customPrefix = "BBVenturesApi";
+
+                var identityPrefix = "MicrosoftIdentity";
+
+                var typeNamespace = type.Namespace;
+
+                var simpleName = type.Name;
+
+                // Check if the type is from the Microsoft.AspNetCore.Identity namespace
+                if (typeNamespace?.StartsWith("Microsoft.AspNetCore.Identity") == true)
+                {
+                    return $"{identityPrefix}{simpleName}";
+                }
+
+                // For custom endpoints, use the BBVenturesApi prefix
+                return $"{customPrefix}{simpleName}";
+            });
+        });
+
+        #endregion
+
+
+
 
 
 // Add services to the container.
-builder.Services.AddControllers();
+        builder.Services.AddControllers();
 
 
-builder.Services.AddCors(options =>
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("DevelopmentCorsPolicy", corsBuilder =>
+            {
+                corsBuilder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+
+            options.AddPolicy("ProductionCorsPolicy", corsBuilder =>
+            {
+                corsBuilder.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
+    }
+
+    public static void Configure(WebApplication app) 
 {
-    options.AddPolicy("DevelopmentCorsPolicy", corsBuilder =>
-    {
-        corsBuilder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-
-    options.AddPolicy("ProductionCorsPolicy", corsBuilder =>
-    {
-        corsBuilder.WithOrigins("https://bbventures.web.app", "https://bbventures.firebaseapp.com")
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-});
-
-var app = builder.Build();
+// var app = builder.Build();
 
 
 if (app.Environment.IsDevelopment())
@@ -183,11 +214,14 @@ if (app.Environment.IsDevelopment())
         //alternatively get the raw SQL from the DbContext and execute this manually after deleting the DB manually:
         // var sql = context.Database.GenerateCreateScript();
         // Console.WriteLine(sql); //this will print the SQL to build the exact DB from what the context looks like
-        var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-        dbSeeder.SeedAsync().Wait();
     }
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+    dbSeeder.SeedAsync().Wait();
+}
 
 
 // Configure the HTTP request pipeline.
@@ -220,3 +254,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+    }
+}
