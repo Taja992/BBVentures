@@ -6,4 +6,5 @@
         public DateTime? CreatedAt { get; set; }
         public int WeekNumber { get; set; }
     }
+    
 }
