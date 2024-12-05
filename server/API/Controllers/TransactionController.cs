@@ -46,7 +46,7 @@ public class TransactionController(AppDbContext context) : ControllerBase
     [HttpPost]
     [Authorize]
     [Route("addTransaction")]
-    public async Task<ActionResult<TransactionDto>> AddTransaction([FromBody] TransactionDto dto)
+    public async Task<ActionResult<Transaction>> AddTransaction([FromBody] TransactionDto dto)
     {
         var trans = await service.CreateTransaction(dto);
         return Ok(trans); //lol
