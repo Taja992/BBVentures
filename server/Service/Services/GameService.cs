@@ -58,68 +58,86 @@ public interface IGameService
         }
 
         public async Task ProcessWinningNumbers(List<int> winningNumbers)
+{
+    if (winningNumbers.Count != 3)
+    {
+        throw new ArgumentException("Exactly 3 winning numbers must be provided.");
+    }
+
+    // Sort the winning numbers in ascending order
+    winningNumbers.Sort();
+
+    var currentGame = await GetActiveGame();
+    var winningBoards = GetWinningBoards(currentGame, winningNumbers);
+    await UpdateWinningBoards(winningBoards);
+    await UpdateCurrentGameWithWinners(currentGame, winningNumbers);
+    await CreateNewGameForNextWeek(currentGame);
+}
+
+// -------------------- Process Winning Numbers Section --------------------
+
+private async Task<Game> GetActiveGame()
+{
+    var games = await _repository.GetAllGamesAsync();
+    var currentGame = games.FirstOrDefault(g => g.IsActive);
+    if (currentGame == null)
+    {
+        throw new InvalidOperationException("No active game found.");
+    }
+    return currentGame;
+}
+
+private List<Board> GetWinningBoards(Game currentGame, List<int> winningNumbers)
+{
+    // Iterates through all boards of the ACTIVE game
+    return currentGame.Boards
+        .Where(b => b.GameId == currentGame.Id && b.Numbers != null && !winningNumbers.Except(b.Numbers).Any())
+        .ToList();
+}
+
+private async Task UpdateWinningBoards(List<Board> winningBoards)
+{
+    foreach (var winningBoard in winningBoards)
+    {
+        // TO-DO:
+        // Yet to be implemented
+        // Handle the winning board logic (e.g., update board status, notify players, etc.)
+        // Example: winningBoard.IsWinner = true;
+        await _boardRepository.UpdateBoard(winningBoard);
+    }
+}
+
+private async Task UpdateCurrentGameWithWinners(Game currentGame, List<int> winningNumbers)
+{
+    currentGame.WinnerNumbers = winningNumbers;
+    currentGame.IsActive = false;
+    await _repository.UpdateGame(currentGame);
+}
+
+private async Task CreateNewGameForNextWeek(Game currentGame)
+{
+    var newGame = new Game
+    {
+        Id = Guid.NewGuid(),
+        IsActive = true,
+        WeekNumber = currentGame.WeekNumber + 1,
+        WinnerNumbers = null
+    };
+    await _repository.AddGame(newGame);
+
+    foreach (var board in currentGame.Boards)
+    {
+        if (board.Numbers != null)
         {
-            if (winningNumbers.Count != 3)
-            {
-                throw new ArgumentException("Exactly 3 winning numbers must be provided.");
-            }
-
-            // Sort the winning numbers in ascending order
-            winningNumbers.Sort();
-
-            var games = await _repository.GetAllGamesAsync();
-            var currentGame = games.FirstOrDefault(g => g.IsActive);
-            if (currentGame == null)
-            {
-                throw new InvalidOperationException("No active game found.");
-            }
-
-            // Determine the winning boards
-            var winningBoards = currentGame.Boards.Where(b => b.Numbers != null && !winningNumbers.Except(b.Numbers).Any()).ToList();
-            var boardsToUpdate = new List<Board>();
-
-            foreach (var winningBoard in winningBoards)
-            {
-                // Handle the winning board logic (e.g., update board status, notify players, etc.)
-                // Example: winningBoard.IsWinner = true;
-                boardsToUpdate.Add(winningBoard);
-            }
-
-            // Set the winning numbers for the current game
-            currentGame.WinnerNumbers = winningNumbers;
-
-            // Set the current game to inactive
-            currentGame.IsActive = false;
-            await _repository.UpdateGame(currentGame);
-
-            // Create and activate a new game for the next week
-            var newGame = new Game
-            {
-                Id = Guid.NewGuid(),
-                IsActive = true,
-                WeekNumber = currentGame.WeekNumber + 1,
-                WinnerNumbers = null
-            };
-            await _repository.AddGame(newGame);
-
-            // Reset boards and related info for the new game
-            foreach (var board in currentGame.Boards)
-            {
-                if (board.Numbers != null)
-                {
-                    board.Numbers.Clear();
-                }
-                board.IsAutoplay = false;
-                board.GameId = newGame.Id;
-                boardsToUpdate.Add(board);
-            }
-
-            // Update all boards
-            foreach (var board in boardsToUpdate)
-            {
-                await _boardRepository.UpdateBoard(board);
-            }
+            board.Numbers.Clear();
         }
+        board.IsAutoplay = false;
+        board.GameId = newGame.Id;
+        await _boardRepository.UpdateBoard(board);
+    }
+}
+
+// -------------------- End of Process Winning Numbers Section --------------------
         
         public async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
         {
