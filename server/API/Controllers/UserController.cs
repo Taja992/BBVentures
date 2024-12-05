@@ -91,7 +91,7 @@ public class UserController(IUserService userService, UserManager<User> userMana
             return NotFound("user not found");
         }
 
-        var response = await userService.UpdateBalance(dto, transactionAmount, false);
+        var response = await userService.UpdateBalance(dto, transactionAmount);
         
         if (response)
         {

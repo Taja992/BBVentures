@@ -12,7 +12,7 @@ public interface IUserService
     Task<bool> UpdateUser(UserDto userDto, bool isAdmin);
     Task<UserDto?> GetUserById(string id);
     Task<bool> AssignRole(string userId, string role);
-    public Task<bool> UpdateBalance(UserDto dto, decimal transactionAmount, bool isAdmin);
+    public Task<bool> UpdateBalance(UserDto dto, decimal transactionAmount);
 }
 
 public class UserService(IUserRepository userRepository) : IUserService
@@ -94,7 +94,6 @@ public class UserService(IUserRepository userRepository) : IUserService
             user.UserName = userDto.UserName;
             user.NormalizedUserName = userDto.UserName.ToUpperInvariant();
         }
-        user.Balance = userDto.Balance;
         user.UserName = userDto.UserName;
         user.UpdatedAt = DateTime.UtcNow;
         user.PhoneNumber = userDto.PhoneNumber;
@@ -102,12 +101,19 @@ public class UserService(IUserRepository userRepository) : IUserService
         return await userRepository.UpdateUser(user);
     }
 
-    public async Task<bool> UpdateBalance(UserDto dto, decimal transactionAmount, bool isAdmin)
+    public async Task<bool> UpdateBalance(UserDto dto, decimal transactionAmount)
     {
+        
+        var user = await userRepository.GetUserById(dto.Id);
 
-        dto.Balance += transactionAmount;
+        if (user == null)
+        {
+            return false;
+        }
+        
+        user.Balance = dto.Balance + transactionAmount;
 
-        return await UpdateUser(dto, isAdmin);
+        return await userRepository.UpdateUser(user);
 
 
     }
