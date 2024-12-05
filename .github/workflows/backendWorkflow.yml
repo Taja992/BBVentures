@@ -1,16 +1,28 @@
-﻿name: CI
+﻿name: API tests with .NET + TestContainers
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  local_development:
+    runs-on: ubuntu-22.04
+
+    services:
+      db:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: bbventure_db
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -21,17 +33,11 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore dependencies for API
-        run: dotnet restore server/API/API.csproj
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Restore dependencies for Tests
-        run: dotnet restore server/BBVenturesTests/BBVenturesTests.csproj
+      - name: Build Docker image
+        run: docker build -t bbventure-api-tests .
 
-      - name: Build API
-        run: dotnet build server/API/API.csproj --no-restore
-
-#      - name: Build Tests
-#        run: dotnet build server/BBVenturesTests/BBVenturesTests.csproj --no-restore
-#
-#      - name: Run tests
-#        run: dotnet test server/BBVenturesTests/BBVenturesTests.csproj --no-build --verbosity normal
+      - name: Run tests in Docker container
+        run: docker run --rm --network host bbventure-api-tests dotnet test
