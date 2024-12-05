@@ -179,6 +179,8 @@ export interface BBVenturesApiUser {
   createdAt?: string | null;
   /** @format date-time */
   updatedAt?: string | null;
+  /** @maxLength 50 */
+  role?: string | null;
   boards?: BBVenturesApiBoard[] | null;
   transactions?: BBVenturesApiTransaction[] | null;
 }
