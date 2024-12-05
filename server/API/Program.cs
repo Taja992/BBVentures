@@ -203,26 +203,25 @@ public class Program
 // var app = builder.Build();
 
 
-if (app.Environment.IsDevelopment())
-{
-    using (var scope = app.Services.CreateScope())
+    if (app.Environment.IsDevelopment() || Environment.GetEnvironmentVariable("RUN_SEEDER") == "true")
     {
-        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
-        //at this point your columns and tables will be created based on what the context class looks like
-        //alternatively get the raw SQL from the DbContext and execute this manually after deleting the DB manually:
-        // var sql = context.Database.GenerateCreateScript();
-        // Console.WriteLine(sql); //this will print the SQL to build the exact DB from what the context looks like
+        using (var scope = app.Services.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+            //at this point your columns and tables will be created based on what the context class looks like
+            //alternatively get the raw SQL from the DbContext and execute this manually after deleting the DB manually:
+            // var sql = context.Database.GenerateCreateScript();
+            // Console.WriteLine(sql); //this will print the SQL to build the exact DB from what the context looks like
+        }
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+            dbSeeder.SeedAsync().Wait();
+        }
     }
-}
-
-using (var scope = app.Services.CreateScope())
-{
-    var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-    dbSeeder.SeedAsync().Wait();
-}
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
