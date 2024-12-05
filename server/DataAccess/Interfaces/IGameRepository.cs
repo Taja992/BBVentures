@@ -8,4 +8,5 @@ public interface IGameRepository
     Task<Game> AddGame(Game game);
     Task<Game> UpdateGame(Game game);
     Task<decimal> CalculateTotalRevenueForGame(Guid gameId);
+    Task<Game?> GetActiveGameAsync();
 }
