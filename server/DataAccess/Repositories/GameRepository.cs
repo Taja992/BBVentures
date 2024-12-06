@@ -75,4 +75,12 @@ public class GameRepository : IGameRepository
     {
         return _context.Games.Any(e => e.Id == id);
     }
+    
+    public async Task<List<Board>> GetWinningBoardsForGame(Guid gameId, List<int> winningNumbers)
+    {
+        var game = await _context.Games.Include(g => g.Boards).FirstOrDefaultAsync(g => g.Id == gameId);
+        if (game == null) throw new KeyNotFoundException("Game not found.");
+
+        return game.Boards.Where(b => b.Numbers != null && !winningNumbers.Except(b.Numbers).Any()).ToList();
+    }
 }

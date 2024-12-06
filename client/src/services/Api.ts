@@ -82,6 +82,13 @@ export interface BBVenturesApiGameDto {
   isActive?: boolean;
   /** @format int32 */
   weekNumber?: number;
+  /** @format double */
+  clubRevenue?: number;
+  /** @format double */
+  winnersRevenue?: number;
+  winners?: string[] | null;
+  winnerUsernames?: string[] | null;
+  winnerEmails?: string[] | null;
 }
 
 export interface BBVenturesApiLoginRequest {
@@ -179,8 +186,6 @@ export interface BBVenturesApiUser {
   createdAt?: string | null;
   /** @format date-time */
   updatedAt?: string | null;
-  /** @maxLength 50 */
-  role?: string | null;
   boards?: BBVenturesApiBoard[] | null;
   transactions?: BBVenturesApiTransaction[] | null;
 }

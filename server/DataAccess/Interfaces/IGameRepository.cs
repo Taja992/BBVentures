@@ -9,4 +9,5 @@ public interface IGameRepository
     Task<Game> UpdateGame(Game game);
     Task<decimal> CalculateTotalRevenueForGame(Guid gameId);
     Task<Game?> GetActiveGameAsync();
+    Task<List<Board>> GetWinningBoardsForGame(Guid gameId, List<int> winningNumbers);
 }
