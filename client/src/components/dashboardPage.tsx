@@ -12,7 +12,7 @@ import InputWinningNumbersComponent from "./admin/inputWinningNumbersComponent";
 import TopUp from "./player/TopUpComponent";
 import BoardsHistory from "./admin/boardsHistory";
 import BoardHistoryComponent from "./player/BoardHistory-UserID-Component";
-import GameHistoryForAdminComponent from "./admin/GameHistoryForAdminComponent";
+import GameHistoryForAdminComponent from "./admin/gameHistoryForAdminComponent";
 
 
 const DashboardPage = () => {
