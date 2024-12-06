@@ -10,7 +10,7 @@ namespace BBVenturesTests;
 
 public class TransactionControllerTests(ITestOutputHelper output) : ApiTestBase
 {
-
+    
     [Fact]
     public async Task GetAllTransactions_GetsAllTransactionsAndReturnsStatusCodeOk()
     {
@@ -67,8 +67,9 @@ public class TransactionControllerTests(ITestOutputHelper output) : ApiTestBase
         Transaction addedTrans = JsonSerializer.Deserialize<Transaction>(body,
             new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })!;
         
+        //
         //fetching all transactions from db and then finding the one we just added
-        
+        //
         await AuthorizeClient("Admin");
         
         var response2 = await Client.GetAsync("api/Transaction/getTransactions"); //getting response from http client
@@ -99,8 +100,9 @@ public class TransactionControllerTests(ITestOutputHelper output) : ApiTestBase
             MobilePayTransactionNumber = "fffffffffffffffffff"
         };
 
+        //
         //Adding the transaction
-        
+        //
         var content = JsonContent.Create(trans); //so the data is sent as a json (PostAsync doesnt allow raw data, has to be json)
         var response = await Client.PostAsync("api/Transaction/addTransaction", content);
         var body = await response.Content.ReadAsStringAsync();
@@ -110,6 +112,78 @@ public class TransactionControllerTests(ITestOutputHelper output) : ApiTestBase
         
         Assert.True(addedTrans.isPending);
 
+    }
+
+    [Fact]
+    public async Task UpdateTransaction_UpdatesTransaction()
+    {
+        await AuthorizeClient("Admin");
+        
+        //
+        //getting all transactions
+        //
+        var response = await Client.GetAsync("api/Transaction/getTransactions"); //getting response from http client
+        var body = await response.Content.ReadAsStringAsync(); //gets body of response as a string (like a json)
+        List<Transaction> transactions = JsonSerializer.Deserialize<List<Transaction>>(body, 
+            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })!;
+        //the json serializer is so it's not camelcase
+        
+        
+        //getting the first transaction as a dto
+        TransactionResponseDto transToUpdate = new TransactionResponseDto().FromEntity(transactions.First());
+
+        bool originalIsPending = transToUpdate.isPending;
+        decimal originalAmount = transToUpdate.Amount;
+        string originalUserId = transToUpdate.UserId;
+        
+        transToUpdate.isPending = false;
+        transToUpdate.Amount = 20;
+
+        var content = JsonContent.Create(transToUpdate);
+        var response2 = await Client.PutAsync("api/Transaction/updateTransaction", content);
+        var body2 = await response2.Content.ReadAsStringAsync();
+        TransactionDto transResponse = JsonSerializer.Deserialize<TransactionDto>(body2,
+            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })!;
+        
+        Assert.NotEqual(originalIsPending, transResponse.isPending);
+        Assert.NotEqual(originalAmount, transResponse.Amount);
+        Assert.Equal(originalUserId, transResponse.UserId);
+    }
+
+
+
+    [Theory]
+    [InlineData("00000000-0000-0000-0000-000000000000", null)]
+    [InlineData("00000000-0000-0000-0000-000000000000", "")]
+    public async Task UpdateTransaction_FailsIfInvalidIdOrNoIdIsGiven(string newId, string newUserId)
+    {
+        await AuthorizeClient("Admin");
+        
+        var response = await Client.GetAsync("api/Transaction/getTransactions"); //getting response from http client
+        var body = await response.Content.ReadAsStringAsync(); //gets body of response as a string (like a json)
+        List<Transaction> transactions = JsonSerializer.Deserialize<List<Transaction>>(body,
+            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })!;
+        //the json serializer is so it's not camelcase
+        
+        //getting the first transaction as a dto
+        TransactionResponseDto transToUpdate = new TransactionResponseDto().FromEntity(transactions.First());
+
+        transToUpdate.UserId = newUserId;
+        transToUpdate.Id = Guid.Parse(newId);
+
+        var content = JsonContent.Create(transToUpdate);
+        
+        var response2 = await Client.PutAsync("api/Transaction/updateTransaction", content);
+
+        if (transToUpdate.Id == null || transToUpdate.UserId == null)
+        {
+            Assert.Equal(HttpStatusCode.BadRequest, response2.StatusCode);
+        }
+        else
+        {
+            Assert.Equal(HttpStatusCode.NotFound, response2.StatusCode);
+        }
+        
     }
 
 
