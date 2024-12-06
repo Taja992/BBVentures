@@ -46,10 +46,10 @@ namespace API.Controllers
         [HttpPost]
         [Route("processWinningNumbers")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ProcessWinningNumbers([FromBody] List<int> winningNumbers)
+        public async Task<ActionResult<GameDto>> ProcessWinningNumbers([FromBody] List<int> winningNumbers)
         {
-            await _service.ProcessWinningNumbers(winningNumbers);
-            return Ok();
+            var gameDto = await _service.ProcessWinningNumbers(winningNumbers);
+            return Ok(gameDto);
         }
         
   
