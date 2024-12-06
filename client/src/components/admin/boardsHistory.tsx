@@ -33,7 +33,7 @@ const BoardsHistory: React.FC = () => {
 
     return (
         <div className="boards-history">
-            <h2 className="text-2xl font-bold mb-4">Boards History</h2>
+            <h2 className="text-2xl font-bold mb-4">Boards History For Admin </h2>
             <table className="table-auto min-w-full bg-white border border-black">
                 <thead>
                 <tr>
