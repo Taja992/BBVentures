@@ -26,6 +26,9 @@ const GameHistoryForAdminComponent: React.FC = () => {
         fetchData();
     }, [setGames]);
 
+    const activeGame = games.find(game => game.isActive);
+    const inactiveGames = games.filter(game => !game.isActive);
+
     const columns = [
         { label: 'Week Number', renderCell: (item: BBVenturesApiGameDto) => item.weekNumber },
         { label: 'Winner Numbers', renderCell: (item: BBVenturesApiGameDto) => item.winnerNumbers?.join(', ') },
@@ -38,7 +41,18 @@ const GameHistoryForAdminComponent: React.FC = () => {
     ];
 
     return (
-        <CompactTable columns={columns} data={{ nodes: games }} theme={theme} />
+        <div>
+            {activeGame && (
+                <div>
+                    <h2>Active Game</h2>
+                    <CompactTable columns={columns} data={{nodes: [activeGame]}} theme={theme}/>
+                </div>
+            )}
+            <h2>Game History</h2>
+            <div className="max-h-64 overflow-y-auto">
+                <CompactTable columns={columns} data={{nodes: inactiveGames}} theme={theme}/>
+            </div>
+        </div>
     );
 };
 

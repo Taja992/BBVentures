@@ -584,11 +584,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Game/processWinningNumbers
      */
     gameProcessWinningNumbersCreate: (data: number[], params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<BBVenturesApiGameDto, any>({
         path: `/api/Game/processWinningNumbers`,
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
