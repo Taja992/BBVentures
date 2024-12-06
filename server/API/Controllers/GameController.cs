@@ -25,23 +25,23 @@ namespace API.Controllers
             return Ok(game);
         }
 
-        [HttpPost]
-        [Route("addGame")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<GameDto>> AddGame([FromBody] GameDto dto)
-        {
-            var game = await _service.CreateGame(dto);
-            return Ok(game);
-        }
+        // // [HttpPost]
+        // // [Route("addGame")]
+        // // [Authorize(Roles = "Admin")]
+        // // public async Task<ActionResult<GameDto>> AddGame([FromBody] GameDto dto)
+        // // {
+        // //     var game = await _service.CreateGame(dto);
+        // //     return Ok(game);
+        // // }
 
-        [HttpPut]
-        [Route("updateGame")]
-        [Authorize  (Roles = "Admin")]
-        public async Task<ActionResult<GameDto>> UpdateGame([FromBody] GameDto dto)
-        {
-            var game = await _service.UpdateGame(dto);
-            return Ok(game);
-        }
+        // [HttpPut]
+        // [Route("updateGame")]
+        // [Authorize  (Roles = "Admin")]
+        // public async Task<ActionResult<GameDto>> UpdateGame([FromBody] GameDto dto)
+        // {
+        //     var game = await _service.UpdateGame(dto);
+        //     return Ok(game);
+        // }
 
         [HttpPost]
         [Route("processWinningNumbers")]

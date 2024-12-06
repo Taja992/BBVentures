@@ -1,11 +1,12 @@
 ﻿import { useState } from "react";
 import { useAtom } from "jotai";
-import { userInfoAtom } from "../../atoms/atoms";
+import {gamesAtom, userInfoAtom } from "../../atoms/atoms";
 import { http } from "../../http";
 
 const InputWinningNumbersComponent = () => {
     const [winningNumbers, setWinningNumbers] = useState<number[]>([]);
     const [userInfo] = useAtom(userInfoAtom);
+    const [, setGames] = useAtom(gamesAtom);
 
     const handleInputChange = (index: number, value: string) => {
         const newNumbers = [...winningNumbers];
@@ -22,6 +23,8 @@ const InputWinningNumbersComponent = () => {
         try {
             await http.gameProcessWinningNumbersCreate(winningNumbers);
             alert("Winning numbers submitted successfully.");
+            const updatedGames = await http.gameList();
+            setGames(updatedGames.data);
         } catch (error) {
             console.error("Failed to submit winning numbers:", error);
             alert("Failed to submit winning numbers.");

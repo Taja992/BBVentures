@@ -82,6 +82,13 @@ export interface BBVenturesApiGameDto {
   isActive?: boolean;
   /** @format int32 */
   weekNumber?: number;
+  /** @format double */
+  clubRevenue?: number;
+  /** @format double */
+  winnersRevenue?: number;
+  winners?: string[] | null;
+  winnerUsernames?: string[] | null;
+  winnerEmails?: string[] | null;
 }
 
 export interface BBVenturesApiLoginRequest {
@@ -179,8 +186,6 @@ export interface BBVenturesApiUser {
   createdAt?: string | null;
   /** @format date-time */
   updatedAt?: string | null;
-  /** @maxLength 50 */
-  role?: string | null;
   boards?: BBVenturesApiBoard[] | null;
   transactions?: BBVenturesApiTransaction[] | null;
 }
@@ -533,40 +538,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<BBVenturesApiGameDto[], any>({
         path: `/api/Game`,
         method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Game
-     * @name GameAddGameCreate
-     * @request POST:/api/Game/addGame
-     */
-    gameAddGameCreate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
-      this.request<BBVenturesApiGameDto, any>({
-        path: `/api/Game/addGame`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Game
-     * @name GameUpdateGameUpdate
-     * @request PUT:/api/Game/updateGame
-     */
-    gameUpdateGameUpdate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
-      this.request<BBVenturesApiGameDto, any>({
-        path: `/api/Game/updateGame`,
-        method: "PUT",
-        body: data,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
