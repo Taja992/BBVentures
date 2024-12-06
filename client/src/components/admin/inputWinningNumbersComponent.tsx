@@ -21,9 +21,10 @@ const InputWinningNumbersComponent = () => {
         }
 
         try {
-            const response = await http.gameProcessWinningNumbersCreate(winningNumbers);
-            setGames((prevGames) => [...prevGames, response.data]);
+            await http.gameProcessWinningNumbersCreate(winningNumbers);
             alert("Winning numbers submitted successfully.");
+            const updatedGames = await http.gameList();
+            setGames(updatedGames.data);
         } catch (error) {
             console.error("Failed to submit winning numbers:", error);
             alert("Failed to submit winning numbers.");
