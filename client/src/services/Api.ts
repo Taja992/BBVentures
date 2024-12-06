@@ -546,50 +546,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Game
-     * @name GameAddGameCreate
-     * @request POST:/api/Game/addGame
-     */
-    gameAddGameCreate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
-      this.request<BBVenturesApiGameDto, any>({
-        path: `/api/Game/addGame`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Game
-     * @name GameUpdateGameUpdate
-     * @request PUT:/api/Game/updateGame
-     */
-    gameUpdateGameUpdate: (data: BBVenturesApiGameDto, params: RequestParams = {}) =>
-      this.request<BBVenturesApiGameDto, any>({
-        path: `/api/Game/updateGame`,
-        method: "PUT",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Game
      * @name GameProcessWinningNumbersCreate
      * @request POST:/api/Game/processWinningNumbers
      */
     gameProcessWinningNumbersCreate: (data: number[], params: RequestParams = {}) =>
-      this.request<BBVenturesApiGameDto, any>({
+      this.request<void, any>({
         path: `/api/Game/processWinningNumbers`,
         method: "POST",
         body: data,
         type: ContentType.Json,
-        format: "json",
         ...params,
       }),
 
