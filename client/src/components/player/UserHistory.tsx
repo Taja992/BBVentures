@@ -50,6 +50,8 @@ function UserHistory() {
     
     return (
         <>
+            <h1 className={"text-2xl font-bold mb-4"}> Your Transactions </h1>
+            
             <div className={"table-container"}>
                 <table className={"table-auto bg-white border border-black"}>
                     <thead>

@@ -584,12 +584,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Game/processWinningNumbers
      */
     gameProcessWinningNumbersCreate: (data: number[], params: RequestParams = {}) =>
-      this.request<BBVenturesApiGameDto, any>({
+      this.request<void, any>({
         path: `/api/Game/processWinningNumbers`,
         method: "POST",
         body: data,
         type: ContentType.Json,
-        format: "json",
         ...params,
       }),
 
@@ -597,12 +596,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transaction
-     * @name TransactionList
-     * @request GET:/api/Transaction
+     * @name TransactionGetTransactionsList
+     * @request GET:/api/Transaction/getTransactions
      */
-    transactionList: (params: RequestParams = {}) =>
+    transactionGetTransactionsList: (params: RequestParams = {}) =>
       this.request<BBVenturesApiTransactionResponseDto[], any>({
-        path: `/api/Transaction`,
+        path: `/api/Transaction/getTransactions`,
         method: "GET",
         format: "json",
         ...params,
@@ -631,7 +630,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Transaction/addTransaction
      */
     transactionAddTransactionCreate: (data: BBVenturesApiTransactionDto, params: RequestParams = {}) =>
-      this.request<BBVenturesApiTransactionDto, any>({
+      this.request<BBVenturesApiTransaction, any>({
         path: `/api/Transaction/addTransaction`,
         method: "POST",
         body: data,
