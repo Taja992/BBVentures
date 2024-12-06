@@ -28,14 +28,14 @@ public class TransactionService(AppDbContext context)
         return repo.GetAllTransactions();
     }*/
     
-    public async Task<Transaction> CreateTransaction(TransactionDto dto)
+    public async Task<TransactionDto> CreateTransaction(TransactionDto dto)
     {
         //use validator to validate and throw if we want
         Transaction trans = dto.ToTransaction();
         trans.CreatedAt = DateTime.UtcNow;
         trans.isPending = true;
         Transaction newTrans = await _repository.AddTransaction(trans);
-        return newTrans;
+        return new TransactionDto().FromEntity(newTrans);
     }
 
     public TransactionResponseDto UpdateTransaction(TransactionResponseDto dto)

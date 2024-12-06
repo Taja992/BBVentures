@@ -20,16 +20,15 @@ public class TransactionController(AppDbContext context) : ControllerBase
     private TransactionService service = new TransactionService(context);
     
     [HttpGet]
-    [Authorize(Roles = "Admin")]
-    [Route("getTransactions")]
+    [AllowAnonymous]
     public ActionResult<List<TransactionResponseDto>> GetAllTransactions()
     {
         return Ok(service.GetAllTransactions());
     }
     
     [HttpGet]
-    [Authorize]
     [Route("transactionsFromUser")]
+    [AllowAnonymous]
     public ActionResult<List<TransactionResponseDto>> GetAllTransactionsFromUser()
     {
         
@@ -44,17 +43,17 @@ public class TransactionController(AppDbContext context) : ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
     [Route("addTransaction")]
-    public async Task<ActionResult<Transaction>> AddTransaction([FromBody] TransactionDto dto)
+    [AllowAnonymous]
+    public async Task<ActionResult<TransactionDto>> AddTransaction([FromBody] TransactionDto dto)
     {
         var trans = await service.CreateTransaction(dto);
         return Ok(trans); //lol
     }
     
     [HttpPut]
-    [Authorize(Roles = "Admin")]
     [Route("updateTransaction")]
+    [AllowAnonymous]
     public ActionResult<TransactionDto> UpdateTransaction([FromBody] TransactionResponseDto dto)
     {
         if (string.IsNullOrEmpty(dto.Id.ToString()))

@@ -7,7 +7,6 @@ using Xunit.Abstractions;
 
 namespace BBVenturesTests;
 
-[Collection("Sequential")]
 public class UserControllerTests(ITestOutputHelper output) : ApiTestBase
 {
     [Fact]
