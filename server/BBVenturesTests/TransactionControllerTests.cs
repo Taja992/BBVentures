@@ -8,6 +8,11 @@ using Xunit.Abstractions;
 
 namespace BBVenturesTests;
 
+//putting multiple files under the same collection ensures they run sequentially
+//I'm doing this because running both files at the same time causes errors
+//since they both try to make a new instance of the db, which causes errors
+//bc u cant have 2 dbs with the same name. at least this is my understanding of it. idk man its midnight
+[Collection("Sequential")]
 public class TransactionControllerTests(ITestOutputHelper output) : ApiTestBase
 {
     
