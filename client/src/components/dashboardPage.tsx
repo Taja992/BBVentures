@@ -10,9 +10,9 @@ import UpdateSelf from "./player/updateSelfComponent";
 import BoardGameComponent from "./player/BoardGameComponent";
 import InputWinningNumbersComponent from "./admin/inputWinningNumbersComponent";
 import TopUp from "./player/TopUpComponent";
-import BoardsHistory from "./admin/boardsHistory";
 import BoardHistoryComponent from "./player/BoardHistory-UserID-Component";
 import GameHistoryForAdminComponent from "./admin/gameHistoryForAdminComponent";
+import AdminBoardsHistoryComponent from "./admin/adminBoardsHistoryComponent";
 
 
 const DashboardPage = () => {
@@ -73,7 +73,7 @@ const DashboardPage = () => {
                 {userInfo?.isPlayer && <TopUp />}
             </div>
             <div className={"border border-black p-4 mb-4"}>
-                <BoardsHistory />
+                <AdminBoardsHistoryComponent />
             </div>
         </>
     );
