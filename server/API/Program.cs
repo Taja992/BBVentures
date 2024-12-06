@@ -1,3 +1,4 @@
+
 using API.Misc;
 using DataAccess;
 using DataAccess.DataAccessObjects;
@@ -17,11 +18,8 @@ using Service.Services;
 using Service.TransferModels.Requests.Create;
 using Service.Validators;
 
-namespace API;
-
 public class Program
 {
-    private static ILogger<Program>? _logger;
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -29,9 +27,6 @@ public class Program
         ConfigureServices(builder);
 
         var app = builder.Build();
-
-        // Initialize the logger before running the app
-        _logger = app.Services.GetRequiredService<ILogger<Program>>();
 
         Configure(app);
 
@@ -41,8 +36,8 @@ public class Program
         }
         catch (OperationCanceledException)
         {
-            // Log the shutdown message using the static logger
-            _logger.LogInformation("Application is shutting down...");
+            var logger = app.Services.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation( "Application is shutting down...");
         }
     }
 
