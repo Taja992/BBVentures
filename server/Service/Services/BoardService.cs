@@ -14,12 +14,14 @@ namespace Service.Services
         private readonly AppDbContext _context;
         private readonly IBoardRepository _boardRepository;
         private readonly IValidator<CreateBoardDto> _createValidator;
+        private readonly IGameRepository _gameRepository;
 
-        public BoardService(AppDbContext context, IBoardRepository boardRepository, IValidator<CreateBoardDto> createValidator)
+        public BoardService(AppDbContext context, IBoardRepository boardRepository, IValidator<CreateBoardDto> createValidator, IGameRepository gameRepository)
         {
             _context = context;
             _boardRepository = boardRepository;
             _createValidator = createValidator;
+            _gameRepository = gameRepository;
         }
 
         public async Task<BoardDto> CreateBoard(CreateBoardDto createBoardDto)
@@ -61,6 +63,8 @@ namespace Service.Services
 
             var newBoard = await _boardRepository.CreateBoard(board);
 
+
+
             return new BoardDto
             {
                 Id = newBoard.Id,
@@ -92,12 +96,18 @@ namespace Service.Services
         public async Task<List<BoardHistoryDto>> GetBoardHistoryByUserId(string userId)
         {
             var boards = await _boardRepository.GetBoardsByUserId(userId);
+            
+            var activeGame = await _gameRepository.GetActiveGameAsync();
+            if (activeGame == null)
+            {
+                throw new Exception("No active game found");
+            }
 
             return boards.Select(board => new BoardHistoryDto
             {
                 Numbers = board.Numbers ?? new List<int>(), // Ensure Numbers is not null
                 CreatedAt = board.CreatedAt,
-                WeekNumber = board.Game?.WeekNumber ?? 0 // Ensure Game is not null
+                WeekNumber = activeGame.WeekNumber // Ensure Game is not null
             }).ToList();
         }
     }

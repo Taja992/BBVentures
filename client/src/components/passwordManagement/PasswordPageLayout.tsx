@@ -2,7 +2,7 @@
 
 const PasswordPageLayout = () => {
     return (
-        <div>
+        <div className="bg-gradient-to-b from-orange-300 to-red-700 min-h-screen">
             <Outlet />
         </div>
     );

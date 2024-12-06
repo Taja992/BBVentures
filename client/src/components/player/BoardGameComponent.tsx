@@ -1,10 +1,10 @@
 ﻿import { useState, useEffect } from 'react';
+import { useAtom } from 'jotai';
 import { http } from '../../http';
 import './BoardGameComponent.css';
 import { BBVenturesApiCreateBoardDto } from '../../services/Api';
 import toast from 'react-hot-toast';
-import BoardHistoryComponent from './BoardHistory-UserID-Component';
-import { useAtom } from 'jotai';
+import { boardStateAtom } from '../../atoms/atoms';
 import { userBalance } from '../../atoms/atoms';
 
 const BoardGameComponent = () => {
@@ -12,7 +12,7 @@ const BoardGameComponent = () => {
     const [fieldCount, setFieldCount] = useState<number>(4);
     const [gameId, setGameId] = useState<string | null>(null);
     const [, setBalance] = useAtom(userBalance);
-    const [refreshHistory, setRefreshHistory] = useState<number>(0);
+    const [, setBoardState] = useAtom(boardStateAtom);
     const [isActive, setIsActive] = useState<boolean | null>(null);
 
     useEffect(() => {
@@ -91,14 +91,12 @@ const BoardGameComponent = () => {
 
         try {
             const response = await http.boardCreateCreate(requestBody);
-            console.log('Board created:', response.data);
             toast.success("Board bought!");
             const cost = calculateCost(fieldCount);
             setBalance(prevBalance => (prevBalance ?? 0) - cost);
-            setRefreshHistory(prev => prev + 1);
-        } catch (error) {
-            console.error('Error creating board:', error);
-            toast.error("Error buying board :(");
+            setBoardState(prevState => [...prevState, response.data]);
+        } catch {
+            toast.error("Error buying board :( Is balance sufficient?");
         }
     };
 
@@ -111,7 +109,7 @@ const BoardGameComponent = () => {
             {isActive ? (
                 <>
                     <div className="field-selection">
-                        {[4, 5, 6, 7].map(count => (
+                        {[5, 6, 7, 8].map(count => (
                             <button
                                 key={count}
                                 className={`field-button ${fieldCount === count ? 'selected' : ''}`}
@@ -137,7 +135,6 @@ const BoardGameComponent = () => {
             ) : (
                 <p>This user is not active</p>
             )}
-            <BoardHistoryComponent key={refreshHistory} />
         </div>
     );
 };

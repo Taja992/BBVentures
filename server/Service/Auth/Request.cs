@@ -15,6 +15,8 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 
 public record LoginRequest(string Email, string Password);
 
+public record RoleAssignmentRequest(string UserId, string Role);
+
 public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {
     public LoginRequestValidator()

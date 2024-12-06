@@ -13,6 +13,7 @@ const GetAllUsers: React.FC = () => {
     const theme = useTheme(getTheme());
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
     const [formData, setFormData] = useState<{ [key: string]: BBVenturesApiUserDto }>({});
+    const [searchTerm, setSearchTerm] = useState<string>('');
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -41,6 +42,24 @@ const GetAllUsers: React.FC = () => {
                 [name]: newValue,
             },
         }));
+    };
+
+    const handleRoleChange = async (userId: string, role: string) => {
+        try {
+            await http.userAssignRoleCreate({ userId, role });
+            toast.success('Role assigned successfully!');
+
+            // Update the formData state with the new role
+            setFormData((prevData) => ({
+                ...prevData,
+                [userId]: {
+                    ...prevData[userId],
+                    role: role,
+                },
+            }));
+        } catch (error) {
+            toast.error('Failed to assign role.');
+        }
     };
 
     const handleUpdate = async (user: BBVenturesApiUserDto) => {
@@ -141,6 +160,23 @@ const GetAllUsers: React.FC = () => {
             ),
         },
         {
+            label: "Role",
+            renderCell: (item: BBVenturesApiUserDto) => (
+                editingUserId === item.id ? (
+                    <select
+                        value={formData[item.id!]?.role || item.role || ''}
+                        onChange={(event) => handleRoleChange(item.id!, event.target.value)}
+                    >
+                        <option value="">Select Role</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Player">Player</option>
+                    </select>
+                ) : (
+                    item.role || "No role assigned"
+                )
+            ),
+        },
+        {
             label: "Actions",
             renderCell: (item: BBVenturesApiUserDto) => (
                 editingUserId === item.id ? (
@@ -152,10 +188,25 @@ const GetAllUsers: React.FC = () => {
         },
     ];
 
+    const filteredUsers = allUsers.filter(user =>
+        (user.userName?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+        (user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false)
+    );
+
     return (
         <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">All Users</h1>
-            <CompactTable columns={columns} data={{nodes: allUsers}} theme={theme} className="w-full border-collapse"/>
+            <div className="flex items-center mb-4">
+                <h1 className="text-2xl font-bold">All Users</h1>
+                <input
+                    type="text"
+                    placeholder="Username or Email"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="border p-2 ml-4"
+                />
+            </div>
+            <CompactTable columns={columns} data={{nodes: filteredUsers}} theme={theme}
+                          className="w-full border-collapse"/>
         </div>
     );
 };

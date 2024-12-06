@@ -16,8 +16,8 @@ export const boardsAtom = atom<BBVenturesApiBoardDto[]>([]);
 // to keep track of user balance
 export const userBalance = atom<number>();
 
-
-
+// to keep track of user board history
+export const boardStateAtom = atom<BBVenturesApiBoardDto[]>([]);
 
 
 //////////Auth Stuff////////////////////

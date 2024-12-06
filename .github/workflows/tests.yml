@@ -1,0 +1,43 @@
+﻿name: API tests with .NET + TestContainers
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  local_development:
+    runs-on: ubuntu-22.04
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: bbventure_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8'
+      - uses: docker/setup-buildx-action@v3
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 1
+          done
+      - name: Run tests
+        run: dotnet test
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          ConnectionStrings__AppDb: Host=localhost;Port=5432;Database=bbventure_db;Username=postgres;Password=postgres
+          RUN_SEEDER: true

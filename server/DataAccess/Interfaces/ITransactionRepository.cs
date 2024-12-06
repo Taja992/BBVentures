@@ -13,5 +13,4 @@ public interface ITransactionRepository
     public Task<Transaction> AddTransaction(Transaction trans);
 
     public Transaction UpdateTransaction(Transaction trans);
-
 }

@@ -29,9 +29,3 @@ jobs:
 
       - name: Build API
         run: dotnet build server/API/API.csproj --no-restore
-
-      - name: Build Tests
-        run: dotnet build server/BBVenturesTests/BBVenturesTests.csproj --no-restore
-
-      - name: Run tests
-        run: dotnet test server/BBVenturesTests/BBVenturesTests.csproj --no-build --verbosity normal

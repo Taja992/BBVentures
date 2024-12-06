@@ -8,7 +8,7 @@ namespace Service.Validators
         public GameValidator()
         {
             RuleFor(x => x.WinnerNumbers)
-                .Must(numbers => numbers.Count == 3)
+                .Must(numbers => numbers is { Count: 3 })
                 .WithMessage("Exactly 3 winning numbers must be provided.");
         }
     }

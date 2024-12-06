@@ -12,6 +12,8 @@ public class DbSeeder
     private readonly UserManager<User> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly AppDbContext context;
+    public string AdminId { get; private set; }
+    public string PlayerId { get; private set; }
 
     public DbSeeder(
         ILogger<DbSeeder> logger,
@@ -29,8 +31,12 @@ public class DbSeeder
     public async Task SeedAsync()
     {
         await CreateRoles(Role.Admin, Role.Player);
-        var adminId = await CreateUser(username: "Admin", email: "admin@example.com",balance: 10000, isActive: true, password: "S3cret!!", role: Role.Admin);
-        var playerId = await CreateUser(username: "Player",email: "player@example.com", balance: 15000, isActive: false, password: "S3cret!!", role: Role.Player);
+        AdminId = await CreateUser(username: "Admin", email: "admin@example.com",balance: 1000, isActive: true, password: "S3cret!!", role: Role.Admin);
+        PlayerId = await CreateUser(username: "Player",email: "player@example.com", balance: 500, isActive: false, password: "S3cret!!", role: Role.Player);
+        var player2Id = await CreateUser(username: "Player2", email: "player2@example.com",balance: 1000, isActive: true, password: "S3cret!!", role: Role.Player);
+        var player3Id = await CreateUser(username: "Player3",email: "player3@example.com", balance: 1550, isActive: false, password: "S3cret!!", role: Role.Player);
+        var player4Id = await CreateUser(username: "Player4", email: "player4@example.com",balance: 1230, isActive: true, password: "S3cret!!", role: Role.Player);
+        var player5Id = await CreateUser(username: "Player5",email: "player5@example.com", balance: 1500, isActive: false, password: "S3cret!!", role: Role.Player);
         await CreateGame(
             id: new Guid("11111111-1111-1111-1111-111111111111"),
             winnerNumbers: new List<int> { 1, 2, 3 },
@@ -47,24 +53,24 @@ public class DbSeeder
         await CreateBoards(
             new List<(Guid Id, string UserId, Guid GameId, List<int> Numbers, bool IsAutoplay)>
             {
-                (Guid.NewGuid(), playerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 1, 2, 3, 4, 5 }, false),
-                (Guid.NewGuid(), adminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
-                (Guid.NewGuid(), playerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
-                (Guid.NewGuid(), adminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
-                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 6, 7, 8, 11, 2, 6 }, true),
-                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, false),
-                (Guid.NewGuid(), adminId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, false),
-                (Guid.NewGuid(), playerId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9, 1, 2 }, true)
+                (Guid.NewGuid(), PlayerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 1, 2, 3, 4, 5 }, false),
+                (Guid.NewGuid(), AdminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
+                (Guid.NewGuid(), PlayerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
+                (Guid.NewGuid(), AdminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
+                (Guid.NewGuid(), player2Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 6, 7, 8, 11, 2, 6 }, true),
+                (Guid.NewGuid(), player2Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, false),
+                (Guid.NewGuid(), AdminId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, false),
+                (Guid.NewGuid(), player3Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9, 1, 2 }, true)
             }
         );
         
         await CreateTransactions(
             new List<(Guid Id, string UserId, decimal Amount, string TransactionNumber, bool IsPending, DateTime transactions)>
             {
-                (Guid.NewGuid(), playerId, 100, "Transaction001", true, DateTime.UtcNow),
-                (Guid.NewGuid(), adminId, 200, "Transaction002", true, DateTime.UtcNow),
-                (Guid.NewGuid(), playerId, 300, "Transaction003", false, DateTime.UtcNow),
-                (Guid.NewGuid(), adminId, 400, "Transaction004", false, DateTime.UtcNow)
+                (Guid.NewGuid(), PlayerId, 100, "Transaction001", true, DateTime.UtcNow),
+                (Guid.NewGuid(), AdminId, 200, "Transaction002", true, DateTime.UtcNow),
+                (Guid.NewGuid(), PlayerId, 300, "Transaction003", false, DateTime.UtcNow),
+                (Guid.NewGuid(), AdminId, 400, "Transaction004", false, DateTime.UtcNow)
             }
         );
     }
@@ -103,7 +109,7 @@ public class DbSeeder
                 logger.LogWarning("{Code}: {Description}", error.Code, error.Description);
             }
         }
-        await userManager.AddToRoleAsync(player!, role!);
+        await userManager.AddToRoleAsync(player, role);
         return player.Id;
     }
 

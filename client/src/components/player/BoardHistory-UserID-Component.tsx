@@ -11,8 +11,12 @@ const BoardHistoryComponent = () => {
     const fetchBoards = async () => {
         try {
             const response = await http.boardUserBoardHistoryList();
-            setBoards(response.data);
-        } catch (err) {
+            if (response.data.length === 0) {
+                setError('No boards have been played.');
+            } else {
+                setBoards(response.data);
+            }
+        } catch {
             setError('Failed to fetch boards.');
             toast.error('Failed to fetch boards.');
         } finally {
