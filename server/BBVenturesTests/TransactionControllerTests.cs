@@ -136,8 +136,8 @@ public class TransactionControllerTests(ITestOutputHelper output) : ApiTestBase
         decimal originalAmount = transToUpdate.Amount;
         string originalUserId = transToUpdate.UserId;
         
-        transToUpdate.isPending = false;
-        transToUpdate.Amount = 20;
+        transToUpdate.isPending = !transToUpdate.isPending;
+        transToUpdate.Amount = 2;
 
         var content = JsonContent.Create(transToUpdate);
         var response2 = await Client.PutAsync("api/Transaction/updateTransaction", content);
