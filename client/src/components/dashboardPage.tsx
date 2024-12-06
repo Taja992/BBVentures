@@ -5,7 +5,6 @@ import { userBalance, userInfoAtom, boardStateAtom } from "../atoms/atoms";
 import RegisterUser from "./admin/registerUserComponent";
 import UserHistory from "./player/UserHistory";
 import AllHistory from "./admin/AllHistory";
-import GamesHistory from "./admin/gamesHistoryComponent";
 import GetAllUsers from "./admin/allUsersComponent";
 import UpdateSelf from "./player/updateSelfComponent";
 import BoardGameComponent from "./player/BoardGameComponent";
@@ -13,6 +12,8 @@ import InputWinningNumbersComponent from "./admin/inputWinningNumbersComponent";
 import TopUp from "./player/TopUpComponent";
 import BoardsHistory from "./admin/boardsHistory";
 import BoardHistoryComponent from "./player/BoardHistory-UserID-Component";
+import GameHistoryForAdminComponent from "./admin/gameHistoryForAdminComponent";
+
 
 const DashboardPage = () => {
     const [userInfo] = useAtom(userInfoAtom);
@@ -52,7 +53,7 @@ const DashboardPage = () => {
                 <UpdateSelf />
             </div>
             <div className="border border-black p-4 mb-4">
-                <GamesHistory />
+                <GameHistoryForAdminComponent />
             </div>
             <div className="border border-black p-4 mb-4">
                 <h4>History</h4>

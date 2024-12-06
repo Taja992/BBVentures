@@ -9,6 +9,11 @@ public class GameDto
     public decimal TotalRevenue { get; set; }
     public bool IsActive { get; set; }
     public int WeekNumber { get; set; }
+    public decimal ClubRevenue { get; set; }
+    public decimal WinnersRevenue { get; set; } 
+    public List<string>? Winners { get; set; }
+    public List<string>? WinnerUsernames { get; set; } 
+    public List<string>? WinnerEmails { get; set; }
 
     public Game ToEntity()
     {
@@ -23,12 +28,13 @@ public class GameDto
 
     public static GameDto FromEntity(Game game)
     {
+        
         return new GameDto
         {
             Id = game.Id,
             WinnerNumbers = game.WinnerNumbers,
             IsActive = game.IsActive,
-            WeekNumber = game.WeekNumber
+            WeekNumber = game.WeekNumber,
         };
     }
 }
