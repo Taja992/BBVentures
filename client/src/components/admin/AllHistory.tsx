@@ -10,7 +10,7 @@ function AllHistory(){
 
     useEffect(() => {getAllTrans(); getAllUsers()}, [])
     async function getAllTrans(){
-        const response = await http.transactionList();
+        const response = await http.transactionGetTransactionsList();
         setAllTrans(response.data);
         console.log(response.data);
     }
@@ -60,24 +60,6 @@ function AllHistory(){
         
     }
     
-    //below was an attempt at getting the user name via http request but theres not really a way to do it that isnt asynchronous,
-    //which tables dont like. So for now I'm doing the less efficient route of getting all the users at the start and going through
-    //that list
-     /*function getUserNameById(id: string){
-        const response = http.userGetByIdList({id});
-        var playerName;
-        var data;
-        response.then(res => {
-            playerName = res.data.id
-            data = res.data
-            return playerName;
-            //console.log("Id: " + res.data.id);
-        })
-         console.log(data);
-        // console.log("Player Name: " + playerName)
-        return playerName;
-    }*/
-    
     function getUserNameById(id: string){
         let name;
         allUsers.map((user) => {
@@ -111,7 +93,7 @@ function AllHistory(){
 
     return <>
 
-        <h1 className={"text-2xl font-bold mb-4"}> All transactions </h1>
+        <h1 className={"text-2xl font-bold mb-4"}> All Transactions </h1>
         
         <button onClick={getAllTrans}>this is a test button</button>
         <br/>
@@ -150,26 +132,6 @@ function AllHistory(){
 
             </table>
         </div>
-
-        {/*{
-            allTrans.map((t) => {
-                return <div>
-                    <>detected transaction</>
-                    <br/>
-                    <>Id: {t.id}</>
-                    <br/>
-                    <>playerId: {t.userId}</>
-                    <br/>
-                    <>amount: {t.amount}</>
-                    <br/>
-                    <h1 className={"font-bold"}> {t.isPending ? "pending" : "approved"} </h1>
-                    <br/>
-                    {t.isPending ? <button onClick={() => approveTransaction(t)}>approve</button> : <></>}
-                    <br/>
-                    <br/>
-                </div>
-            })
-        }*/}
 
     </>
 
