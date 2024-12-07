@@ -45,6 +45,7 @@ export interface BBVenturesApiBoardDto {
   updatedAt?: string | null;
   weekNumber?: number;
   playerUsername?: string | null;
+    playerEmail?: string | null;
 }
 
 export interface BBVenturesApiBoardHistoryDto {

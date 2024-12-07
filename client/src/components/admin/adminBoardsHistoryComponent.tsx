@@ -35,6 +35,7 @@ const AdminBoardsHistoryComponent: React.FC = () => {
     // Define columns for the table
     const columns = [
         { label: 'Username', renderCell: (item: BBVenturesApiBoardDto) => item.playerUsername },
+        { label: 'Email', renderCell: (item: BBVenturesApiBoardDto) => item.playerEmail },
         { label: 'Week Number', renderCell: (item: BBVenturesApiBoardDto) => item.weekNumber},
         { label: 'Numbers', renderCell: (item: BBVenturesApiBoardDto) => item.numbers?.join(', ') },
         { label: 'Is Autoplay', renderCell: (item: BBVenturesApiBoardDto) => (item.isAutoplay ? 'Yes' : 'No') },
