@@ -43,6 +43,9 @@ export interface BBVenturesApiBoardDto {
   createdAt?: string | null;
   /** @format date-time */
   updatedAt?: string | null;
+  weekNumber?: number;
+  playerUsername?: string | null;
+    playerEmail?: string | null;
 }
 
 export interface BBVenturesApiBoardHistoryDto {
@@ -52,7 +55,6 @@ export interface BBVenturesApiBoardHistoryDto {
   /** @format int32 */
   weekNumber?: number;
 }
-
 export interface BBVenturesApiCreateBoardDto {
   userId?: string | null;
   /** @format uuid */

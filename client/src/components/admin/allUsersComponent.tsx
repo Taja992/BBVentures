@@ -3,9 +3,11 @@ import { allUsersAtom } from "../../atoms/atoms";
 import { http } from "../../http";
 import { useEffect, useState } from "react";
 import { BBVenturesApiUserDto } from "../../services/Api";
+//for the tables
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { getTheme } from "@table-library/react-table-library/baseline";
+//end
 import toast from 'react-hot-toast';
 
 const GetAllUsers: React.FC = () => {
