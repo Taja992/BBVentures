@@ -88,8 +88,6 @@ namespace Service.Services
                 var userDetails = await GetUserDetails(board.UserId);
                 boardDto.PlayerUsername = userDetails.PlayerUsername;
                 boardDto.PlayerEmail = userDetails.PlayerEmail;
-                boardDto.WeekNumber = 
-                boardDtos.Add(boardDto);
             }
 
             return boardDtos;
