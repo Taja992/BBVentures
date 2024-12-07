@@ -8,7 +8,7 @@ public class Transaction
     [Key] public Guid Id { get; set; }
 
     public string UserId { get; set; } = null!;
-
+    
     public decimal Amount { get; set; }
 
     public DateTime? CreatedAt { get; set; }
