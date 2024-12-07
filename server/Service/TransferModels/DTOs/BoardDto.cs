@@ -9,5 +9,9 @@
         public bool IsAutoplay { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        
+        public int WeekNumber { get; set; }
+        
+        public string? PlayerUsername { get; set; }
     }
 }

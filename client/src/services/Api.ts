@@ -52,7 +52,21 @@ export interface BBVenturesApiBoardHistoryDto {
   /** @format int32 */
   weekNumber?: number;
 }
-
+export interface BBVenturesApiAdminBoardHistoryDto {
+    /** @format uuid */
+    id?: string;
+    userId?: string | null;
+    /** @format uuid */
+    gameId?: string;
+    numbers?: number[] | null;
+    isAutoplay?: boolean;
+    /** @format date-time */
+    createdAt?: string | null;
+    /** @format date-time */
+    updatedAt?: string | null;
+    game?: BBVenturesApiGame;
+    user?: BBVenturesApiUser;
+    }
 export interface BBVenturesApiCreateBoardDto {
   userId?: string | null;
   /** @format uuid */

@@ -89,7 +89,9 @@ namespace Service.Services
                 Numbers = board.Numbers,
                 IsAutoplay = board.IsAutoplay,
                 CreatedAt = board.CreatedAt,
-                UpdatedAt = board.UpdatedAt
+                UpdatedAt = board.UpdatedAt,
+                PlayerUsername = board.User.UserName,
+                WeekNumber = board.Game.WeekNumber
             }).ToList();
         }
         
