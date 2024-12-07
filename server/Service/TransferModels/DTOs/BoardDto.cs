@@ -1,4 +1,4 @@
-﻿namespace Service.TransferModels.DTOs
+﻿using DataAccess.Models;namespace Service.TransferModels.DTOs
 {
     public class BoardDto
     {
@@ -13,5 +13,40 @@
         public int WeekNumber { get; set; }
         
         public string? PlayerUsername { get; set; }
+        
+        public string? PlayerEmail { get; set; }
+        
+        public Board ToEntity()
+        {
+            return new Board
+            {
+                Id = Id,
+                UserId = UserId,
+                GameId = GameId,
+                Numbers = Numbers,
+                IsAutoplay = IsAutoplay,
+                CreatedAt = CreatedAt,
+                UpdatedAt = UpdatedAt,
+                
+            };
+        }
+        
+        public static BoardDto FromEntity(Board board)
+        {
+            return new BoardDto
+            {
+                Id = board.Id,
+                UserId = board.UserId,
+                GameId = board.GameId,
+                Numbers = board.Numbers,
+                IsAutoplay = board.IsAutoplay,
+                CreatedAt = board.CreatedAt,
+                UpdatedAt = board.UpdatedAt,
+                
+            };
+        }
     }
+    
+    
 }
+
