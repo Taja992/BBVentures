@@ -76,7 +76,9 @@ namespace Service.Services
                 Numbers = newBoard.Numbers,
                 IsAutoplay = newBoard.IsAutoplay,
                 CreatedAt = newBoard.CreatedAt,
-                UpdatedAt = newBoard.UpdatedAt
+                UpdatedAt = newBoard.UpdatedAt,
+                PlayerUsername = user.UserName,
+                PlayerEmail = user.Email
             };
         }
 
