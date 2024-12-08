@@ -18,6 +18,7 @@ public interface IGameService
 }
 
 public class GameService : IGameService
+
 {
     private readonly IGameRepository _repository;
     private readonly IBoardRepository _boardRepository;
