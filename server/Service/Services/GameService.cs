@@ -14,7 +14,7 @@ public interface IGameService
     Task<decimal> CalculateTotalRevenueForGame(Guid gameId);
     Task<decimal> CalculateClubRevenue(Guid gameId);
     Task<decimal> CalculateWinnersRevenue(Guid gameId);
-    Task<List<(string UserName, string UserEmail)>> GetWinnersDetails(Guid gameId, List<int> winningNumbers);
+    Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers);
 }
 
 public class GameService : IGameService
@@ -38,23 +38,43 @@ public class GameService : IGameService
 
         foreach (var game in games)
         {
-            var totalRevenue = await CalculateTotalRevenueForGame(game.Id);
-            var clubRevenue = await CalculateClubRevenue(game.Id);
-            var winnersRevenue = await CalculateWinnersRevenue(game.Id);
-            var winnersDetails = await GetWinnersDetails(game.Id, game.WinnerNumbers ?? new List<int>());
-
-            var gameDto = GameDto.FromEntity(game);
-            gameDto.TotalRevenue = totalRevenue;
-            gameDto.ClubRevenue = clubRevenue;
-            gameDto.WinnersRevenue = winnersRevenue;
-            gameDto.WinnerUsernames = winnersDetails.Select(w => w.UserName).ToList();
-            gameDto.WinnerEmails = winnersDetails.Select(w => w.UserEmail).ToList();
-
+            var gameDto = await ConvertToGameDto(game);
             gameDtos.Add(gameDto);
         }
 
         return gameDtos;
     }
+
+    private async Task<(List<string> Usernames, List<string> Emails)> GetWinnerUsernamesAndEmails(List<string> userIds)
+    {
+        var usernames = new List<string>();
+        var emails = new List<string>();
+
+        foreach (var userId in userIds)
+        {
+            var user = await _userRepository.GetUserById(userId);
+            if (user != null)
+            {
+                usernames.Add(user.UserName ?? "Unknown User");
+                emails.Add(user.Email ?? "Unknown Email");
+            }
+        }
+
+        return (usernames, emails);
+    }
+
+    private async Task<GameDto> ConvertToGameDto(Game game)
+    {
+        var (winnerUsernames, winnerEmails) = await GetWinnerUsernamesAndEmails(game.WinnersUserId ?? new List<string>());
+
+        var gameDto = GameDto.FromEntity(game);
+        gameDto.WinnerUsernames = winnerUsernames;
+        gameDto.WinnerEmails = winnerEmails;
+
+        return gameDto;
+    }
+    
+    
 
     // public async Task<GameDto> CreateGame(GameDto dto)
     // {
@@ -138,6 +158,20 @@ public class GameService : IGameService
         currentGame.WinnerNumbers = winningNumbers;
         currentGame.IsActive = false;
         currentGame.EndedAt = DateTime.UtcNow;
+
+        var totalRevenue = await CalculateTotalRevenueForGame(currentGame.Id);
+        currentGame.TotalRevenue = totalRevenue;
+        currentGame.ClubRevenue = totalRevenue * 0.30m;
+        currentGame.WinnersRevenue = totalRevenue * 0.70m;
+
+        var winnersUserIds = await GetWinnersDetails(currentGame.Id, winningNumbers);
+        //use a HashSet to make sure if the same person wins multiple times they only get recorded as 1 person
+        //HashSet set will prevent duplicate IDs from being added to the list
+        var uniqueWinnersUserIds = new HashSet<string>(winnersUserIds);
+        currentGame.Winners = uniqueWinnersUserIds.Count;
+        currentGame.WinnersUserId = uniqueWinnersUserIds.ToList();
+        currentGame.WinnerShare = currentGame.Winners > 0 ? currentGame.WinnersRevenue / currentGame.Winners : 0;
+
         await _repository.UpdateGame(currentGame);
     }
     
@@ -182,7 +216,7 @@ public class GameService : IGameService
             TotalRevenue = 0,
             ClubRevenue = 0,
             WinnersRevenue = 0,
-            Winners = null,
+            Winners = 0,
             WinnerUsernames = null,
             WinnerEmails = null
         };
@@ -206,23 +240,20 @@ public class GameService : IGameService
         return totalRevenue * 0.70m;
     }
 
-    public async Task<List<(string UserName, string UserEmail)>> GetWinnersDetails(Guid gameId,
-        List<int> winningNumbers)
+    public async Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers)
     {
         var winningBoards = await _repository.GetWinningBoardsForGame(gameId, winningNumbers);
-        var winnersDetails = new List<(string UserName, string UserEmail)>();
+        var winnersUserIds = new List<string>();
 
         foreach (var board in winningBoards)
         {
             var user = await _userRepository.GetUserById(board.UserId);
             if (user != null)
             {
-                var userName = user.UserName ?? "Unknown User";
-                var userEmail = user.Email ?? "Unknown Email"; 
-                winnersDetails.Add((userName, userEmail));
+                winnersUserIds.Add(user.Id);
             }
         }
 
-        return winnersDetails;
+        return winnersUserIds;
     }
 }

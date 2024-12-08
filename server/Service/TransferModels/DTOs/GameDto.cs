@@ -11,9 +11,11 @@ public class GameDto
     public int WeekNumber { get; set; }
     public decimal ClubRevenue { get; set; }
     public decimal WinnersRevenue { get; set; } 
-    public List<string>? Winners { get; set; }
+    public int Winners { get; set; }
+    public decimal WinnerShare { get; set; }
     public List<string>? WinnerUsernames { get; set; } 
     public List<string>? WinnerEmails { get; set; }
+    public List<string>? WinnersUserId { get; set; }
 
     public Game ToEntity()
     {
@@ -22,7 +24,13 @@ public class GameDto
             Id = Id,
             WinnerNumbers = WinnerNumbers,
             IsActive = IsActive,
-            WeekNumber = WeekNumber
+            WeekNumber = WeekNumber,
+            TotalRevenue = TotalRevenue,
+            ClubRevenue = ClubRevenue,
+            WinnersRevenue = WinnersRevenue,
+            Winners = Winners,
+            WinnerShare = WinnerShare,
+            WinnersUserId = WinnersUserId
         };
     }
 
@@ -35,6 +43,12 @@ public class GameDto
             WinnerNumbers = game.WinnerNumbers,
             IsActive = game.IsActive,
             WeekNumber = game.WeekNumber,
+            TotalRevenue = game.TotalRevenue,
+            ClubRevenue = game.ClubRevenue,
+            WinnersRevenue = game.WinnersRevenue,
+            Winners = game.Winners,
+            WinnerShare = game.WinnerShare,
+            WinnersUserId = game.WinnersUserId
         };
     }
 }
