@@ -13,6 +13,7 @@ import TopUp from "./player/TopUpComponent";
 import BoardHistoryComponent from "./player/BoardHistory-UserID-Component";
 import GameHistoryForAdminComponent from "./admin/gameHistoryForAdminComponent";
 import AdminBoardsHistoryComponent from "./admin/adminBoardsHistoryComponent";
+import GameHistoryForUserComponent from "./player/gameHistoryForUserComponent";
 
 
 const DashboardPage = () => {
@@ -53,13 +54,15 @@ const DashboardPage = () => {
                 <UpdateSelf/>
             </div>
             <div className="border border-black p-4 mb-4">
+                <h4>Game History for Admin</h4>
                 <GameHistoryForAdminComponent/>
             </div>
-            <div className={"border border-black p-4 mb-4"}>
-                <AdminBoardsHistoryComponent/>
+            <div className="border border-black p-4 mb-4">
+                <h4>Game History for User</h4>
+                <GameHistoryForUserComponent/>
             </div>
             <div className="border border-black p-4 mb-4">
-                <h4>Personal Board History</h4>
+                <h4>History</h4>
                 <BoardHistoryComponent key={boardState.length}/>
             </div>
             <div className="border border-black p-4 mb-4">
@@ -75,7 +78,9 @@ const DashboardPage = () => {
             <div className="border border-black p-4 mb-4">
                 {userInfo?.isPlayer && <TopUp/>}
             </div>
-
+            <div className={"border border-black p-4 mb-4"}>
+                <AdminBoardsHistoryComponent/>
+            </div>
         </>
     );
 };

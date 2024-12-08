@@ -9,7 +9,7 @@ import { userBalance } from '../../atoms/atoms';
 
 const BoardGameComponent = () => {
     const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
-    const [fieldCount, setFieldCount] = useState<number>(4);
+    const [fieldCount, setFieldCount] = useState<number>(5);
     const [gameId, setGameId] = useState<string | null>(null);
     const [, setBalance] = useAtom(userBalance);
     const [, setBoardState] = useAtom(boardStateAtom);
@@ -24,10 +24,11 @@ const BoardGameComponent = () => {
                     setGameId(activeGame.id);
                     console.log('Active game found:', activeGame);
                 } else {
-                    console.error('No active game found');
+                    toast.error('No active game found.');
                 }
             } catch (error) {
                 console.error('Failed to fetch games:', error);
+                toast.error('Failed to fetch active game.');
             }
         };
 
@@ -37,6 +38,7 @@ const BoardGameComponent = () => {
                 setIsActive(response.data.isActive ?? false);
             } catch (error) {
                 console.error('Failed to fetch user status:', error);
+                toast.error('Failed to fetch user status.');
             }
         };
 
@@ -62,24 +64,24 @@ const BoardGameComponent = () => {
             case 6: return 40;
             case 7: return 80;
             case 8: return 160;
-            default: throw new Error('Invalid number of fields');
+            default: throw new Error('Invalid number of fields. Only 5, 6, 7, or 8 fields are allowed.');
         }
     };
 
     const handleSubmit = async () => {
         if (selectedNumbers.length !== fieldCount) {
-            alert(`Please select exactly ${fieldCount} numbers.`);
+            toast.error(`Please select exactly ${fieldCount} numbers.`);
             return;
         }
 
         if (!gameId) {
-            alert('No active game found.');
+            toast.error('No active game found.');
             return;
         }
 
         const sortedNumbers = [...selectedNumbers].sort((a, b) => a - b);
 
-        const requestBody: BBVenturesApiCreateBoardDto  = {
+        const requestBody: BBVenturesApiCreateBoardDto = {
             userId: "",
             gameId: gameId,
             numbers: sortedNumbers,
@@ -95,7 +97,8 @@ const BoardGameComponent = () => {
             const cost = calculateCost(fieldCount);
             setBalance(prevBalance => (prevBalance ?? 0) - cost);
             setBoardState(prevState => [...prevState, response.data]);
-        } catch {
+        } catch (error) {
+            console.error('Error buying board:', error);
             toast.error("Error buying board :( Is balance sufficient?");
         }
     };
