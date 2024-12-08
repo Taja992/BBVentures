@@ -80,7 +80,7 @@ public class GameService : IGameService
             throw new InvalidOperationException("No active game found.");
         }
 
-        var winningBoards = GetWinningBoards(currentGame, winningNumbers);
+        var winningBoards = await GetWinningBoards(currentGame.Id, winningNumbers);
         await UpdateWinningBoards(winningBoards);
 
         await UpdateCurrentGameWithWinningNumbers(currentGame, winningNumbers);
@@ -103,9 +103,10 @@ public class GameService : IGameService
         return games.FirstOrDefault(g => g.IsActive);
     }
 
-    private List<Board> GetWinningBoards(Game currentGame, List<int> winningNumbers)
+    private async Task<List<Board>> GetWinningBoards(Guid activeGameId, List<int> winningNumbers)
     {
-        return currentGame.Boards
+        var boards = await _boardRepository.GetBoardsByGameId(activeGameId);
+        return boards
             .Where(b => b.Numbers != null && !winningNumbers.Except(b.Numbers).Any())
             .ToList();
     }

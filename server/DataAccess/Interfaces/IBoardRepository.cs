@@ -8,13 +8,15 @@ public interface IBoardRepository
 
     Task<List<Board>> GetAllBoards();
 
-    public Task<Board> AddBoard(Board b);
+    Task<Board> AddBoard(Board board);
 
-    public Task<Board> UpdateBoard(Board b);
+    Task<Board> UpdateBoard(Board board);
 
-    public void DeleteBoard(Board b);
+    void DeleteBoard(Board board);
 
     Task<List<Board>> GetBoardsByUserId(string userId);
+
+    Task<List<Board>> GetBoardsByGameId(Guid gameId);
 
     Task<bool> IsUserActive(string userId);
 

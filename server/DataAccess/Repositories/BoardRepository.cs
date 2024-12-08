@@ -43,6 +43,11 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
     {
         return await context.Boards.Where(board => board.UserId == userId).ToListAsync();
     }
+    
+    public async Task<List<Board>> GetBoardsByGameId(Guid gameId)
+    {
+        return await context.Boards.Where(b => b.GameId == gameId).ToListAsync();
+    }
 
     public async Task<bool> IsUserActive(string userId)
     {
