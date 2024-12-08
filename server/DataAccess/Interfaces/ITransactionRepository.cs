@@ -4,9 +4,9 @@ namespace DataAccess.Interfaces;
 
 public interface ITransactionRepository
 {
-    public List<Transaction> GetAllTransactions();
+    public Task<List<Transaction>> GetAllTransactions();
 
-    public List<Transaction> GetAllTransactionsFromUser(string Id);
+    public Task<List<Transaction>>  GetAllTransactionsFromUser(string Id);
 
     public decimal GetSumOfUserTransactions(string Id);
 
