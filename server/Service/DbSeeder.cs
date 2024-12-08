@@ -12,8 +12,9 @@ public class DbSeeder
     private readonly UserManager<User> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly AppDbContext context;
-    public string AdminId { get; private set; }
-    public string PlayerId { get; private set; }
+    public string? AdminId { get; private set; }
+    public string? PlayerId { get; private set; }
+    
 
     public DbSeeder(
         ILogger<DbSeeder> logger,

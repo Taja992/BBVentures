@@ -17,6 +17,8 @@ using Service.Services;
 using Service.TransferModels.Requests.Create;
 using Service.Validators;
 
+namespace API;
+
 public class Program
 {
     public static void Main(string[] args)
