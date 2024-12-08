@@ -2,8 +2,12 @@
 import { http } from '../../http';
 import { BBVenturesApiBoardHistoryDto } from '../../services/Api';
 import toast from 'react-hot-toast';
+import { CompactTable } from "@table-library/react-table-library/compact";
+import { useTheme } from "@table-library/react-table-library/theme";
+import { getTheme } from "@table-library/react-table-library/baseline";
 
 const BoardHistoryComponent = () => {
+    const theme = useTheme(getTheme());
     const [boards, setBoards] = useState<BBVenturesApiBoardHistoryDto[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -36,30 +40,17 @@ const BoardHistoryComponent = () => {
         return <p className="text-red-500">{error}</p>;
     }
 
-    const sortedBoards = [...boards].sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
+    const columns = [
+        { label: 'Week Number', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.weekNumber },
+        { label: 'Numbers', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.numbers?.join(', ') || 'N/A' },
+        { label: 'Date', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.createdAt ? new Date(item.createdAt).toLocaleString() : 'N/A' },
+    ];
 
     return (
         <div className="board-history">
-            <h2 className="text-2xl font-bold mb-4">Board History</h2>
-            <div className="table-container">
-                <table className="table-auto min-w-full bg-white border border-black">
-                    <thead>
-                    <tr>
-                        <th className="py-2 px-4 border border-black">Week Number</th>
-                        <th className="py-2 px-4 border border-black">Numbers</th>
-                        <th className="py-2 px-4 border border-black">Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {sortedBoards.map((board) => (
-                        <tr key={board.createdAt} className="text-center">
-                            <td className="py-2 px-4 border border-black">{board.weekNumber}</td>
-                            <td className="py-2 px-4 border border-black">{board.numbers?.join(', ') || 'N/A'}</td>
-                            <td className="py-2 px-4 border border-black">{board.createdAt ? new Date(board.createdAt).toLocaleString() : 'N/A'}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
+            <h2 className="text-2xl font-bold mb-4">Boards History For User</h2>
+            <div className="max-h-64 overflow-y-auto">
+                <CompactTable columns={columns} data={{ nodes: boards }} theme={theme} />
             </div>
         </div>
     );
