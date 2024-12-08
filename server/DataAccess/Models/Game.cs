@@ -13,6 +13,8 @@ public class Game
     public bool IsActive { get; set; }
 
     public int WeekNumber { get; set; }
+    
+    public DateTime? EndedAt { get; set; }
 
     [InverseProperty("Game")] public virtual ICollection<Board> Boards { get; set; } = new List<Board>();
 }
