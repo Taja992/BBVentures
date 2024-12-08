@@ -30,11 +30,6 @@ const AdminBoardsHistoryComponent: React.FC = () => {
         
     }, [setBoards]);
     
-    
-    
-
-
-    // Define columns for the table
     const columns = [
         { label: 'Username', renderCell: (item: BBVenturesApiBoardDto) => item.playerUsername },
         { label: 'Email', renderCell: (item: BBVenturesApiBoardDto) => item.playerEmail },

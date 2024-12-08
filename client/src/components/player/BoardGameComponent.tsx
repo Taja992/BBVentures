@@ -4,7 +4,7 @@ import { http } from '../../http';
 import './BoardGameComponent.css';
 import { BBVenturesApiCreateBoardDto } from '../../services/Api';
 import toast from 'react-hot-toast';
-import { boardStateAtom } from '../../atoms/atoms';
+import {boardsAtom, boardStateAtom } from '../../atoms/atoms';
 import { userBalance } from '../../atoms/atoms';
 
 const BoardGameComponent = () => {
@@ -14,6 +14,7 @@ const BoardGameComponent = () => {
     const [, setBalance] = useAtom(userBalance);
     const [, setBoardState] = useAtom(boardStateAtom);
     const [isActive, setIsActive] = useState<boolean | null>(null);
+    const [, setBoards] = useAtom(boardsAtom);
 
     useEffect(() => {
         const fetchActiveGame = async () => {
@@ -97,6 +98,7 @@ const BoardGameComponent = () => {
             const cost = calculateCost(fieldCount);
             setBalance(prevBalance => (prevBalance ?? 0) - cost);
             setBoardState(prevState => [...prevState, response.data]);
+            setBoards(prevBoards => [...prevBoards, response.data]);
         } catch (error) {
             console.error('Error buying board:', error);
             toast.error("Error buying board :( Is balance sufficient?");
