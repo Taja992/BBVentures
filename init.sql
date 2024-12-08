@@ -56,6 +56,7 @@ create table "Games"
     "WinnerNumbers" int[],
     "IsActive"      boolean not null,
     "WeekNumber"    integer not null
+    "EndedAt"       timestamp with time zone
 );
 
 alter table "Games"
@@ -192,6 +193,7 @@ create table "Boards"
     "IsAutoplay" boolean not null,
     "CreatedAt"  timestamp with time zone,
     "UpdatedAt"  timestamp with time zone
+    "IsWon"      boolean
 );
 
 alter table "Boards"

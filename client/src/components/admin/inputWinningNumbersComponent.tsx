@@ -1,7 +1,8 @@
 ﻿import { useState } from "react";
 import { useAtom } from "jotai";
-import {gamesAtom, userInfoAtom } from "../../atoms/atoms";
+import { gamesAtom, userInfoAtom } from "../../atoms/atoms";
 import { http } from "../../http";
+import './InputWinningNumbersComponent.css';
 
 const InputWinningNumbersComponent = () => {
     const [winningNumbers, setWinningNumbers] = useState<number[]>([]);
@@ -36,17 +37,20 @@ const InputWinningNumbersComponent = () => {
     }
 
     return (
-        <div>
+        <div className="input-winning-numbers">
             <h2>Input Winning Numbers</h2>
-            {Array.from({ length: 3 }).map((_, index) => (
-                <input
-                    key={index}
-                    type="number"
-                    value={winningNumbers[index] || ""}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                />
-            ))}
-            <button onClick={handleSubmit}>Submit</button>
+            <div className="input-fields">
+                {Array.from({ length: 3 }).map((_, index) => (
+                    <input
+                        key={index}
+                        type="number"
+                        value={winningNumbers[index] || ""}
+                        onChange={(e) => handleInputChange(index, e.target.value)}
+                        className="winning-number-input"
+                    />
+                ))}
+            </div>
+            <button onClick={handleSubmit} className="submit-button">Submit</button>
         </div>
     );
 };

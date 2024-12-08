@@ -18,6 +18,8 @@ public class Board
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
+    
+    public Boolean isWon { get; set; }
 
     [ForeignKey("GameId")]
     [InverseProperty("Boards")]

@@ -39,9 +39,14 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
         context.SaveChanges();
     }
 
-    public async Task<List<Board>> GetBoardsByUserId(string userId) // New method
+    public async Task<List<Board>> GetBoardsByUserId(string userId)
     {
         return await context.Boards.Where(board => board.UserId == userId).ToListAsync();
+    }
+    
+    public async Task<List<Board>> GetBoardsByGameId(Guid gameId)
+    {
+        return await context.Boards.Where(b => b.GameId == gameId).ToListAsync();
     }
 
     public async Task<bool> IsUserActive(string userId)
