@@ -19,8 +19,5 @@ public interface IBoardRepository
     Task<List<Board>> GetBoardsByGameId(Guid gameId);
 
     Task<bool> IsUserActive(string userId);
-
-    Task<User?> FindUserById(string userId);
-
-    Task UpdateUser(User user);
+    
 }

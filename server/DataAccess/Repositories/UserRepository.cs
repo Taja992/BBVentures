@@ -22,6 +22,8 @@ public class UserRepository(AppDbContext context, UserManager<User> userManager)
         context.Users.Update(user);
         return await context.SaveChangesAsync() > 0;
     }
+    
+    
 
 
     public async Task<IList<string>> GetUserRoles(User user)

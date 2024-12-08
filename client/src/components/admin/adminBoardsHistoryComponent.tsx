@@ -6,6 +6,7 @@ import { http } from '../../http.ts';
 import { BBVenturesApiBoardDto } from '../../services/Api';
 import { useAtom } from 'jotai';
 import { boardsAtom } from '../../atoms/atoms';
+import toast from 'react-hot-toast';
 
 
 const AdminBoardsHistoryComponent: React.FC = () => {
@@ -18,9 +19,10 @@ const AdminBoardsHistoryComponent: React.FC = () => {
             try {
                 const response = await http.boardList();
                 setBoards(response.data);
-                console.log(response.data);
+                console.log("THIS", response.data);
             } catch (error) {
                 console.error('Error fetching boards:', error);
+                toast.error("Error fetching boards")
             }
         };
 
@@ -28,11 +30,6 @@ const AdminBoardsHistoryComponent: React.FC = () => {
         
     }, [setBoards]);
     
-    
-    
-
-
-    // Define columns for the table
     const columns = [
         { label: 'Username', renderCell: (item: BBVenturesApiBoardDto) => item.playerUsername },
         { label: 'Email', renderCell: (item: BBVenturesApiBoardDto) => item.playerEmail },
@@ -47,7 +44,7 @@ const AdminBoardsHistoryComponent: React.FC = () => {
 
     return (
         <div>
-            <h2>Boards History</h2>
+            <h2>Admin Boards History</h2>
             <div className="max-h-64 overflow-y-auto">
                 <CompactTable columns={columns} data={{ nodes: boards }} theme={theme} />
             </div>
