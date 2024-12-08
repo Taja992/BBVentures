@@ -20,8 +20,7 @@ public class TransactionController(ITransactionService service) : ControllerBase
     
     
     [HttpGet]
-    //[Authorize(Roles = "Admin")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     [Route("getTransactions")]
     public async Task<ActionResult<List<TransactionResponseDto>>> GetAllTransactions()
     {
@@ -45,7 +44,7 @@ public class TransactionController(ITransactionService service) : ControllerBase
     }
     
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize]
     [Route("transactionsFromName")]
     public async Task<ActionResult<List<TransactionResponseDto>>> GetAllTransactionsFromUsersName(string searchVal)
     {
