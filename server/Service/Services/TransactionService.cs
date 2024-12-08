@@ -1,7 +1,7 @@
 ﻿using DataAccess;
-using DataAccess.DataAccessObjects;
 using DataAccess.Interfaces;
 using DataAccess.Models;
+using DataAccess.Repositories;
 using Service.TransferModels.DTOs;
 
 namespace Service.Services;
@@ -15,12 +15,13 @@ public interface ITransactionService
     public Task<Transaction> CreateTransaction(TransactionDto dto);
 
     public TransactionResponseDto UpdateTransaction(TransactionResponseDto dto);
+    public Task<List<TransactionResponseDto>> GetAllTransactionsFromUsersName(string searchVal);
 }
-
 
 
 public class TransactionService(ITransactionRepository repository, UserService userService) : ITransactionService
 {
+    
     
     
     public async Task<List<TransactionResponseDto>> GetAllTransactions()
@@ -50,11 +51,6 @@ public class TransactionService(ITransactionRepository repository, UserService u
         return allTransFromSearch;
 
     }
-    
-    /*public List<Transaction> GetAllTransactions()
-    {
-        return repo.GetAllTransactions();
-    }*/
     
     public async Task<Transaction> CreateTransaction(TransactionDto dto)
     {

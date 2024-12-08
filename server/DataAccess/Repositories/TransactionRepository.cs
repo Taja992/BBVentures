@@ -2,7 +2,7 @@
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.DataAccessObjects;
+namespace DataAccess.Repositories;
 
 public class TransactionRepository(AppDbContext context) : ITransactionRepository
 {
