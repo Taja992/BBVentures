@@ -10,7 +10,7 @@ import UpdateSelf from "./player/updateSelfComponent";
 import BoardGameComponent from "./player/BoardGameComponent";
 import InputWinningNumbersComponent from "./admin/inputWinningNumbersComponent";
 import TopUp from "./player/TopUpComponent";
-import BoardHistoryComponent from "./player/BoardHistory-UserID-Component";
+import UserBoardHistoryComponent from "./player/userBoardsHistoryComponent";
 import GameHistoryForAdminComponent from "./admin/gameHistoryForAdminComponent";
 import AdminBoardsHistoryComponent from "./admin/adminBoardsHistoryComponent";
 import GameHistoryForUserComponent from "./player/gameHistoryForUserComponent";
@@ -54,16 +54,12 @@ const DashboardPage = () => {
                 <UpdateSelf/>
             </div>
             <div className="border border-black p-4 mb-4">
-                <h4>Game History for Admin</h4>
+                <h2 className="text-2xl font-bold mb-4">Admin Game History</h2>
                 <GameHistoryForAdminComponent/>
             </div>
             <div className="border border-black p-4 mb-4">
-                <h4>Game History for User</h4>
+                <h2 className="text-2xl font-bold mb-4">User Game History</h2>
                 <GameHistoryForUserComponent/>
-            </div>
-            <div className="border border-black p-4 mb-4">
-                <h4>History</h4>
-                <BoardHistoryComponent key={boardState.length}/>
             </div>
             <div className="border border-black p-4 mb-4">
                 {userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}
@@ -80,6 +76,10 @@ const DashboardPage = () => {
             </div>
             <div className={"border border-black p-4 mb-4"}>
                 <AdminBoardsHistoryComponent/>
+            </div>
+
+            <div className="border border-black p-4 mb-4">
+                <UserBoardHistoryComponent/>
             </div>
         </>
     );
