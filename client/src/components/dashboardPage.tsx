@@ -13,6 +13,7 @@ import TopUp from "./player/TopUpComponent";
 import BoardHistoryComponent from "./player/BoardHistory-UserID-Component";
 import GameHistoryForAdminComponent from "./admin/gameHistoryForAdminComponent";
 import AdminBoardsHistoryComponent from "./admin/adminBoardsHistoryComponent";
+import GameHistoryForUserComponent from "./player/gameHistoryForUserComponent";
 
 
 const DashboardPage = () => {
@@ -44,36 +45,41 @@ const DashboardPage = () => {
             <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
             <h2>Balance: {Balance}</h2>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <RegisterUser />}
+                {userInfo?.isAdmin && <RegisterUser/>}
             </div>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <GetAllUsers />}
+                {userInfo?.isAdmin && <GetAllUsers/>}
             </div>
             <div className="border border-black p-4 mb-4">
-                <UpdateSelf />
+                <UpdateSelf/>
             </div>
             <div className="border border-black p-4 mb-4">
-                <GameHistoryForAdminComponent />
+                <h4>Game History for Admin</h4>
+                <GameHistoryForAdminComponent/>
+            </div>
+            <div className="border border-black p-4 mb-4">
+                <h4>Game History for User</h4>
+                <GameHistoryForUserComponent/>
             </div>
             <div className="border border-black p-4 mb-4">
                 <h4>History</h4>
-                <BoardHistoryComponent key={boardState.length} />
+                <BoardHistoryComponent key={boardState.length}/>
             </div>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin ? <AllHistory /> : <UserHistory />}
+                {userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}
             </div>
             <div className="border border-black p-4 mb-4">
                 <h4>Game</h4>
-                <BoardGameComponent />
+                <BoardGameComponent/>
             </div>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <InputWinningNumbersComponent />}
+                {userInfo?.isAdmin && <InputWinningNumbersComponent/>}
             </div>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isPlayer && <TopUp />}
+                {userInfo?.isPlayer && <TopUp/>}
             </div>
             <div className={"border border-black p-4 mb-4"}>
-                <AdminBoardsHistoryComponent />
+                <AdminBoardsHistoryComponent/>
             </div>
         </>
     );
