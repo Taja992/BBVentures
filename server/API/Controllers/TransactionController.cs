@@ -15,9 +15,9 @@ namespace API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TransactionController(AppDbContext context) : ControllerBase
+public class TransactionController(ITransactionService service) : ControllerBase
 {
-    private TransactionService service = new TransactionService(context);
+    
     
     [HttpGet]
     [Authorize(Roles = "Admin")]

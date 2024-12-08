@@ -1,24 +1,37 @@
 ﻿using DataAccess;
 using DataAccess.DataAccessObjects;
+using DataAccess.Interfaces;
 using DataAccess.Models;
 using Service.TransferModels.DTOs;
 
 namespace Service.Services;
 
-public class TransactionService(AppDbContext context)
+public interface ITransactionService
 {
-    private TransactionRepository _repository = new TransactionRepository(context);
+    public List<TransactionResponseDto> GetAllTransactions();
+
+    public List<TransactionResponseDto> GetAllTransactionsFromUser(string guid);
+
+    public Task<Transaction> CreateTransaction(TransactionDto dto);
+
+    public TransactionResponseDto UpdateTransaction(TransactionResponseDto dto);
+}
+
+
+
+public class TransactionService(ITransactionRepository repository) : ITransactionService
+{
 
     public List<TransactionResponseDto> GetAllTransactions()
     {
-        List<Transaction> allTrans = _repository.GetAllTransactions();
+        List<Transaction> allTrans = repository.GetAllTransactions();
         List<TransactionResponseDto> trans = new TransactionResponseDto().FromEntities(allTrans);
         return trans;
     }
     
-    public List<TransactionResponseDto> GetAllTransactionsFromUser(string GUID)
+    public List<TransactionResponseDto> GetAllTransactionsFromUser(string guid)
     {
-        List<Transaction> transFromUser = _repository.GetAllTransactionsFromUser(GUID);
+        List<Transaction> transFromUser = repository.GetAllTransactionsFromUser(guid);
         List<TransactionResponseDto> trans = new TransactionResponseDto().FromEntities(transFromUser);
         return trans;
     }
@@ -34,14 +47,14 @@ public class TransactionService(AppDbContext context)
         Transaction trans = dto.ToTransaction();
         trans.CreatedAt = DateTime.UtcNow;
         trans.isPending = true;
-        Transaction newTrans = await _repository.AddTransaction(trans);
+        Transaction newTrans = await repository.AddTransaction(trans);
         return newTrans;
     }
 
     public TransactionResponseDto UpdateTransaction(TransactionResponseDto dto)
     {
         Transaction trans = dto.ToTransaction();
-        _repository.UpdateTransaction(trans);
+        repository.UpdateTransaction(trans);
         return new TransactionResponseDto().FromEntity(trans);
     }
 }
