@@ -13,6 +13,7 @@ public interface IUserService
     Task<UserDto?> GetUserById(string id);
     Task<bool> AssignRole(string userId, string role);
     public Task<bool> UpdateBalance(UserDto dto, decimal transactionAmount);
+    public Task<IEnumerable<UserDto>> GetAllUsersWithName(string searchVal);
 }
 
 public class UserService(IUserRepository userRepository) : IUserService
@@ -28,6 +29,22 @@ public class UserService(IUserRepository userRepository) : IUserService
             var userDto = UserDto.FromEntity(user);
             var roles = await userRepository.GetUserRoles(user);
             userDto.Role = roles.FirstOrDefault(); //only 1 role per user
+            userDtos.Add(userDto);
+        }
+
+        return userDtos;
+    }
+
+    public async Task<IEnumerable<UserDto>> GetAllUsersWithName(string searchVal)
+    {
+        var users = await userRepository.GetAllUsersWithName(searchVal);
+        var userDtos = new List<UserDto>();
+
+        foreach (var user in users)
+        {
+            var userDto = UserDto.FromEntity(user);
+            var roles = await userRepository.GetUserRoles(user);
+            userDto.Role = roles.FirstOrDefault();
             userDtos.Add(userDto);
         }
 
