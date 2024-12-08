@@ -48,8 +48,19 @@ namespace API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ProcessWinningNumbers([FromBody] List<int> winningNumbers)
         {
-            await _service.ProcessWinningNumbers(winningNumbers);
-            return Ok();
+            try
+            {
+                await _service.ProcessWinningNumbers(winningNumbers);
+                return Ok();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = "The game is closed until winning numbers have been chosen." });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal server error :((");
+            }
         }
         
   

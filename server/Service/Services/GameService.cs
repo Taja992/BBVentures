@@ -80,13 +80,13 @@ public class GameService : IGameService
             throw new InvalidOperationException("No active game found.");
         }
 
-        if (IsPastSunday5PM())
-        {
-            currentGame.IsActive = false;
-            currentGame.EndedAt = DateTime.UtcNow;
-            await _repository.UpdateGame(currentGame);
-            throw new InvalidOperationException("The game has closed. No more boards can be added.");
-        }
+        // if (IsPastSunday5PM())
+        // {
+        //     currentGame.IsActive = false;
+        //     currentGame.EndedAt = DateTime.UtcNow;
+        //     await _repository.UpdateGame(currentGame);
+        //     throw new InvalidOperationException("The game has closed. No more boards can be added.");
+        // }
 
         var winningBoards = await GetWinningBoards(currentGame.Id, winningNumbers);
         await UpdateWinningBoards(currentGame.Id, winningBoards);
@@ -115,7 +115,7 @@ public class GameService : IGameService
     {
         var boards = await _boardRepository.GetBoardsByGameId(activeGameId);
         return boards
-            .Where(b => b.Numbers != null && !winningNumbers.Except(b.Numbers).Any())
+            .Where(b => b.Numbers != null && winningNumbers.All(w => b.Numbers.Contains(w)))
             .ToList();
     }
 
@@ -134,20 +134,21 @@ public class GameService : IGameService
     {
         currentGame.WinnerNumbers = winningNumbers;
         currentGame.IsActive = false;
+        currentGame.EndedAt = DateTime.UtcNow;
         await _repository.UpdateGame(currentGame);
     }
     
-    private bool IsPastSunday5PM()
-    {
-        var danishTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-        var danishNow = TimeZoneInfo.ConvertTime(DateTime.UtcNow, danishTimeZone);
-        var daysUntilSunday = ((int)DayOfWeek.Sunday - (int)danishNow.DayOfWeek + 7) % 7;
-        var nextSunday = danishNow.AddDays(daysUntilSunday);
-        var sunday5PM = new DateTime(nextSunday.Year, nextSunday.Month, nextSunday.Day, 17, 0, 0, DateTimeKind.Unspecified);
-        sunday5PM = TimeZoneInfo.ConvertTime(sunday5PM, danishTimeZone);
-
-        return danishNow > sunday5PM;
-    }
+    // private bool IsPastSunday5PM()
+    // {
+    //     var danishTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+    //     var danishNow = TimeZoneInfo.ConvertTime(DateTime.UtcNow, danishTimeZone);
+    //     var daysUntilSunday = ((int)DayOfWeek.Sunday - (int)danishNow.DayOfWeek + 7) % 7;
+    //     var nextSunday = danishNow.AddDays(daysUntilSunday);
+    //     var sunday5PM = new DateTime(nextSunday.Year, nextSunday.Month, nextSunday.Day, 17, 0, 0, DateTimeKind.Unspecified);
+    //     sunday5PM = TimeZoneInfo.ConvertTime(sunday5PM, danishTimeZone);
+    //
+    //     return danishNow > sunday5PM;
+    // }
 
     private async Task CreateNewGame(Game currentGame)
     {
@@ -160,13 +161,10 @@ public class GameService : IGameService
         };
         await _repository.AddGame(newGame);
 
-        foreach (var board in currentGame.Boards)
-        {
-            if (board.Numbers != null)
-            {
-                board.Numbers.Clear();
-            }
+        var boardsCopy = currentGame.Boards.ToList(); // Create a copy of the collection
 
+        foreach (var board in boardsCopy)
+        {
             board.IsAutoplay = false;
             board.GameId = newGame.Id;
             await _boardRepository.UpdateBoard(board);
