@@ -7,6 +7,7 @@ function AllHistory(){
 
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [allUsers, setAllUsers] = useState<BBVenturesApiUser[]>([]);
+    const[userNameSearch, setUserNameSearch] = useState("")
 
     useEffect(() => {getAllTrans(); getAllUsers()}, [])
     async function getAllTrans(){
@@ -19,6 +20,15 @@ function AllHistory(){
         const response = await http.userGetallList();
         setAllUsers(response.data);
         //console.log(response.data);
+    }
+    
+    async function filterTransactions(){
+        if(userNameSearch === ""){
+            getAllTrans();
+            return;
+        }
+        const response = await http.transactionTransactionsFromNameList({searchVal: userNameSearch})
+        setAllTrans(response.data)
     }
 
     async function approveTransaction(trans: BBVenturesApiTransaction) {
@@ -77,7 +87,8 @@ function AllHistory(){
         <button onClick={getAllTrans}>this is a test button</button>
         <br/>
         <label className={"mr-3"}>From User:</label>
-        <input className={"py-1 px-1 my-1 mb-2 border border-grey"}/>
+        <input className={"py-1 px-1 my-1 mb-2 border border-grey"} value={userNameSearch} onChange={e => setUserNameSearch(e.target.value)}/>
+        <button className={"button"} onClick={filterTransactions}>search</button>
         
         <div className={"table-container"}>
             <table className={"table-auto bg-white border border-black"}>

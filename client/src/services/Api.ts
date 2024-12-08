@@ -43,9 +43,10 @@ export interface BBVenturesApiBoardDto {
   createdAt?: string | null;
   /** @format date-time */
   updatedAt?: string | null;
+  /** @format int32 */
   weekNumber?: number;
   playerUsername?: string | null;
-    playerEmail?: string | null;
+  playerEmail?: string | null;
 }
 
 export interface BBVenturesApiBoardHistoryDto {
@@ -55,6 +56,7 @@ export interface BBVenturesApiBoardHistoryDto {
   /** @format int32 */
   weekNumber?: number;
 }
+
 export interface BBVenturesApiCreateBoardDto {
   userId?: string | null;
   /** @format uuid */
@@ -628,6 +630,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transaction
+     * @name TransactionTransactionsFromNameList
+     * @request GET:/api/Transaction/transactionsFromName
+     */
+    transactionTransactionsFromNameList: (
+      query?: {
+        searchVal?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BBVenturesApiTransactionResponseDto[], any>({
+        path: `/api/Transaction/transactionsFromName`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transaction
      * @name TransactionAddTransactionCreate
      * @request POST:/api/Transaction/addTransaction
      */
@@ -669,6 +692,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<BBVenturesApiUserDto[], any>({
         path: `/api/User/getall`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserGetWithNameList
+     * @request GET:/api/User/getWithName
+     */
+    userGetWithNameList: (
+      query?: {
+        searchVal?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BBVenturesApiUserDto[], any>({
+        path: `/api/User/getWithName`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
