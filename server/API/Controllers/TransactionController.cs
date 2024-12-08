@@ -15,22 +15,22 @@ namespace API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TransactionController(AppDbContext context) : ControllerBase
+public class TransactionController(ITransactionService service) : ControllerBase
 {
-    private TransactionService service = new TransactionService(context);
+    
     
     [HttpGet]
     [Authorize(Roles = "Admin")]
     [Route("getTransactions")]
-    public ActionResult<List<TransactionResponseDto>> GetAllTransactions()
+    public async Task<ActionResult<List<TransactionResponseDto>>> GetAllTransactions()
     {
-        return Ok(service.GetAllTransactions());
+        return Ok(await service.GetAllTransactions());
     }
     
     [HttpGet]
     [Authorize]
     [Route("transactionsFromUser")]
-    public ActionResult<List<TransactionResponseDto>> GetAllTransactionsFromUser()
+    public async Task<ActionResult<List<TransactionResponseDto>>> GetAllTransactionsFromUser()
     {
         
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -40,7 +40,15 @@ public class TransactionController(AppDbContext context) : ControllerBase
             return Unauthorized();
         }
         
-        return Ok(service.GetAllTransactionsFromUser(userId));
+        return Ok(await service.GetAllTransactionsFromUser(userId));
+    }
+    
+    [HttpGet]
+    [Authorize]
+    [Route("transactionsFromName")]
+    public async Task<ActionResult<List<TransactionResponseDto>>> GetAllTransactionsFromUsersName(string searchVal)
+    {
+        return Ok(await service.GetAllTransactionsFromUsersName(searchVal));
     }
 
     [HttpPost]

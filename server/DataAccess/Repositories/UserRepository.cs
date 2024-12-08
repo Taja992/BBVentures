@@ -12,6 +12,13 @@ public class UserRepository(AppDbContext context, UserManager<User> userManager)
         return await context.Users.ToListAsync();
     }
 
+    public async Task<IEnumerable<User>> GetAllUsersWithName(string searchVal)
+    {
+        //right now it uses ".Contains" which means if u search for "Player" it'll also return "Player2", "Player3" etc.
+        //to make it more accurate we could change it to equals instead
+        return await context.Users.Where(u => u.UserName!.Contains(searchVal)).ToListAsync();
+    }
+
     public async Task<User?> GetUserById(string id)
     {
         return await context.Users.FindAsync(id);

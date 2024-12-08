@@ -12,35 +12,14 @@ function AllHistory(){
     async function getAllTrans(){
         const response = await http.transactionGetTransactionsList();
         setAllTrans(response.data);
-        console.log(response.data);
+        //console.log(response.data);
     }
 
     async function getAllUsers(){
         const response = await http.userGetallList();
         setAllUsers(response.data);
-        console.log(response.data);
+        //console.log(response.data);
     }
-    
-    /*async function approveTransaction(trans: BBVenturesApiTransaction) {
-        trans.isPending = false;
-
-        http.transactionUpdateTransactionUpdate(trans);
-
-        //updating that players balance now that the transaction has gone through
-        let id : string  = trans.userId!
-        
-        const response = await http.userGetByIdList({id});
-        let player = response.data
-        
-        const newBalance = player.balance! - trans.amount!;
-        player.balance = newBalance;
-        console.log(player);
-        
-        console.log("about to update player")
-        await http.userUpdateUpdate(player)
-        
-        //setBalance(newBalance);
-    }*/
 
     async function approveTransaction(trans: BBVenturesApiTransaction) {
         trans.isPending = false;
@@ -97,6 +76,8 @@ function AllHistory(){
         
         <button onClick={getAllTrans}>this is a test button</button>
         <br/>
+        <label className={"mr-3"}>From User:</label>
+        <input className={"py-1 px-1 my-1 mb-2 border border-grey"}/>
         
         <div className={"table-container"}>
             <table className={"table-auto bg-white border border-black"}>

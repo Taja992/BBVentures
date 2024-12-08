@@ -1,18 +1,19 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.DataAccessObjects;
+namespace DataAccess.Repositories;
 
 public class TransactionRepository(AppDbContext context) : ITransactionRepository
 {
-    public List<Transaction> GetAllTransactions()
+    public async Task<List<Transaction>> GetAllTransactions()
     {
-        return context.Transactions.ToList();
+        return await context.Transactions.ToListAsync();
     }
 
-    public List<Transaction> GetAllTransactionsFromUser(string Id)
+    public async Task<List<Transaction>> GetAllTransactionsFromUser(string Id)
     {
-        var transFromUser = from i in context.Transactions.ToList() where i.UserId == Id select i;
+        var transFromUser = from i in await context.Transactions.ToListAsync() where i.UserId == Id select i;
         return transFromUser.ToList();
     }
 

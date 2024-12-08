@@ -1,7 +1,6 @@
 
 using API.Misc;
 using DataAccess;
-using DataAccess.DataAccessObjects;
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using DataAccess.Repositories;
@@ -125,6 +124,8 @@ public class Program
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IBoardService, BoardService>();
         builder.Services.AddScoped<IGameService, GameService>();
+        builder.Services.AddScoped<ITransactionService, TransactionService>();
+        builder.Services.AddScoped<UserService>(); //this is so it can be added to the transaction service for "GetAllTransactionFromUsersName()"
 
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<IPasswordService, PasswordService>();
