@@ -44,37 +44,38 @@ const DashboardPage = () => {
             <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
             <h2>Balance: {Balance}</h2>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <RegisterUser />}
+                {userInfo?.isAdmin && <RegisterUser/>}
             </div>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <GetAllUsers />}
+                {userInfo?.isAdmin && <GetAllUsers/>}
             </div>
             <div className="border border-black p-4 mb-4">
-                <UpdateSelf />
+                <UpdateSelf/>
             </div>
             <div className="border border-black p-4 mb-4">
-                <GameHistoryForAdminComponent />
+                <GameHistoryForAdminComponent/>
+            </div>
+            <div className={"border border-black p-4 mb-4"}>
+                <AdminBoardsHistoryComponent/>
             </div>
             <div className="border border-black p-4 mb-4">
-                <h4>History</h4>
-                <BoardHistoryComponent key={boardState.length} />
+                <h4>Personal Board History</h4>
+                <BoardHistoryComponent key={boardState.length}/>
             </div>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin ? <AllHistory /> : <UserHistory />}
+                {userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}
             </div>
             <div className="border border-black p-4 mb-4">
                 <h4>Game</h4>
-                <BoardGameComponent />
+                <BoardGameComponent/>
             </div>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <InputWinningNumbersComponent />}
+                {userInfo?.isAdmin && <InputWinningNumbersComponent/>}
             </div>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isPlayer && <TopUp />}
+                {userInfo?.isPlayer && <TopUp/>}
             </div>
-            <div className={"border border-black p-4 mb-4"}>
-                <AdminBoardsHistoryComponent />
-            </div>
+
         </>
     );
 };

@@ -15,14 +15,16 @@ namespace Service.Services
         private readonly IBoardRepository _boardRepository;
         private readonly IValidator<CreateBoardDto> _createValidator;
         private readonly IGameRepository _gameRepository;
+        private readonly IUserRepository _userRepository;
 
         public BoardService(AppDbContext context, IBoardRepository boardRepository,
-            IValidator<CreateBoardDto> createValidator, IGameRepository gameRepository)
+            IValidator<CreateBoardDto> createValidator, IGameRepository gameRepository, IUserRepository userRepository)
         {
             _context = context;
             _boardRepository = boardRepository;
             _createValidator = createValidator;
             _gameRepository = gameRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<BoardDto> CreateBoard(CreateBoardDto createBoardDto)
@@ -38,7 +40,7 @@ namespace Service.Services
                 _ => throw new ArgumentException("Invalid number of fields")
             };
 
-            var user = await _boardRepository.FindUserById(createBoardDto.UserId);
+            var user = await _userRepository.GetUserById(createBoardDto.UserId);
             if (user == null)
             {
                 throw new Exception("User not found");
@@ -50,7 +52,7 @@ namespace Service.Services
             }
 
             user.Balance -= cost;
-            await _boardRepository.UpdateUser(user);
+            await _userRepository.UpdateUser(user);
 
             var board = new Board
             {
@@ -88,6 +90,7 @@ namespace Service.Services
                 var userDetails = await GetUserDetails(board.UserId);
                 boardDto.PlayerUsername = userDetails.PlayerUsername;
                 boardDto.PlayerEmail = userDetails.PlayerEmail;
+                boardDtos.Add(boardDto);
             }
 
             return boardDtos;
@@ -112,9 +115,10 @@ namespace Service.Services
             }).ToList();
         }
 
-        public async Task<(string PlayerUsername, string PlayerEmail)> GetUserDetails(string userId)
+        public async Task<(string? PlayerUsername, string? PlayerEmail)> GetUserDetails(string userId)
         {
-            var user = await _boardRepository.FindUserById(userId);
+
+            var user = await _userRepository.GetUserById(userId);
             if (user == null)
             {
                 throw new Exception("User not found");
