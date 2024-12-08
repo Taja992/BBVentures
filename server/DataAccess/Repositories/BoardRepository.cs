@@ -49,15 +49,6 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
         var user = await context.Users.FindAsync(userId);
         return user?.IsActive ?? false;
     }
-
-    public async Task<User?> FindUserById(string userId)
-    {
-        return await context.Users.FindAsync(userId);
-    }
-
-    public async Task UpdateUser(User user)
-    {
-        context.Users.Update(user);
-        await context.SaveChangesAsync();
-    }
+    
+    
 }
