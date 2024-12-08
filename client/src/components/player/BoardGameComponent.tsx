@@ -24,10 +24,11 @@ const BoardGameComponent = () => {
                     setGameId(activeGame.id);
                     console.log('Active game found:', activeGame);
                 } else {
-                    console.error('No active game found');
+                    toast.error('No active game found.');
                 }
             } catch (error) {
                 console.error('Failed to fetch games:', error);
+                toast.error('Failed to fetch active game.');
             }
         };
 
@@ -37,6 +38,7 @@ const BoardGameComponent = () => {
                 setIsActive(response.data.isActive ?? false);
             } catch (error) {
                 console.error('Failed to fetch user status:', error);
+                toast.error('Failed to fetch user status.');
             }
         };
 
@@ -95,7 +97,8 @@ const BoardGameComponent = () => {
             const cost = calculateCost(fieldCount);
             setBalance(prevBalance => (prevBalance ?? 0) - cost);
             setBoardState(prevState => [...prevState, response.data]);
-        } catch {
+        } catch (error) {
+            console.error('Error buying board:', error);
             toast.error("Error buying board :( Is balance sufficient?");
         }
     };
