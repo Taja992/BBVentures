@@ -141,11 +141,12 @@ public class GameService : IGameService
     {
         var danishTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
         var danishNow = TimeZoneInfo.ConvertTime(DateTime.UtcNow, danishTimeZone);
-        var nextSunday = danishNow.AddDays(7 - (int)danishNow.DayOfWeek);
+        var daysUntilSunday = ((int)DayOfWeek.Sunday - (int)danishNow.DayOfWeek + 7) % 7;
+        var nextSunday = danishNow.AddDays(daysUntilSunday);
         var sunday5PM = new DateTime(nextSunday.Year, nextSunday.Month, nextSunday.Day, 17, 0, 0, DateTimeKind.Unspecified);
-        sunday5PM = TimeZoneInfo.ConvertTimeToUtc(sunday5PM, danishTimeZone);
+        sunday5PM = TimeZoneInfo.ConvertTime(sunday5PM, danishTimeZone);
 
-        return DateTime.UtcNow > sunday5PM;
+        return danishNow > sunday5PM;
     }
 
     private async Task CreateNewGame(Game currentGame)
