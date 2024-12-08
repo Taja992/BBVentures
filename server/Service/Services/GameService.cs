@@ -8,9 +8,9 @@ namespace Service.Services;
 public interface IGameService
 {
     Task<List<GameDto>> GetAllGames();
-    Task<GameDto> CreateGame(GameDto dto);
-    Task<GameDto> UpdateGame(GameDto dto);
-    Task ProcessWinningNumbers(List<int> winningNumbers);
+    // Task<GameDto> CreateGame(GameDto dto);
+    // Task<GameDto> UpdateGame(GameDto dto);
+    Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers);
     Task<decimal> CalculateTotalRevenueForGame(Guid gameId);
     Task<decimal> CalculateClubRevenue(Guid gameId);
     Task<decimal> CalculateWinnersRevenue(Guid gameId);
@@ -18,6 +18,7 @@ public interface IGameService
 }
 
 public class GameService : IGameService
+
 {
     private readonly IGameRepository _repository;
     private readonly IBoardRepository _boardRepository;
@@ -55,22 +56,22 @@ public class GameService : IGameService
         return gameDtos;
     }
 
-    public async Task<GameDto> CreateGame(GameDto dto)
-    {
-        var game = dto.ToEntity();
-        game.Id = Guid.NewGuid();
-        var createdGame = await _repository.AddGame(game);
-        return GameDto.FromEntity(createdGame);
-    }
+    // public async Task<GameDto> CreateGame(GameDto dto)
+    // {
+    //     var game = dto.ToEntity();
+    //     game.Id = Guid.NewGuid();
+    //     var createdGame = await _repository.AddGame(game);
+    //     return GameDto.FromEntity(createdGame);
+    // }
+    //
+    // public async Task<GameDto> UpdateGame(GameDto dto)
+    // {
+    //     var game = dto.ToEntity();
+    //     var updatedGame = await _repository.UpdateGame(game);
+    //     return GameDto.FromEntity(updatedGame);
+    // }
 
-    public async Task<GameDto> UpdateGame(GameDto dto)
-    {
-        var game = dto.ToEntity();
-        var updatedGame = await _repository.UpdateGame(game);
-        return GameDto.FromEntity(updatedGame);
-    }
-
-    public async Task ProcessWinningNumbers(List<int> winningNumbers)
+    public async Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers)
     {
         ValidateWinningNumbers(winningNumbers);
 
@@ -92,7 +93,9 @@ public class GameService : IGameService
         await UpdateWinningBoards(currentGame.Id, winningBoards);
 
         await UpdateCurrentGameWithWinningNumbers(currentGame, winningNumbers);
-        await CreateNewGame(currentGame);
+        var newGameDto = await CreateNewGame(currentGame);
+
+        return newGameDto;
     }
 
     private void ValidateWinningNumbers(List<int> winningNumbers)
@@ -150,7 +153,7 @@ public class GameService : IGameService
     //     return danishNow > sunday5PM;
     // }
 
-    private async Task CreateNewGame(Game currentGame)
+    private async Task<GameDto> CreateNewGame(Game currentGame)
     {
         var newGame = new Game
         {
@@ -169,6 +172,21 @@ public class GameService : IGameService
             board.GameId = newGame.Id;
             await _boardRepository.UpdateBoard(board);
         }
+        
+        return new GameDto
+        {
+            Id = newGame.Id,
+            WinnerNumbers = null,
+            IsActive = newGame.IsActive,
+            WeekNumber = newGame.WeekNumber,
+            TotalRevenue = 0,
+            ClubRevenue = 0,
+            WinnersRevenue = 0,
+            Winners = null,
+            WinnerUsernames = null,
+            WinnerEmails = null
+        };
+        
     }
 
     public async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
@@ -199,7 +217,9 @@ public class GameService : IGameService
             var user = await _userRepository.GetUserById(board.UserId);
             if (user != null)
             {
-                winnersDetails.Add((user.UserName, user.Email));
+                var userName = user.UserName ?? "Unknown User";
+                var userEmail = user.Email ?? "Unknown Email"; 
+                winnersDetails.Add((userName, userEmail));
             }
         }
 

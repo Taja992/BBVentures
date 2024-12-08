@@ -27,6 +27,7 @@ export interface BBVenturesApiBoard {
   createdAt?: string | null;
   /** @format date-time */
   updatedAt?: string | null;
+  isWon?: boolean;
   game?: BBVenturesApiGame;
   user?: BBVenturesApiUser;
 }
@@ -43,9 +44,11 @@ export interface BBVenturesApiBoardDto {
   createdAt?: string | null;
   /** @format date-time */
   updatedAt?: string | null;
+  isWon?: boolean;
+  /** @format int32 */
   weekNumber?: number;
   playerUsername?: string | null;
-    playerEmail?: string | null;
+  playerEmail?: string | null;
 }
 
 export interface BBVenturesApiBoardHistoryDto {
@@ -55,6 +58,7 @@ export interface BBVenturesApiBoardHistoryDto {
   /** @format int32 */
   weekNumber?: number;
 }
+
 export interface BBVenturesApiCreateBoardDto {
   userId?: string | null;
   /** @format uuid */
@@ -72,6 +76,8 @@ export interface BBVenturesApiGame {
   isActive?: boolean;
   /** @format int32 */
   weekNumber?: number;
+  /** @format date-time */
+  endedAt?: string | null;
   boards?: BBVenturesApiBoard[] | null;
 }
 
@@ -586,11 +592,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Game/processWinningNumbers
      */
     gameProcessWinningNumbersCreate: (data: number[], params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<BBVenturesApiGameDto, any>({
         path: `/api/Game/processWinningNumbers`,
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -620,6 +627,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<BBVenturesApiTransactionResponseDto[], any>({
         path: `/api/Transaction/transactionsFromUser`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transaction
+     * @name TransactionTransactionsFromNameList
+     * @request GET:/api/Transaction/transactionsFromName
+     */
+    transactionTransactionsFromNameList: (
+      query?: {
+        searchVal?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BBVenturesApiTransactionResponseDto[], any>({
+        path: `/api/Transaction/transactionsFromName`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
@@ -669,6 +697,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<BBVenturesApiUserDto[], any>({
         path: `/api/User/getall`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserGetWithNameList
+     * @request GET:/api/User/getWithName
+     */
+    userGetWithNameList: (
+      query?: {
+        searchVal?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BBVenturesApiUserDto[], any>({
+        path: `/api/User/getWithName`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),

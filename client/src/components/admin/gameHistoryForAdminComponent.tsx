@@ -30,14 +30,14 @@ const GameHistoryForAdminComponent: React.FC = () => {
     const inactiveGames = games.filter(game => !game.isActive);
 
     const columns = [
-        { label: 'Week Number', renderCell: (item: BBVenturesApiGameDto) => item.weekNumber },
-        { label: 'Winner Numbers', renderCell: (item: BBVenturesApiGameDto) => item.winnerNumbers?.join(', ') },
+        { label: 'Week Number', renderCell: (item: BBVenturesApiGameDto) => item.weekNumber ?? 'N/A' },
+        { label: 'Winner Numbers', renderCell: (item: BBVenturesApiGameDto) => item.winnerNumbers?.join(', ') ?? 'N/A' },
         { label: 'Is Active', renderCell: (item: BBVenturesApiGameDto) => item.isActive ? 'Yes' : 'No' },
-        { label: 'Total Revenue', renderCell: (item: BBVenturesApiGameDto) => item.totalRevenue },
-        { label: 'Club Revenue', renderCell: (item: BBVenturesApiGameDto) => item.clubRevenue },
-        { label: 'Winners Revenue', renderCell: (item: BBVenturesApiGameDto) => item.winnersRevenue },
-        { label: 'Winner Usernames', renderCell: (item: BBVenturesApiGameDto) => item.winnerUsernames?.join(', ') },
-        { label: 'Winner Emails', renderCell: (item: BBVenturesApiGameDto) => item.winnerEmails?.join(', ') },
+        { label: 'Total Revenue', renderCell: (item: BBVenturesApiGameDto) => item.totalRevenue ?? 'N/A' },
+        { label: 'Club Revenue', renderCell: (item: BBVenturesApiGameDto) => item.clubRevenue ?? 'N/A' },
+        { label: 'Winners Revenue', renderCell: (item: BBVenturesApiGameDto) => item.winnersRevenue ?? 'N/A' },
+        { label: 'Winner Usernames', renderCell: (item: BBVenturesApiGameDto) => item.winnerUsernames?.join(', ') ?? 'N/A' },
+        { label: 'Winner Emails', renderCell: (item: BBVenturesApiGameDto) => item.winnerEmails?.join(', ') ?? 'N/A' },
     ];
 
     return (

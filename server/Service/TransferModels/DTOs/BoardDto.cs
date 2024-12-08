@@ -21,7 +21,7 @@
             return new Board
             {
                 Id = Id,
-                UserId = UserId,
+                UserId = UserId ?? string.Empty,
                 GameId = GameId,
                 Numbers = Numbers,
                 IsAutoplay = IsAutoplay,
