@@ -80,8 +80,16 @@ public class GameService : IGameService
             throw new InvalidOperationException("No active game found.");
         }
 
+        if (IsPastSunday5PM())
+        {
+            currentGame.IsActive = false;
+            currentGame.EndedAt = DateTime.UtcNow;
+            await _repository.UpdateGame(currentGame);
+            throw new InvalidOperationException("The game has closed. No more boards can be added.");
+        }
+
         var winningBoards = await GetWinningBoards(currentGame.Id, winningNumbers);
-        await UpdateWinningBoards(winningBoards);
+        await UpdateWinningBoards(currentGame.Id, winningBoards);
 
         await UpdateCurrentGameWithWinningNumbers(currentGame, winningNumbers);
         await CreateNewGame(currentGame);
@@ -111,13 +119,14 @@ public class GameService : IGameService
             .ToList();
     }
 
-    private async Task UpdateWinningBoards(List<Board> winningBoards)
+    private async Task UpdateWinningBoards(Guid activeGameId, List<Board> winningBoards)
     {
-        foreach (var winningBoard in winningBoards)
+        var allBoards = await _boardRepository.GetBoardsByGameId(activeGameId);
+
+        foreach (var board in allBoards)
         {
-            // Handle the winning board logic (e.g., update board status, notify players, etc.)
-            // Example: winningBoard.IsWinner = true;
-            await _boardRepository.UpdateBoard(winningBoard);
+            board.isWon = winningBoards.Any(wb => wb.Id == board.Id);
+            await _boardRepository.UpdateBoard(board);
         }
     }
 
@@ -126,6 +135,17 @@ public class GameService : IGameService
         currentGame.WinnerNumbers = winningNumbers;
         currentGame.IsActive = false;
         await _repository.UpdateGame(currentGame);
+    }
+    
+    private bool IsPastSunday5PM()
+    {
+        var danishTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+        var danishNow = TimeZoneInfo.ConvertTime(DateTime.UtcNow, danishTimeZone);
+        var nextSunday = danishNow.AddDays(7 - (int)danishNow.DayOfWeek);
+        var sunday5PM = new DateTime(nextSunday.Year, nextSunday.Month, nextSunday.Day, 17, 0, 0, DateTimeKind.Unspecified);
+        sunday5PM = TimeZoneInfo.ConvertTimeToUtc(sunday5PM, danishTimeZone);
+
+        return DateTime.UtcNow > sunday5PM;
     }
 
     private async Task CreateNewGame(Game currentGame)
