@@ -53,9 +53,9 @@ namespace API.Controllers
                 var newGameDto = await _service.ProcessWinningNumbers(winningNumbers);
                 return Ok(newGameDto);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest(new { message = "The game is closed until winning numbers have been chosen." });
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception)
             {

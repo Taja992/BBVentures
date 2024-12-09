@@ -8,6 +8,15 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
 {
     public async Task<Board> CreateBoard(Board board)
     {
+        // Check if there is an active game
+        var activeGame = await context.Games.FirstOrDefaultAsync(g => g.IsActive);
+    
+        if (activeGame != null)
+        {
+            // Attach the board to the active game
+            board.GameId = activeGame.Id;
+        }
+
         context.Boards.Add(board);
         await context.SaveChangesAsync();
         return board;
@@ -55,5 +64,27 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
         return user?.IsActive ?? false;
     }
     
+    public async Task<List<Board>> GetAutoplayBoards()
+    {
+        return await context.Boards.Where(b => b.IsAutoplay).ToListAsync();
+    }
     
+    public async Task<Board> GetBoardById(Guid id)
+    {
+        var board = await context.Boards.FindAsync(id);
+        if (board == null)
+        {
+            throw new KeyNotFoundException($"Board with ID {id} not found.");
+        }
+        return board;
+    }
+
+    // This is used to tell the context to stop tracking it
+    public void Detach(Board board)
+    {
+        context.Entry(board).State = EntityState.Detached;
+    }
+    
+    
+
 }

@@ -20,20 +20,20 @@ public interface IGameService
 public class GameService : IGameService
 
 {
-    private readonly IGameRepository _repository;
+    private readonly IGameRepository _gameRepository;
     private readonly IBoardRepository _boardRepository;
     private readonly IUserRepository _userRepository;
 
-    public GameService(IGameRepository repository, IBoardRepository boardRepository, IUserRepository userRepository)
+    public GameService(IGameRepository gameRepository, IBoardRepository boardRepository, IUserRepository userRepository)
     {
-        _repository = repository;
+        _gameRepository = gameRepository;
         _boardRepository = boardRepository;
         _userRepository = userRepository;
     }
 
     public async Task<List<GameDto>> GetAllGames()
     {
-        var games = await _repository.GetAllGamesAsync();
+        var games = await _gameRepository.GetAllGamesAsync();
         var gameDtos = new List<GameDto>();
 
         foreach (var game in games)
@@ -74,8 +74,6 @@ public class GameService : IGameService
         return gameDto;
     }
     
-    
-
     // public async Task<GameDto> CreateGame(GameDto dto)
     // {
     //     var game = dto.ToEntity();
@@ -110,9 +108,11 @@ public class GameService : IGameService
         // }
 
         var winningBoards = await GetWinningBoards(currentGame.Id, winningNumbers);
-        await UpdateWinningBoards(currentGame.Id, winningBoards);
+        await UpdateWinningBoards(winningBoards);
 
         await UpdateCurrentGameWithWinningNumbers(currentGame, winningNumbers);
+        currentGame.IsActive = false;
+        await _gameRepository.UpdateGame(currentGame);
         var newGameDto = await CreateNewGame(currentGame);
 
         return newGameDto;
@@ -130,8 +130,7 @@ public class GameService : IGameService
 
     private async Task<Game?> GetActiveGame()
     {
-        var games = await _repository.GetAllGamesAsync();
-        return games.FirstOrDefault(g => g.IsActive);
+        return await _gameRepository.GetActiveGameAsync();
     }
 
     private async Task<List<Board>> GetWinningBoards(Guid activeGameId, List<int> winningNumbers)
@@ -142,13 +141,18 @@ public class GameService : IGameService
             .ToList();
     }
 
-    private async Task UpdateWinningBoards(Guid activeGameId, List<Board> winningBoards)
+    private async Task UpdateWinningBoards(List<Board> winningBoards)
     {
-        var allBoards = await _boardRepository.GetBoardsByGameId(activeGameId);
-
-        foreach (var board in allBoards)
+        foreach (var board in winningBoards)
         {
-            board.isWon = winningBoards.Any(wb => wb.Id == board.Id);
+            var existingBoard = await _boardRepository.GetBoardById(board.Id);
+            //using detach here again to make sure there is no overlap in what
+            //microsoft entity is tracking
+
+            _boardRepository.Detach(existingBoard);
+
+
+            board.isWon = true;
             await _boardRepository.UpdateBoard(board);
         }
     }
@@ -165,14 +169,11 @@ public class GameService : IGameService
         currentGame.WinnersRevenue = totalRevenue * 0.70m;
 
         var winnersUserIds = await GetWinnersDetails(currentGame.Id, winningNumbers);
-        //use a HashSet to make sure if the same person wins multiple times they only get recorded as 1 person
-        //HashSet set will prevent duplicate IDs from being added to the list
-        var uniqueWinnersUserIds = new HashSet<string>(winnersUserIds);
-        currentGame.Winners = uniqueWinnersUserIds.Count;
-        currentGame.WinnersUserId = uniqueWinnersUserIds.ToList();
+        currentGame.WinnersUserId = winnersUserIds;
+        currentGame.Winners = winnersUserIds.Count;
         currentGame.WinnerShare = currentGame.Winners > 0 ? currentGame.WinnersRevenue / currentGame.Winners : 0;
 
-        await _repository.UpdateGame(currentGame);
+        await _gameRepository.UpdateGame(currentGame);
     }
     
     // private bool IsPastSunday5PM()
@@ -186,8 +187,25 @@ public class GameService : IGameService
     //
     //     return danishNow > sunday5PM;
     // }
-
+    
+    #region Create Game Region (This gets confusing due to Auto-Play)
+    
     private async Task<GameDto> CreateNewGame(Game currentGame)
+    {
+        //First we create a new game and add it
+        var newGame = await InitializeNewGame(currentGame);
+        await _gameRepository.AddGame(newGame);
+        // We fetch all the autoplay boards and create new boards with the same numbers on the new game ID
+        // Then Disable auto-play on the old boards and detach them 
+        // Detach tells Microsoft Entity to stop tracking them so there is no overlap and the correct
+        // Board gets the correct update
+        var autoplayBoards = await _boardRepository.GetAutoplayBoards();
+        await CreateAndDetachAutoplayBoards(newGame.Id, autoplayBoards);
+
+        return MapToGameDto(newGame);
+    }
+
+    private Task<Game> InitializeNewGame(Game currentGame)
     {
         var newGame = new Game
         {
@@ -196,17 +214,44 @@ public class GameService : IGameService
             WeekNumber = currentGame.WeekNumber + 1,
             WinnerNumbers = null
         };
-        await _repository.AddGame(newGame);
+        return Task.FromResult(newGame);
+    }
 
-        var boardsCopy = currentGame.Boards.ToList(); // Create a copy of the collection
-
-        foreach (var board in boardsCopy)
+    private async Task CreateAndDetachAutoplayBoards(Guid newGameId, List<Board> autoplayBoards)
+    {
+        foreach (var board in autoplayBoards)
         {
-            board.IsAutoplay = false;
-            board.GameId = newGame.Id;
-            await _boardRepository.UpdateBoard(board);
+            await CreateNewAutoplayBoard(newGameId, board);
+            await DetachAndDisableAutoplay(board);
         }
-        
+    }
+
+    private async Task CreateNewAutoplayBoard(Guid newGameId, Board board)
+    {
+        var newBoard = new Board
+        {
+            Id = Guid.NewGuid(),
+            GameId = newGameId,
+            UserId = board.UserId,
+            Numbers = board.Numbers,
+            IsAutoplay = true,
+            isWon = false
+        };
+        await _boardRepository.CreateBoard(newBoard);
+    }
+
+    private async Task DetachAndDisableAutoplay(Board board)
+    {
+        var existingBoard = await _boardRepository.GetBoardById(board.Id);
+
+        _boardRepository.Detach(existingBoard);
+
+        board.IsAutoplay = false;
+        await _boardRepository.UpdateBoard(board);
+    }
+
+    private GameDto MapToGameDto(Game newGame)
+    {
         return new GameDto
         {
             Id = newGame.Id,
@@ -220,12 +265,13 @@ public class GameService : IGameService
             WinnerUsernames = null,
             WinnerEmails = null
         };
-        
     }
-
+    #endregion
+    
+    #region Calculations
     public async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
     {
-        return await _repository.CalculateTotalRevenueForGame(gameId);
+        return await _gameRepository.CalculateTotalRevenueForGame(gameId);
     }
 
     public async Task<decimal> CalculateClubRevenue(Guid gameId)
@@ -239,10 +285,12 @@ public class GameService : IGameService
         var totalRevenue = await CalculateTotalRevenueForGame(gameId);
         return totalRevenue * 0.70m;
     }
+    #endregion
+
 
     public async Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers)
     {
-        var winningBoards = await _repository.GetWinningBoardsForGame(gameId, winningNumbers);
+        var winningBoards = await _gameRepository.GetWinningBoardsForGame(gameId, winningNumbers);
         var winnersUserIds = new List<string>();
 
         foreach (var board in winningBoards)
