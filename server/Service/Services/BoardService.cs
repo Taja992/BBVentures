@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using System.Globalization;
+using DataAccess;
 using DataAccess.Interfaces;
 using FluentValidation;
 using Service.TransferModels.DTOs;
@@ -132,6 +133,45 @@ namespace Service.Services
                 throw new Exception("User not found");
             } return (user.UserName, user.Email);
         }
+
+        public int GetCurrentWeekNumber()
+        {
+            DateTime today = DateTime.UtcNow;
+            Calendar calendar = new GregorianCalendar();
+            return calendar.GetWeekOfYear(today, CalendarWeekRule.FirstDay, today.DayOfWeek);
+        }
+
+        public async Task<List<BoardDto>> GetBoardsFromThisWeek(string userId)
+        {
+            int thisWeekNum = GetCurrentWeekNumber();
+            return await GetBoardsFromWeek(thisWeekNum, userId);
+        }
+        
+
+        public async Task<List<BoardDto>> GetBoardsFromWeek(int weekNum, string userId)
+        {
+            List<Board> allboards = await _boardRepository.GetBoardsByUserId(userId);
+            List<BoardDto> boardsThisWeek = new List<BoardDto>();
+            foreach (Board board in allboards)
+            {
+                Calendar calendar = new GregorianCalendar();
+                //boolean for if its this week
+                bool isThisWeek = calendar.GetWeekOfYear(board.CreatedAt, CalendarWeekRule.FirstDay, board.CreatedAt.DayOfWeek) == weekNum;
+                if (isThisWeek)
+                {
+                    boardsThisWeek.Add(BoardDto.FromEntity(board));
+                }
+                
+            }
+
+            return boardsThisWeek;
+
+        }
+        
+        
+        
+        
+        
     }
 
 }

@@ -7,7 +7,7 @@
         public Guid GameId { get; set; }
         public List<int>? Numbers { get; set; }
         public bool IsAutoplay { get; set; }
-        public DateTime? CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsWon { get; set; }
         public int WeekNumber { get; set; }
