@@ -265,7 +265,25 @@ public class GameService : IGameService
     #region Calculations
     public async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
     {
-        return await _gameRepository.CalculateTotalRevenueForGame(gameId);
+        var boards = await _boardRepository.GetBoardsByGameId(gameId);
+
+        decimal totalRevenue = 0;
+        foreach (var board in boards)
+        {
+            if (board.Numbers == null) throw new InvalidOperationException("Board numbers cannot be null.");
+
+            var cost = board.Numbers.Count switch
+            {
+                5 => 20,
+                6 => 40,
+                7 => 80,
+                8 => 160,
+                _ => throw new ArgumentException("Invalid number of fields")
+            };
+            totalRevenue += cost;
+        }
+
+        return totalRevenue;
     }
 
     public async Task<decimal> CalculateClubRevenue(Guid gameId)
