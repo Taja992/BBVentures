@@ -9,10 +9,6 @@ public interface IGameService
 {
     Task<List<GameDto>> GetAllGames();
     Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers);
-    Task<decimal> CalculateTotalRevenueForGame(Guid gameId);
-    Task<decimal> CalculateClubRevenue(Guid gameId);
-    Task<decimal> CalculateWinnersRevenue(Guid gameId);
-    Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers);
 }
 
 public class GameService : IGameService
@@ -103,8 +99,7 @@ public class GameService : IGameService
         await UpdateWinningBoards(winningBoards);
 
         await UpdateCurrentGameWithWinningNumbers(currentGame, winningNumbers);
-        currentGame.IsActive = false;
-        await _gameRepository.UpdateGame(currentGame);
+
         var newGameDto = await CreateNewGame(currentGame);
 
         return newGameDto;
@@ -262,8 +257,9 @@ public class GameService : IGameService
     }
     #endregion
     
-    #region Calculations
-    public async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
+
+    
+    private async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
     {
         var boards = await _boardRepository.GetBoardsByGameId(gameId);
 
@@ -285,22 +281,9 @@ public class GameService : IGameService
 
         return totalRevenue;
     }
+    
 
-    public async Task<decimal> CalculateClubRevenue(Guid gameId)
-    {
-        var totalRevenue = await CalculateTotalRevenueForGame(gameId);
-        return totalRevenue * 0.30m;
-    }
-
-    public async Task<decimal> CalculateWinnersRevenue(Guid gameId)
-    {
-        var totalRevenue = await CalculateTotalRevenueForGame(gameId);
-        return totalRevenue * 0.70m;
-    }
-    #endregion
-
-
-    public async Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers)
+    private async Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers)
     {
         var winningBoards = await _gameRepository.GetWinningBoardsForGame(gameId, winningNumbers);
         var winnersUserIds = new List<string>();
