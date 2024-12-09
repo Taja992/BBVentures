@@ -23,7 +23,7 @@ function UserBoardHistoryThisWeek() {
     const columns = [
         {label: 'Week Number', renderCell: (item: BBVenturesApiBoardHistoryDto)=> item.weekNumber},
         {label: 'Numbers', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.numbers?.join(", ") || "N/A"},
-        {label: 'Date', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.createdAt ? new Date(item.createdAt).toLocaleString() : "N/A"}
+        {label: 'Date', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.createdAt ? new Date(item.createdAt).toLocaleString() : "N/A"},
     ];
     
     
