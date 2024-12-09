@@ -27,14 +27,7 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
     {
         return await context.Boards.ToListAsync();
     }
-
-    public async Task<Board> AddBoard(Board board)
-    {
-        context.Boards.Add(board);
-        await context.SaveChangesAsync();
-        return board;
-    }
-
+    
     public async Task<Board> UpdateBoard(Board board)
     {
         context.Boards.Update(board);
@@ -42,11 +35,24 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
         return board;
     }
 
-    public void DeleteBoard(Board board)
-    {
-        context.Boards.Remove(board);
-        context.SaveChanges();
-    }
+    // public void DeleteBoard(Board board)
+    // {
+    //     context.Boards.Remove(board);
+    //     context.SaveChanges();
+    // }
+    
+    // public async Task<bool> IsUserActive(string userId)
+    // {
+    //     var user = await context.Users.FindAsync(userId);
+    //     return user?.IsActive ?? false;
+    // }
+    
+    // public async Task<Board> AddBoard(Board board)
+    // {
+    //     context.Boards.Add(board);
+    //     await context.SaveChangesAsync();
+    //     return board;
+    // }
 
     public async Task<List<Board>> GetBoardsByUserId(string userId)
     {
@@ -56,12 +62,6 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
     public async Task<List<Board>> GetBoardsByGameId(Guid gameId)
     {
         return await context.Boards.Where(b => b.GameId == gameId).ToListAsync();
-    }
-
-    public async Task<bool> IsUserActive(string userId)
-    {
-        var user = await context.Users.FindAsync(userId);
-        return user?.IsActive ?? false;
     }
     
     public async Task<List<Board>> GetAutoplayBoards()

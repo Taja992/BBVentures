@@ -8,8 +8,6 @@ namespace Service.Services;
 public interface IGameService
 {
     Task<List<GameDto>> GetAllGames();
-    // Task<GameDto> CreateGame(GameDto dto);
-    // Task<GameDto> UpdateGame(GameDto dto);
     Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers);
     Task<decimal> CalculateTotalRevenueForGame(Guid gameId);
     Task<decimal> CalculateClubRevenue(Guid gameId);
@@ -82,20 +80,6 @@ public class GameService : IGameService
         return gameDto;
     }
     
-    // public async Task<GameDto> CreateGame(GameDto dto)
-    // {
-    //     var game = dto.ToEntity();
-    //     game.Id = Guid.NewGuid();
-    //     var createdGame = await _repository.AddGame(game);
-    //     return GameDto.FromEntity(createdGame);
-    // }
-    //
-    // public async Task<GameDto> UpdateGame(GameDto dto)
-    // {
-    //     var game = dto.ToEntity();
-    //     var updatedGame = await _repository.UpdateGame(game);
-    //     return GameDto.FromEntity(updatedGame);
-    // }
 
     public async Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers)
     {
