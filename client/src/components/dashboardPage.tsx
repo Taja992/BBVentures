@@ -14,7 +14,7 @@ import UserBoardHistoryComponent from "./player/userBoardsHistoryComponent";
 import GameHistoryForAdminComponent from "./admin/gameHistoryForAdminComponent";
 import AdminBoardsHistoryComponent from "./admin/adminBoardsHistoryComponent";
 import GameHistoryForUserComponent from "./player/gameHistoryForUserComponent";
-import UserBoardHistoryThisWeek from "./player/UserBoardHistoryThisWeek";
+import UserBoardHistoryThisWeek from "./player/userBoardHistoryThisWeek";
 
 
 const DashboardPage = () => {
