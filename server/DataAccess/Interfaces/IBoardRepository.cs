@@ -19,5 +19,12 @@ public interface IBoardRepository
     Task<List<Board>> GetBoardsByGameId(Guid gameId);
 
     Task<bool> IsUserActive(string userId);
-    
+    Task<List<Board>> GetAutoplayBoards();
+
+    Task<Board> GetBoardById(Guid id);
+    void Detach(Board board);
+
+
+
+
 }

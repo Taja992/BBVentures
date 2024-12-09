@@ -55,13 +55,13 @@ public class DbSeeder
             new List<(Guid Id, string UserId, Guid GameId, List<int> Numbers, bool IsAutoplay)>
             {
                 (Guid.NewGuid(), PlayerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 1, 2, 3, 4, 5 }, false),
-                (Guid.NewGuid(), AdminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
-                (Guid.NewGuid(), PlayerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
-                (Guid.NewGuid(), AdminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, true),
+                (Guid.NewGuid(), AdminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, false),
+                (Guid.NewGuid(), PlayerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, false),
+                (Guid.NewGuid(), AdminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, false),
                 (Guid.NewGuid(), player2Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 6, 7, 8, 11, 2, 6 }, true),
                 (Guid.NewGuid(), player2Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, false),
                 (Guid.NewGuid(), AdminId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, false),
-                (Guid.NewGuid(), player3Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9, 1, 2 }, true)
+                (Guid.NewGuid(), player4Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9, 1, 2 }, true)
             }
         );
         
