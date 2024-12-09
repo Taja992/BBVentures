@@ -9,5 +9,6 @@ namespace Service.Services
         Task<List<BoardDto>> GetAllBoards();
         Task<List<BoardHistoryDto>> GetBoardHistoryByUserId(string userId);
         int CalculateCost(int fieldCount);
+        public Task<List<BoardDto>> GetBoardsFromThisWeek(string userId);
     }
 }

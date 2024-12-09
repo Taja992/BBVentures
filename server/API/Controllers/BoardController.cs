@@ -69,5 +69,22 @@ namespace API.Controllers
             var boards = await _boardService.GetBoardHistoryByUserId(userId);
             return Ok(boards);
         }
+
+        [HttpGet]
+        [Route("get-boards-from-this-week")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<BoardDto>>> GetBoardsFromThisWeek()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized("User ID could not be found");
+            }
+
+            List<BoardDto> boards = await _boardService.GetBoardsFromThisWeek(userId);
+            return boards;
+        }
+        
+        
     }
 }
