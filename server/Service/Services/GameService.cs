@@ -9,10 +9,6 @@ public interface IGameService
 {
     Task<List<GameDto>> GetAllGames();
     Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers);
-    Task<decimal> CalculateTotalRevenueForGame(Guid gameId);
-    Task<decimal> CalculateClubRevenue(Guid gameId);
-    Task<decimal> CalculateWinnersRevenue(Guid gameId);
-    Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers);
 }
 
 public class GameService : IGameService
@@ -21,14 +17,17 @@ public class GameService : IGameService
     private readonly IGameRepository _gameRepository;
     private readonly IBoardRepository _boardRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IBoardService _boardService;
 
-    public GameService(IGameRepository gameRepository, IBoardRepository boardRepository, IUserRepository userRepository)
+    public GameService(IGameRepository gameRepository, IBoardRepository boardRepository, IUserRepository userRepository, IBoardService boardService )
     {
         _gameRepository = gameRepository;
         _boardRepository = boardRepository;
         _userRepository = userRepository;
+        _boardService = boardService;
     }
-
+    
+    #region Get All Games and Convert to Username/Emails
     public async Task<List<GameDto>> GetAllGames()
     {
         var games = await _gameRepository.GetAllGamesAsync();
@@ -79,7 +78,7 @@ public class GameService : IGameService
 
         return gameDto;
     }
-    
+    #endregion
 
     public async Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers)
     {
@@ -103,8 +102,7 @@ public class GameService : IGameService
         await UpdateWinningBoards(winningBoards);
 
         await UpdateCurrentGameWithWinningNumbers(currentGame, winningNumbers);
-        currentGame.IsActive = false;
-        await _gameRepository.UpdateGame(currentGame);
+
         var newGameDto = await CreateNewGame(currentGame);
 
         return newGameDto;
@@ -164,7 +162,8 @@ public class GameService : IGameService
         currentGame.WinnersUserId = winnersUserIds;
         currentGame.Winners = winnersUserIds.Count;
         //Currently this is just dividing it evenly something should be done about if the UserId has multiple wins
-        //they get more
+        //they get more, this will also kind of make winnershare column redundant so we should think of a better
+        //way to do this
         currentGame.WinnerShare = currentGame.Winners > 0 ? currentGame.WinnersRevenue / currentGame.Winners : 0;
 
         await _gameRepository.UpdateGame(currentGame);
@@ -181,6 +180,50 @@ public class GameService : IGameService
     //
     //     return danishNow > sunday5PM;
     // }
+    
+    private async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
+    {
+        var boards = await _boardRepository.GetBoardsByGameId(gameId);
+
+        decimal totalRevenue = 0;
+        foreach (var board in boards)
+        {
+            if (board.Numbers == null) throw new InvalidOperationException("Board numbers cannot be null.");
+
+            var cost = board.Numbers.Count switch
+            {
+                5 => 20,
+                6 => 40,
+                7 => 80,
+                8 => 160,
+                _ => throw new ArgumentException("Invalid number of fields")
+            };
+            totalRevenue += cost;
+        }
+
+        return totalRevenue;
+    }
+    
+
+    private async Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers)
+    {
+        var winningBoards = await _gameRepository.GetWinningBoardsForGame(gameId, winningNumbers);
+        var winnersUserIds = new List<string>();
+
+        foreach (var board in winningBoards)
+        {
+            var user = await _userRepository.GetUserById(board.UserId);
+            if (user != null)
+            {
+                winnersUserIds.Add(user.Id);
+            }
+        }
+
+        return winnersUserIds;
+    }
+    
+    
+    
     
     #region Create Game Region (This gets confusing due to Auto-Play)
     
@@ -222,6 +265,12 @@ public class GameService : IGameService
 
     private async Task CreateNewAutoplayBoard(Guid newGameId, Board board)
     {
+        
+        if (board.Numbers == null)
+        {
+            throw new ArgumentException("Board numbers cannot be null.");
+        }
+        
         var newBoard = new Board
         {
             Id = Guid.NewGuid(),
@@ -231,6 +280,24 @@ public class GameService : IGameService
             IsAutoplay = true,
             isWon = false
         };
+
+        
+        var cost = _boardService.CalculateCost(newBoard.Numbers.Count);
+        
+        var user = await _userRepository.GetUserById(newBoard.UserId);
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        if (user.Balance < cost)
+        {
+            throw new Exception("Insufficient balance");
+        }
+
+        user.Balance -= cost;
+        await _userRepository.UpdateUser(user);
+
         await _boardRepository.CreateBoard(newBoard);
     }
 
@@ -261,41 +328,4 @@ public class GameService : IGameService
         };
     }
     #endregion
-    
-    #region Calculations
-    public async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
-    {
-        return await _gameRepository.CalculateTotalRevenueForGame(gameId);
-    }
-
-    public async Task<decimal> CalculateClubRevenue(Guid gameId)
-    {
-        var totalRevenue = await CalculateTotalRevenueForGame(gameId);
-        return totalRevenue * 0.30m;
-    }
-
-    public async Task<decimal> CalculateWinnersRevenue(Guid gameId)
-    {
-        var totalRevenue = await CalculateTotalRevenueForGame(gameId);
-        return totalRevenue * 0.70m;
-    }
-    #endregion
-
-
-    public async Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers)
-    {
-        var winningBoards = await _gameRepository.GetWinningBoardsForGame(gameId, winningNumbers);
-        var winnersUserIds = new List<string>();
-
-        foreach (var board in winningBoards)
-        {
-            var user = await _userRepository.GetUserById(board.UserId);
-            if (user != null)
-            {
-                winnersUserIds.Add(user.Id);
-            }
-        }
-
-        return winnersUserIds;
-    }
 }
