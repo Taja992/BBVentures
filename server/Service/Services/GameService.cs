@@ -159,7 +159,8 @@ public class GameService : IGameService
         currentGame.WinnersUserId = winnersUserIds;
         currentGame.Winners = winnersUserIds.Count;
         //Currently this is just dividing it evenly something should be done about if the UserId has multiple wins
-        //they get more
+        //they get more, this will also kind of make winnershare column redundant so we should think of a better
+        //way to do this
         currentGame.WinnerShare = currentGame.Winners > 0 ? currentGame.WinnersRevenue / currentGame.Winners : 0;
 
         await _gameRepository.UpdateGame(currentGame);
@@ -176,6 +177,50 @@ public class GameService : IGameService
     //
     //     return danishNow > sunday5PM;
     // }
+    
+    private async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
+    {
+        var boards = await _boardRepository.GetBoardsByGameId(gameId);
+
+        decimal totalRevenue = 0;
+        foreach (var board in boards)
+        {
+            if (board.Numbers == null) throw new InvalidOperationException("Board numbers cannot be null.");
+
+            var cost = board.Numbers.Count switch
+            {
+                5 => 20,
+                6 => 40,
+                7 => 80,
+                8 => 160,
+                _ => throw new ArgumentException("Invalid number of fields")
+            };
+            totalRevenue += cost;
+        }
+
+        return totalRevenue;
+    }
+    
+
+    private async Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers)
+    {
+        var winningBoards = await _gameRepository.GetWinningBoardsForGame(gameId, winningNumbers);
+        var winnersUserIds = new List<string>();
+
+        foreach (var board in winningBoards)
+        {
+            var user = await _userRepository.GetUserById(board.UserId);
+            if (user != null)
+            {
+                winnersUserIds.Add(user.Id);
+            }
+        }
+
+        return winnersUserIds;
+    }
+    
+    
+    
     
     #region Create Game Region (This gets confusing due to Auto-Play)
     
@@ -258,45 +303,4 @@ public class GameService : IGameService
     #endregion
     
 
-    
-    private async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
-    {
-        var boards = await _boardRepository.GetBoardsByGameId(gameId);
-
-        decimal totalRevenue = 0;
-        foreach (var board in boards)
-        {
-            if (board.Numbers == null) throw new InvalidOperationException("Board numbers cannot be null.");
-
-            var cost = board.Numbers.Count switch
-            {
-                5 => 20,
-                6 => 40,
-                7 => 80,
-                8 => 160,
-                _ => throw new ArgumentException("Invalid number of fields")
-            };
-            totalRevenue += cost;
-        }
-
-        return totalRevenue;
-    }
-    
-
-    private async Task<List<string>> GetWinnersDetails(Guid gameId, List<int> winningNumbers)
-    {
-        var winningBoards = await _gameRepository.GetWinningBoardsForGame(gameId, winningNumbers);
-        var winnersUserIds = new List<string>();
-
-        foreach (var board in winningBoards)
-        {
-            var user = await _userRepository.GetUserById(board.UserId);
-            if (user != null)
-            {
-                winnersUserIds.Add(user.Id);
-            }
-        }
-
-        return winnersUserIds;
-    }
 }
