@@ -72,7 +72,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("get-boards-from-this-week")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult<List<BoardDto>>> GetBoardsFromThisWeek()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

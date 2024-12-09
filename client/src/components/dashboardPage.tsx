@@ -14,6 +14,7 @@ import UserBoardHistoryComponent from "./player/userBoardsHistoryComponent";
 import GameHistoryForAdminComponent from "./admin/gameHistoryForAdminComponent";
 import AdminBoardsHistoryComponent from "./admin/adminBoardsHistoryComponent";
 import GameHistoryForUserComponent from "./player/gameHistoryForUserComponent";
+import UserBoardHistoryThisWeek from "./player/UserBoardHistoryThisWeek";
 
 
 const DashboardPage = () => {
@@ -81,6 +82,11 @@ const DashboardPage = () => {
             <div className="border border-black p-4 mb-4">
                 <UserBoardHistoryComponent/>
             </div>
+            
+            <div className="border border-black p-4 mb-4">
+                <UserBoardHistoryThisWeek/>
+            </div>
+
         </>
     );
 };
