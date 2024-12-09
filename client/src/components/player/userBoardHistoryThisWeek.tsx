@@ -22,8 +22,8 @@ const UserBoardHistoryThisWeek = () => {
     
     const columns = [
         {label: 'Week Number', renderCell: (item: BBVenturesApiBoardHistoryDto)=> item.weekNumber},
-        {label: 'Numbers', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.numbers},
-        {label: 'Date', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.createdAt}
+        {label: 'Numbers', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.numbers?.join(", ") || "N/A"},
+        {label: 'Date', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.createdAt ? new Date().toLocaleString(item.createdAt) : "N/A"}
     ];
     
     
