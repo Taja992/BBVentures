@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { gamesAtom, userInfoAtom } from "../../atoms/atoms";
 import { http } from "../../http";
 import './InputWinningNumbersComponent.css';
+import toast from "react-hot-toast";
 
 const InputWinningNumbersComponent = () => {
     const [winningNumbers, setWinningNumbers] = useState<number[]>([]);
@@ -17,17 +18,17 @@ const InputWinningNumbersComponent = () => {
 
     const handleSubmit = async () => {
         if (winningNumbers.length !== 3) {
-            alert("Please enter exactly 3 winning numbers.");
+            toast.error("Please enter exactly 3 winning numbers.");
             return;
         }
 
         try {
             const response = await http.gameProcessWinningNumbersCreate(winningNumbers);
-            alert("Winning numbers submitted successfully.");
+            toast.success("Winning numbers submitted successfully.");
             setGames(prevGames => [...prevGames, response.data]);
         } catch (error) {
+            toast.error("Failed to submit winning numbers:");
             console.error("Failed to submit winning numbers:", error);
-            alert("Failed to submit winning numbers.");
         }
     };
 

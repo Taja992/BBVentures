@@ -8,8 +8,6 @@ namespace Service.Services;
 public interface IGameService
 {
     Task<List<GameDto>> GetAllGames();
-    // Task<GameDto> CreateGame(GameDto dto);
-    // Task<GameDto> UpdateGame(GameDto dto);
     Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers);
     Task<decimal> CalculateTotalRevenueForGame(Guid gameId);
     Task<decimal> CalculateClubRevenue(Guid gameId);
@@ -45,49 +43,43 @@ public class GameService : IGameService
         return gameDtos;
     }
 
-    private async Task<(List<string> Usernames, List<string> Emails)> GetWinnerUsernamesAndEmails(List<string> userIds)
+    private async Task<Dictionary<string, (string Username, string Email, int Count)>> GetWinnerUsernamesAndEmails(List<string> userIds)
     {
-        var usernames = new List<string>();
-        var emails = new List<string>();
+        var userDictionary = new Dictionary<string, (string Username, string Email, int Count)>();
 
         foreach (var userId in userIds)
         {
             var user = await _userRepository.GetUserById(userId);
             if (user != null)
             {
-                usernames.Add(user.UserName ?? "Unknown User");
-                emails.Add(user.Email ?? "Unknown Email");
+                var username = user.UserName ?? "Unknown";
+                var email = user.Email ?? "Unknown";
+
+                if (userDictionary.ContainsKey(user.Id))
+                {
+                    userDictionary[user.Id] = (username, email, userDictionary[user.Id].Count + 1);
+                }
+                else
+                {
+                    userDictionary[user.Id] = (username, email, 1);
+                }
             }
         }
 
-        return (usernames, emails);
+        return userDictionary;
     }
 
     private async Task<GameDto> ConvertToGameDto(Game game)
     {
-        var (winnerUsernames, winnerEmails) = await GetWinnerUsernamesAndEmails(game.WinnersUserId ?? new List<string>());
+        var userDictionary = await GetWinnerUsernamesAndEmails(game.WinnersUserId ?? new List<string>());
 
         var gameDto = GameDto.FromEntity(game);
-        gameDto.WinnerUsernames = winnerUsernames;
-        gameDto.WinnerEmails = winnerEmails;
+        gameDto.WinnerUsernames = userDictionary.Select(u => u.Value.Count > 1 ? $"{u.Value.Username} x{u.Value.Count}" : u.Value.Username).ToList();
+        gameDto.WinnerEmails = userDictionary.Select(u => u.Value.Email).ToList();
 
         return gameDto;
     }
     
-    // public async Task<GameDto> CreateGame(GameDto dto)
-    // {
-    //     var game = dto.ToEntity();
-    //     game.Id = Guid.NewGuid();
-    //     var createdGame = await _repository.AddGame(game);
-    //     return GameDto.FromEntity(createdGame);
-    // }
-    //
-    // public async Task<GameDto> UpdateGame(GameDto dto)
-    // {
-    //     var game = dto.ToEntity();
-    //     var updatedGame = await _repository.UpdateGame(game);
-    //     return GameDto.FromEntity(updatedGame);
-    // }
 
     public async Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers)
     {
@@ -171,6 +163,8 @@ public class GameService : IGameService
         var winnersUserIds = await GetWinnersDetails(currentGame.Id, winningNumbers);
         currentGame.WinnersUserId = winnersUserIds;
         currentGame.Winners = winnersUserIds.Count;
+        //Currently this is just dividing it evenly something should be done about if the UserId has multiple wins
+        //they get more
         currentGame.WinnerShare = currentGame.Winners > 0 ? currentGame.WinnersRevenue / currentGame.Winners : 0;
 
         await _gameRepository.UpdateGame(currentGame);
