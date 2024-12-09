@@ -27,7 +27,7 @@ function UserBoardHistoryThisWeek() {
     ];
     
     
-    return (<>
+    return <>
         
         <h2 className={"text-2xl font-bold mb-4"}>Your Boards This Week</h2>
         
@@ -35,7 +35,7 @@ function UserBoardHistoryThisWeek() {
             <CompactTable columns = {columns} data = {{nodes: boardHistFromWeek}} theme ={theme}/>
         </div>
         
-    </>)
+    </>
     
     
 }
