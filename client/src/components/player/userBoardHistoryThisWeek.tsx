@@ -6,7 +6,7 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import { getTheme } from "@table-library/react-table-library/baseline";
 
 
-const UserBoardHistoryThisWeek = () => {
+function UserBoardHistoryThisWeek() {
     const theme = useTheme(getTheme());
     const [boardHistFromWeek, setBoardHistFromWeek] =  useState<BBVenturesApiBoardHistoryDto[]>([]);
 
