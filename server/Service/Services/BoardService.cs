@@ -151,7 +151,13 @@ namespace Service.Services
         public async Task<List<BoardDto>> GetBoardsFromWeek(int weekNum, string userId)
         {
             List<Board> allboards = await _boardRepository.GetBoardsByUserId(userId);
-            List<BoardDto> boardsThisWeek = new List<BoardDto>();
+            List<BoardDto> boardsThisWeek = new List<BoardDto>(); //list that will be returned
+            var activeGame = await _gameRepository.GetActiveGameAsync();
+            if (activeGame == null)
+            {
+                throw new Exception("No active game found");
+            }
+            
             foreach (Board board in allboards)
             {
                 Calendar calendar = new GregorianCalendar();
@@ -159,7 +165,9 @@ namespace Service.Services
                 bool isThisWeek = calendar.GetWeekOfYear(board.CreatedAt, CalendarWeekRule.FirstDay, board.CreatedAt.DayOfWeek) == weekNum;
                 if (isThisWeek)
                 {
-                    boardsThisWeek.Add(BoardDto.FromEntity(board));
+                    BoardDto dto = BoardDto.FromEntity(board);
+                    dto.WeekNumber = activeGame.WeekNumber; //this is to match the weeknumber in "GetBoardHistoryByUserId()", feel free to change it
+                    boardsThisWeek.Add(dto);
                 }
                 
             }

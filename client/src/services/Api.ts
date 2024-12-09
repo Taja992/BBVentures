@@ -24,7 +24,7 @@ export interface BBVenturesApiBoard {
   numbers?: number[] | null;
   isAutoplay?: boolean;
   /** @format date-time */
-  createdAt?: string | null;
+  createdAt?: string;
   /** @format date-time */
   updatedAt?: string | null;
   isWon?: boolean;
@@ -41,7 +41,7 @@ export interface BBVenturesApiBoardDto {
   numbers?: number[] | null;
   isAutoplay?: boolean;
   /** @format date-time */
-  createdAt?: string | null;
+  createdAt?: string;
   /** @format date-time */
   updatedAt?: string | null;
   isWon?: boolean;
@@ -54,7 +54,7 @@ export interface BBVenturesApiBoardDto {
 export interface BBVenturesApiBoardHistoryDto {
   numbers?: number[] | null;
   /** @format date-time */
-  createdAt?: string | null;
+  createdAt?: string;
   /** @format int32 */
   weekNumber?: number;
 }
@@ -546,6 +546,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<BBVenturesApiBoardHistoryDto[], any>({
         path: `/api/Board/user-board-history`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Board
+     * @name BoardGetBoardsFromThisWeekList
+     * @request GET:/api/Board/get-boards-from-this-week
+     */
+    boardGetBoardsFromThisWeekList: (
+      query?: {
+        userId?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BBVenturesApiBoardDto[], any>({
+        path: `/api/Board/get-boards-from-this-week`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
