@@ -32,10 +32,8 @@ const GameHistoryForUserComponent: React.FC = () => {
     const columns = [
         { label: 'Week Number', renderCell: (item: BBVenturesApiGameDto) => item.weekNumber },
         { label: 'Winner Numbers', renderCell: (item: BBVenturesApiGameDto) => item.winnerNumbers?.join(', ') },
-        { label: 'Is Active', renderCell: (item: BBVenturesApiGameDto) => item.isActive ? 'Yes' : 'No' },
         { label: 'Winners Revenue', renderCell: (item: BBVenturesApiGameDto) => item.winnersRevenue },
-        // { label: 'Winner Usernames', renderCell: (item: BBVenturesApiGameDto) => item.winnerUsernames?.join(', ') },
-        // { label: 'Winner Emails', renderCell: (item: BBVenturesApiGameDto) => item.winnerEmails?.join(', ') },
+        
     ];
 
     return (

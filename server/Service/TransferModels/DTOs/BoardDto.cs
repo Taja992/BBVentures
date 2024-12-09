@@ -9,7 +9,7 @@
         public bool IsAutoplay { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        
+        public bool IsWon { get; set; }
         public int WeekNumber { get; set; }
         
         public string? PlayerUsername { get; set; }
@@ -21,13 +21,13 @@
             return new Board
             {
                 Id = Id,
-                UserId = UserId,
+                UserId = UserId ?? string.Empty,
                 GameId = GameId,
                 Numbers = Numbers,
                 IsAutoplay = IsAutoplay,
                 CreatedAt = CreatedAt,
                 UpdatedAt = UpdatedAt,
-                
+                isWon = IsWon
             };
         }
         
@@ -42,7 +42,7 @@
                 IsAutoplay = board.IsAutoplay,
                 CreatedAt = board.CreatedAt,
                 UpdatedAt = board.UpdatedAt,
-                
+                IsWon = board.isWon
             };
         }
     }

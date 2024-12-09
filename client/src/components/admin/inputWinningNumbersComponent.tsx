@@ -1,7 +1,9 @@
 ﻿import { useState } from "react";
 import { useAtom } from "jotai";
-import {gamesAtom, userInfoAtom } from "../../atoms/atoms";
+import { gamesAtom, userInfoAtom } from "../../atoms/atoms";
 import { http } from "../../http";
+import './InputWinningNumbersComponent.css';
+import toast from "react-hot-toast";
 
 const InputWinningNumbersComponent = () => {
     const [winningNumbers, setWinningNumbers] = useState<number[]>([]);
@@ -16,18 +18,17 @@ const InputWinningNumbersComponent = () => {
 
     const handleSubmit = async () => {
         if (winningNumbers.length !== 3) {
-            alert("Please enter exactly 3 winning numbers.");
+            toast.error("Please enter exactly 3 winning numbers.");
             return;
         }
 
         try {
-            await http.gameProcessWinningNumbersCreate(winningNumbers);
-            alert("Winning numbers submitted successfully.");
-            const updatedGames = await http.gameList();
-            setGames(updatedGames.data);
+            const response = await http.gameProcessWinningNumbersCreate(winningNumbers);
+            toast.success("Winning numbers submitted successfully.");
+            setGames(prevGames => [...prevGames, response.data]);
         } catch (error) {
+            toast.error("Failed to submit winning numbers:");
             console.error("Failed to submit winning numbers:", error);
-            alert("Failed to submit winning numbers.");
         }
     };
 
@@ -36,17 +37,20 @@ const InputWinningNumbersComponent = () => {
     }
 
     return (
-        <div>
+        <div className="input-winning-numbers">
             <h2>Input Winning Numbers</h2>
-            {Array.from({ length: 3 }).map((_, index) => (
-                <input
-                    key={index}
-                    type="number"
-                    value={winningNumbers[index] || ""}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                />
-            ))}
-            <button onClick={handleSubmit}>Submit</button>
+            <div className="input-fields">
+                {Array.from({ length: 3 }).map((_, index) => (
+                    <input
+                        key={index}
+                        type="number"
+                        value={winningNumbers[index] || ""}
+                        onChange={(e) => handleInputChange(index, e.target.value)}
+                        className="winning-number-input"
+                    />
+                ))}
+            </div>
+            <button onClick={handleSubmit} className="submit-button">Submit</button>
         </div>
     );
 };
