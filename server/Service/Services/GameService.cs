@@ -17,14 +17,17 @@ public class GameService : IGameService
     private readonly IGameRepository _gameRepository;
     private readonly IBoardRepository _boardRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IBoardService _boardService;
 
-    public GameService(IGameRepository gameRepository, IBoardRepository boardRepository, IUserRepository userRepository)
+    public GameService(IGameRepository gameRepository, IBoardRepository boardRepository, IUserRepository userRepository, IBoardService boardService )
     {
         _gameRepository = gameRepository;
         _boardRepository = boardRepository;
         _userRepository = userRepository;
+        _boardService = boardService;
     }
-
+    
+    #region Get All Games and Convert to Username/Emails
     public async Task<List<GameDto>> GetAllGames()
     {
         var games = await _gameRepository.GetAllGamesAsync();
@@ -75,7 +78,7 @@ public class GameService : IGameService
 
         return gameDto;
     }
-    
+    #endregion
 
     public async Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers)
     {
@@ -262,6 +265,12 @@ public class GameService : IGameService
 
     private async Task CreateNewAutoplayBoard(Guid newGameId, Board board)
     {
+        
+        if (board.Numbers == null)
+        {
+            throw new ArgumentException("Board numbers cannot be null.");
+        }
+        
         var newBoard = new Board
         {
             Id = Guid.NewGuid(),
@@ -271,6 +280,24 @@ public class GameService : IGameService
             IsAutoplay = true,
             isWon = false
         };
+
+        
+        var cost = _boardService.CalculateCost(newBoard.Numbers.Count);
+        
+        var user = await _userRepository.GetUserById(newBoard.UserId);
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        if (user.Balance < cost)
+        {
+            throw new Exception("Insufficient balance");
+        }
+
+        user.Balance -= cost;
+        await _userRepository.UpdateUser(user);
+
         await _boardRepository.CreateBoard(newBoard);
     }
 

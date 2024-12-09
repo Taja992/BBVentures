@@ -16,6 +16,7 @@ namespace Service.Services
         private readonly IValidator<CreateBoardDto> _createValidator;
         private readonly IGameRepository _gameRepository;
         private readonly IUserRepository _userRepository;
+        
 
         public BoardService(AppDbContext context, IBoardRepository boardRepository,
             IValidator<CreateBoardDto> createValidator, IGameRepository gameRepository, IUserRepository userRepository)
@@ -31,14 +32,7 @@ namespace Service.Services
         {
             await _createValidator.ValidateAndThrowAsync(createBoardDto);
 
-            int cost = createBoardDto.FieldCount switch
-            {
-                5 => 20,
-                6 => 40,
-                7 => 80,
-                8 => 160,
-                _ => throw new ArgumentException("Invalid number of fields")
-            };
+            int cost = CalculateCost(createBoardDto.FieldCount);
 
             var user = await _userRepository.GetUserById(createBoardDto.UserId);
             if (user == null)
@@ -79,6 +73,18 @@ namespace Service.Services
                 UpdatedAt = newBoard.UpdatedAt,
                 PlayerUsername = user.UserName,
                 PlayerEmail = user.Email
+            };
+        }
+        
+        public int CalculateCost(int fieldCount)
+        {
+            return fieldCount switch
+            {
+                5 => 20,
+                6 => 40,
+                7 => 80,
+                8 => 160,
+                _ => throw new ArgumentException("Invalid number of fields")
             };
         }
 
