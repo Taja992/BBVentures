@@ -19,7 +19,7 @@ public interface ITransactionService
 }
 
 
-public class TransactionService(ITransactionRepository repository, UserService userService) : ITransactionService
+public class TransactionService(ITransactionRepository repository, IUserService userService) : ITransactionService
 {
     
     
