@@ -37,8 +37,16 @@ const GameHistoryForAdminComponent: React.FC = () => {
         { label: 'Club Revenue', renderCell: (item: BBVenturesApiGameDto) => item.clubRevenue ?? 'N/A' },
         { label: 'Winners Revenue', renderCell: (item: BBVenturesApiGameDto) => item.winnersRevenue ?? 'N/A' },
         { label: 'How Many Winners?', renderCell: (item: BBVenturesApiGameDto) => item.winners ?? 'N/A' },
-        { label: 'Winners Split', renderCell: (item: BBVenturesApiGameDto) => item.winnerShare ?? 'N/A' },
-        { label: 'Winner Usernames', renderCell: (item: BBVenturesApiGameDto) => item.winnerUsernames?.join(', ') ?? 'N/A' },
+        { label: 'Winners', renderCell: (item: BBVenturesApiGameDto) => {
+                if (item.winnerUsernames && item.individualWinnings) {
+                    return item.winnerUsernames.map((username, index) => (
+                        <div key={index}>
+                            {username}: {item.individualWinnings?.[index]?.toFixed(2)}
+                        </div>
+                    ));
+                }
+                return 'N/A';
+            }},
         { label: 'Winner Emails', renderCell: (item: BBVenturesApiGameDto) => item.winnerEmails?.join(', ') ?? 'N/A' },
     ];
 

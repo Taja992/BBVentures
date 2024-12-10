@@ -12,10 +12,10 @@ public class GameDto
     public decimal ClubRevenue { get; set; }
     public decimal WinnersRevenue { get; set; } 
     public int Winners { get; set; }
-    public decimal WinnerShare { get; set; }
     public List<string>? WinnerUsernames { get; set; } 
     public List<string>? WinnerEmails { get; set; }
     public List<string>? WinnersUserId { get; set; }
+    public List<decimal>? IndividualWinnings { get; set; }
 
     public Game ToEntity()
     {
@@ -29,14 +29,17 @@ public class GameDto
             ClubRevenue = ClubRevenue,
             WinnersRevenue = WinnersRevenue,
             Winners = Winners,
-            WinnerShare = WinnerShare,
             WinnersUserId = WinnersUserId
         };
     }
 
     public static GameDto FromEntity(Game game)
     {
-        
+        var userDictionary = game.WinnersUserId?.GroupBy(id => id)
+            .ToDictionary(g => g.Key, g => g.Count()) ?? new Dictionary<string, int>();
+
+        var individualWinnings = userDictionary.Select(u => game.WinnerShare * u.Value).ToList();
+
         return new GameDto
         {
             Id = game.Id,
@@ -47,8 +50,8 @@ public class GameDto
             ClubRevenue = game.ClubRevenue,
             WinnersRevenue = game.WinnersRevenue,
             Winners = game.Winners,
-            WinnerShare = game.WinnerShare,
-            WinnersUserId = game.WinnersUserId
+            WinnersUserId = game.WinnersUserId,
+            IndividualWinnings = individualWinnings
         };
     }
 }
