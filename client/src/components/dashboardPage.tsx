@@ -3,8 +3,7 @@ import { useAtom } from "jotai";
 import { http } from "../http";
 import { userBalance, userInfoAtom, boardStateAtom } from "../atoms/atoms";
 import RegisterUser from "./admin/registerUserComponent";
-import UserHistory from "./player/UserHistory";
-import AllHistory from "./admin/AllHistory";
+import AllHistoryOfTransactions from "./admin/AllHistory";
 import GetAllUsers from "./admin/allUsersComponent";
 import UpdateSelf from "./player/updateSelfComponent";
 import BoardGameComponent from "./player/BoardGameComponent";
@@ -15,6 +14,7 @@ import GameHistoryForAdminComponent from "./admin/gameHistoryForAdminComponent";
 import AdminBoardsHistoryComponent from "./admin/adminBoardsHistoryComponent";
 import GameHistoryForUserComponent from "./player/gameHistoryForUserComponent";
 import UserBoardHistoryThisWeek from "./player/userBoardHistoryThisWeek";
+import UserHistoryOfTransactions from "./player/UserHistory";
 
 
 const DashboardPage = () => {
@@ -63,7 +63,7 @@ const DashboardPage = () => {
                 <GameHistoryForUserComponent/>
             </div>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}
+                {userInfo?.isAdmin ? <AllHistoryOfTransactions/> : <UserHistoryOfTransactions/>}
             </div>
             <div className="border border-black p-4 mb-4">
                 <h4>Game</h4>
