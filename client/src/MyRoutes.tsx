@@ -1,13 +1,11 @@
 import {
     createBrowserRouter,
     createRoutesFromElements,
-    Navigate,
     Route,
     RouterProvider,
 } from 'react-router-dom';
 import LoginPage from "./components/loginPage.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
-import ComponentTestPage from "./componentTestPage.tsx";
 import RegisterPasswordPage from "./components/passwordManagement/RegisterPasswordPage.tsx";
 import ErrorPage from "./components/errorPage";
 import Root from "./root";
@@ -34,14 +32,12 @@ const router = createBrowserRouter(
             </Route>
             
             <Route element={<MainLayout />}>
-                <Route path="test" element={<ComponentTestPage />} />
-                <Route path="game" element={<GamePage />} />
-                <Route path="boards" element={<BoardsPage />} />
-                <Route path="manage-users" element={<ManageUsersPage />} />
-                <Route path="user-account" element={<UserAccountPage />} />
-                <Route path="transactions" element={<TransactionsPage />} />
+                <Route path="game" element={<ProtectedRoute element={GamePage} />} />
+                <Route path="boards" element={<ProtectedRoute element={BoardsPage} />} />
+                <Route path="manage-users" element={<ProtectedRoute element={ManageUsersPage} />} />
+                <Route path="user-account" element={<ProtectedRoute element={UserAccountPage} />} />
+                <Route path="transactions" element={<ProtectedRoute element={TransactionsPage} />} />
                 <Route path="game-board" element={<ProtectedRoute element={GameBoard} />} />
-                <Route path="*" element={<Navigate to="/game-board" />} />
             </Route>
         </Route>
     )
