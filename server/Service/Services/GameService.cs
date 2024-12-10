@@ -147,6 +147,7 @@ public class GameService : IGameService
         }
     }
 
+    
     private async Task UpdateCurrentGameWithWinningNumbers(Game currentGame, List<int> winningNumbers)
     {
         currentGame.WinnerNumbers = winningNumbers;
