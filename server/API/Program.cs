@@ -127,6 +127,10 @@ public class Program
         builder.Services.AddScoped<IBoardService, BoardService>();
         builder.Services.AddScoped<IGameService, GameService>();
         builder.Services.AddScoped<ITransactionService, TransactionService>();
+        builder.Services.AddScoped<IGameService, GameService>();
+        builder.Services.AddSingleton<IHostedService, GameEndingService>();
+        builder.Services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        
         
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<IPasswordService, PasswordService>();

@@ -9,6 +9,7 @@ public interface IGameService
 {
     Task<List<GameDto>> GetAllGames();
     Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers);
+    Task EndActiveGame();
 }
 
 public class GameService : IGameService
@@ -106,6 +107,17 @@ public class GameService : IGameService
         var newGameDto = await CreateNewGame(currentGame);
 
         return newGameDto;
+    }
+    
+    public async Task EndActiveGame()
+    {
+        var currentGame = await GetActiveGame();
+        if (currentGame != null)
+        {
+            currentGame.IsActive = false;
+            currentGame.EndedAt = DateTime.UtcNow;
+            await _gameRepository.UpdateGame(currentGame);
+        }
     }
 
     private void ValidateWinningNumbers(List<int> winningNumbers)
