@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { http } from "../http";
-import { userBalance, userInfoAtom, boardStateAtom } from "../atoms/atoms";
+import { http } from "../../http";
+import { userBalance, userInfoAtom } from "../../atoms/atoms";
 import RegisterUser from "../admin/registerUserComponent";
 import GetAllUsers from "../admin/allUsersComponent";
 import UpdateSelf from "../player/updateSelfComponent";
@@ -11,10 +11,9 @@ import UpdateSelf from "../player/updateSelfComponent";
 
 const ManageUsersPage = () => {
     const [userInfo] = useAtom(userInfoAtom);
-    const [username, setUsername] = useState<string | null>(null);
-    const [Balance, setBalance] = useAtom(userBalance);
-    const [boardState] = useAtom(boardStateAtom);
-
+    const [, setUsername] = useState<string | null>(null);
+    const [, setBalance] = useAtom(userBalance);
+   
     //use on every page for auth
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -29,10 +28,7 @@ const ManageUsersPage = () => {
 
         fetchUserInfo();
     }, []);
-
-    useEffect(() => {
-        // This effect will run whenever the boardState changes, triggering a refresh of the BoardHistoryComponent
-    }, [boardState]);
+    
 
     return (
         <>
@@ -44,7 +40,7 @@ const ManageUsersPage = () => {
                 {userInfo?.isAdmin && <GetAllUsers/>}
             </div>
             <div className="border border-black p-4 mb-4">
-                <UpdateSelf/>
+                {userInfo?.isPlayer && !userInfo?.isAdmin && <UpdateSelf/>}
             </div>
             
 
