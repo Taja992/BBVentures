@@ -85,18 +85,18 @@ public class GameService : IGameService
     {
         ValidateWinningNumbers(winningNumbers);
 
-        var currentGame = await GetActiveGame();
-        if (currentGame == null)
+        var latestGame = await _gameRepository.GetLatestGameByWeekNumberAsync();
+        if (latestGame == null)
         {
-            throw new InvalidOperationException("No active game found.");
+            throw new InvalidOperationException("No game found.");
         }
 
-        var winningBoards = await GetWinningBoards(currentGame.Id, winningNumbers);
+        var winningBoards = await GetWinningBoards(latestGame.Id, winningNumbers);
         await UpdateWinningBoards(winningBoards);
 
-        await UpdateCurrentGameWithWinningNumbers(currentGame, winningNumbers);
+        await UpdateCurrentGameWithWinningNumbers(latestGame, winningNumbers);
 
-        var newGameDto = await CreateNewGame(currentGame);
+        var newGameDto = await CreateNewGame(latestGame);
 
         return newGameDto;
     }

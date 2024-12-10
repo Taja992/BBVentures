@@ -63,4 +63,11 @@ public class GameRepository : IGameRepository
 
         return game.Boards.Where(b => b.Numbers != null && !winningNumbers.Except(b.Numbers).Any()).ToList();
     }
+    
+    public async Task<Game?> GetLatestGameByWeekNumberAsync()
+    {
+        return await _context.Games
+            .OrderByDescending(g => g.WeekNumber)
+            .FirstOrDefaultAsync();
+    }
 }
