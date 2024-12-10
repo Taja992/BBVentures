@@ -3,8 +3,6 @@ import { useAtom } from "jotai";
 import { http } from "../http";
 import { userBalance, userInfoAtom, boardStateAtom } from "../atoms/atoms";
 import RegisterUser from "./admin/registerUserComponent";
-import UserHistory from "./player/UserHistory";
-import AllHistory from "./admin/AllHistory";
 import GetAllUsers from "./admin/allUsersComponent";
 import UpdateSelf from "./player/updateSelfComponent";
 import BoardGameComponent from "./player/BoardGameComponent";
@@ -62,9 +60,6 @@ const DashboardPage = () => {
             <div className="border border-black p-4 mb-4">
                 <h2 className="text-2xl font-bold mb-4">User Game History</h2>
                 <GameHistoryForUserComponent/>
-            </div>
-            <div className="border border-black p-4 mb-4">
-               //auth line {userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}
             </div>
             <div className="border border-black p-4 mb-4">
                 <h4>Game</h4>
