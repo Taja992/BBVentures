@@ -8,13 +8,13 @@ import LoginPage from "./components/loginPage.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import ComponentTestPage from "./componentTestPage.tsx";
 import RegisterPasswordPage from "./components/passwordManagement/RegisterPasswordPage.tsx";
-import Dashboard from "./components/dashboardPage";
 import ErrorPage from "./components/errorPage";
 import Root from "./root";
 import MainLayout from './mainLayout.tsx';
 import ResetPasswordPage from './components/passwordManagement/ResetPasswordPage.tsx';
 import RequestPasswordPage from './components/passwordManagement/RequestPasswordPage.tsx';
 import PasswordPageLayout from './components/passwordManagement/PasswordPageLayout.tsx';
+import AdminView from './components/AdminView.tsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -29,7 +29,7 @@ const router = createBrowserRouter(
             
             <Route element={<MainLayout />}>
                 <Route path="test" element={<ComponentTestPage />} />
-                <Route path="dashboard" element={<ProtectedRoute element={Dashboard} />} />
+                <Route path="dashboard" element={<ProtectedRoute element={AdminView} />} />
             </Route>
         </Route>
     )
