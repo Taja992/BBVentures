@@ -278,6 +278,7 @@ public class GameService : IGameService
             GameId = newGameId,
             UserId = board.UserId,
             Numbers = board.Numbers,
+            CreatedAt = DateTime.UtcNow,
             IsAutoplay = true,
             isWon = false
         };
