@@ -8,7 +8,7 @@ import BoardGameComponent from "./player/BoardGameComponent";
 const GameBoard = () => {
     const [] = useAtom(userInfoAtom);
     const [username, setUsername] = useState<string | null>(null);
-    const [Balance, setBalance] = useAtom(userBalance);
+    const [, setBalance] = useAtom(userBalance);
     const [boardState] = useAtom(boardStateAtom);
 
     //use on every page for auth
@@ -32,10 +32,6 @@ const GameBoard = () => {
 
     return (
         <>
-            <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
-            <h2>Balance: {Balance}</h2>
-            
-            
             <div className="border border-black p-4 mb-4">
                 <h4>Game</h4>
                 <BoardGameComponent/>
