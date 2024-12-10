@@ -1,4 +1,5 @@
-﻿using DataAccess.Interfaces;
+﻿using System.Globalization;
+using DataAccess.Interfaces;
 using DataAccess.Models;
 using Service.TransferModels.DTOs;
 using System.Linq;
@@ -249,7 +250,7 @@ public class GameService : IGameService
         {
             Id = Guid.NewGuid(),
             IsActive = true,
-            WeekNumber = currentGame.WeekNumber + 1,
+            WeekNumber = ISOWeek.GetWeekOfYear(DateTime.UtcNow),
             WinnerNumbers = null
         };
         return Task.FromResult(newGame);
