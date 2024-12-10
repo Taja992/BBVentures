@@ -22,7 +22,8 @@ const DashboardPage = () => {
     const [username, setUsername] = useState<string | null>(null);
     const [Balance, setBalance] = useAtom(userBalance);
     const [boardState] = useAtom(boardStateAtom);
-
+    
+    //use on every page for auth
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
@@ -63,7 +64,7 @@ const DashboardPage = () => {
                 <GameHistoryForUserComponent/>
             </div>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}
+               //auth line {userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}
             </div>
             <div className="border border-black p-4 mb-4">
                 <h4>Game</h4>

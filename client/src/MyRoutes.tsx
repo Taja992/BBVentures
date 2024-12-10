@@ -14,7 +14,7 @@ import MainLayout from './mainLayout.tsx';
 import ResetPasswordPage from './components/passwordManagement/ResetPasswordPage.tsx';
 import RequestPasswordPage from './components/passwordManagement/RequestPasswordPage.tsx';
 import PasswordPageLayout from './components/passwordManagement/PasswordPageLayout.tsx';
-import AdminView from './components/AdminView.tsx';
+import GameBoard from './components/GameBoard.tsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -29,7 +29,7 @@ const router = createBrowserRouter(
             
             <Route element={<MainLayout />}>
                 <Route path="test" element={<ComponentTestPage />} />
-                <Route path="dashboard" element={<ProtectedRoute element={AdminView} />} />
+                <Route path="game-board" element={<ProtectedRoute element={GameBoard} />} />
             </Route>
         </Route>
     )

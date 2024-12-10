@@ -7,18 +7,16 @@ import UserHistory from "./player/UserHistory";
 import AllHistory from "./admin/AllHistory";
 import GetAllUsers from "./admin/allUsersComponent";
 import UpdateSelf from "./player/updateSelfComponent";
-import InputWinningNumbersComponent from "./admin/inputWinningNumbersComponent";
-import TopUp from "./player/TopUpComponent";
-import GameHistoryForAdminComponent from "./admin/gameHistoryForAdminComponent";
-import AdminBoardsHistoryComponent from "./admin/adminBoardsHistoryComponent";
+import BoardGameComponent from "./player/BoardGameComponent";
 
 
-const AdminView = () => {
+const GameBoard = () => {
     const [userInfo] = useAtom(userInfoAtom);
     const [username, setUsername] = useState<string | null>(null);
     const [Balance, setBalance] = useAtom(userBalance);
     const [boardState] = useAtom(boardStateAtom);
 
+    //use on every page for auth
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
@@ -41,34 +39,16 @@ const AdminView = () => {
         <>
             <h1>{username ? `${username}'s Dashboard` : 'Dashboard'}</h1>
             <h2>Balance: {Balance}</h2>
-            <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <RegisterUser/>}
-            </div>
-            <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <GetAllUsers/>}
-            </div>
-            <div className="border border-black p-4 mb-4">
-                <UpdateSelf/>
-            </div>
-            <div className="border border-black p-4 mb-4">
-                <h2 className="text-2xl font-bold mb-4">Admin Game History</h2>
-                <GameHistoryForAdminComponent/>
-            </div>
+            
             
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin ? <AllHistory/> : <UserHistory/>}
+                <h4>Game</h4>
+                <BoardGameComponent/>
             </div>
-            <div className="border border-black p-4 mb-4">
-                {userInfo?.isAdmin && <InputWinningNumbersComponent/>}
-            </div>
-            <div className="border border-black p-4 mb-4">
-                {userInfo?.isPlayer && <TopUp/>}
-            </div>
-            <div className={"border border-black p-4 mb-4"}>
-                <AdminBoardsHistoryComponent/>
-            </div>
+            
+
         </>
     );
 };
 
-export default AdminView;
+export default GameBoard;
