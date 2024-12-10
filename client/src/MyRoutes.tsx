@@ -16,6 +16,11 @@ import ResetPasswordPage from './components/passwordManagement/ResetPasswordPage
 import RequestPasswordPage from './components/passwordManagement/RequestPasswordPage.tsx';
 import PasswordPageLayout from './components/passwordManagement/PasswordPageLayout.tsx';
 import GameBoard from './components/GameBoard.tsx';
+import GamePage from './components/header-pages/GamePage.tsx';
+import BoardsPage from './components/header-pages/BoardsPage.tsx';
+import ManageUsersPage from './components/header-pages/ManageUsersPage.tsx';
+import UserAccountPage from './components/header-pages/UserAccountPage.tsx';
+import TransactionsPage from './components/header-pages/TransactionsPage.tsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -30,6 +35,11 @@ const router = createBrowserRouter(
             
             <Route element={<MainLayout />}>
                 <Route path="test" element={<ComponentTestPage />} />
+                <Route path="game" element={<GamePage />} />
+                <Route path="boards" element={<BoardsPage />} />
+                <Route path="manage-users" element={<ManageUsersPage />} />
+                <Route path="user-account" element={<UserAccountPage />} />
+                <Route path="transactions" element={<TransactionsPage />} />
                 <Route path="game-board" element={<ProtectedRoute element={GameBoard} />} />
                 <Route path="*" element={<Navigate to="/game-board" />} />
             </Route>

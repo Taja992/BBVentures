@@ -7,7 +7,7 @@ import BoardGameComponent from "./player/BoardGameComponent";
 
 const GameBoard = () => {
     const [] = useAtom(userInfoAtom);
-    const [username, setUsername] = useState<string | null>(null);
+    const [, setUsername] = useState<string | null>(null);
     const [, setBalance] = useAtom(userBalance);
     const [boardState] = useAtom(boardStateAtom);
 
