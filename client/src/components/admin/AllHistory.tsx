@@ -3,7 +3,7 @@ import { http } from "../../http";
 import {BBVenturesApiTransaction, BBVenturesApiUser} from "../../services/Api";
 
 
-function AllHistory(){
+function AllHistoryOfTransactions(){
 
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [allUsers, setAllUsers] = useState<BBVenturesApiUser[]>([]);
@@ -130,4 +130,4 @@ function AllHistory(){
 
 }
 
-export default AllHistory
+export default AllHistoryOfTransactions

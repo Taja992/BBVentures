@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { http } from "../../http";
 import { BBVenturesApiTransaction, BBVenturesApiUser } from "../../services/Api";
 
-function UserHistory() {
+function UserHistoryOfTransactions() {
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [allUsers, setAllUsers] = useState<BBVenturesApiUser[]>([]);
 
@@ -83,4 +83,4 @@ function UserHistory() {
     );
 }
 
-export default UserHistory;
+export default UserHistoryOfTransactions;
