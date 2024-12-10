@@ -84,20 +84,22 @@ const GetAllUsers: React.FC = () => {
             toast.error('Failed to update.');
         }
     };
+    
 
     //this is the table columns, each one is large because they have a toggle to add an input
     const columns = [
         {
             label: "Username",
             renderCell: (item: BBVenturesApiUserDto) => (
-                //This toggles editing mode, controlled by a button below that sets EditingUserId <button onClick={() => setEditingUserId(item.id!)}>Edit</button>
+                //This toggles editing mode, controlled by a button below that sets EditingUserId <button onClick={() => 
                 editingUserId === item.id ? (
                     <input
                         type="text"
                         name="userName"
                         //this is a bunch of null checks and fallbacks
-                        value={formData[item.id!]?.userName || item.userName || ''}
+                        value={formData[item.id!]?.userName || ''}
                         onChange={(event) => handleInputChange(event, item.id!)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
                     />
                 ) : (
                     item.userName
@@ -110,9 +112,10 @@ const GetAllUsers: React.FC = () => {
                 editingUserId === item.id ? (
                     <input
                         type="email"
-                        name="email"
-                        value={formData[item.id!]?.email || item.email || ''}
-                        onChange={(event) => handleInputChange(event, item.id!)}
+                        placeholder="Coming soon"
+                        value=""
+                        disabled
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200 cursor-not-allowed"
                     />
                 ) : (
                     item.email
@@ -128,6 +131,7 @@ const GetAllUsers: React.FC = () => {
                         name="phoneNumber"
                         value={formData[item.id!]?.phoneNumber || item.phoneNumber || ''}
                         onChange={(event) => handleInputChange(event, item.id!)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
                     />
                 ) : (
                     item.phoneNumber

@@ -1,26 +1,16 @@
 ﻿import { useState } from "react";
 import { BBVenturesApiUserDto } from "../../services/Api";
-// import { useAtom } from "jotai";
-// import { allUsersAtom } from "./atoms/atoms";
 import { http } from "../../http";
 import toast from "react-hot-toast";
 
 
 
 const UpdateSelf: React.FC = () => {
-    // const [allUsers, setAllUsers] = useAtom(allUsersAtom);
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
+    //const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
 
-
-    // useEffect(( => {
-    //    
-    //     const fetchCurrentUser = aync () => {
-    //        
-    //     }
-    //    
-    // }))
+    
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -28,7 +18,7 @@ const UpdateSelf: React.FC = () => {
             const updateUser: Partial<BBVenturesApiUserDto> = {
                 id: "",
                 userName: username,
-                email: email,
+                //email: email,
                 phoneNumber: phoneNumber,
             };
 
@@ -62,9 +52,10 @@ const UpdateSelf: React.FC = () => {
                         Email:
                         <input
                             type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Coming soon"
+                            value=""
+                            disabled
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200 cursor-not-allowed"
                         />
                     </label>
                 </div>
@@ -79,17 +70,8 @@ const UpdateSelf: React.FC = () => {
                         />
                     </label>
                 </div>
-                {/*<div>*/}
-                {/*    <label>*/}
-                {/*        Last Update:*/}
-                {/*        <input*/}
-                {/*        type="text"*/}
-                {/*        value={updatedAt}*/}
-                {/*        readOnly*/}
-                {/*        />*/}
-                {/*    </label>*/}
-                {/*</div>*/}
-                <button type="submit" className="bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                <button type="submit"
+                        className="bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Update
                 </button>
             </form>
