@@ -1,6 +1,7 @@
 import {
     createBrowserRouter,
     createRoutesFromElements,
+    Navigate,
     Route,
     RouterProvider,
 } from 'react-router-dom';
@@ -38,6 +39,8 @@ const router = createBrowserRouter(
                 <Route path="user-account" element={<ProtectedRoute element={UserAccountPage} />} />
                 <Route path="transactions" element={<ProtectedRoute element={TransactionsPage} />} />
                 <Route path="game-board" element={<ProtectedRoute element={GameBoard} />} />
+                //does not redirect to game-board without this, idk why
+                <Route path="*" element={<Navigate to="/game-board" />} />
             </Route>
         </Route>
     )
