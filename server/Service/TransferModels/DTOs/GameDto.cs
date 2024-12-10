@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using System.Globalization;
+using DataAccess.Models;
 
 namespace Service.TransferModels.DTOs;
 
@@ -37,6 +38,7 @@ public class GameDto
     {
         var userDictionary = game.WinnersUserId?.GroupBy(id => id)
             .ToDictionary(g => g.Key, g => g.Count()) ?? new Dictionary<string, int>();
+        var weekNumber = ISOWeek.GetWeekOfYear(game.EndedAt ?? DateTime.UtcNow);
 
         var individualWinnings = userDictionary.Select(u => game.WinnerShare * u.Value).ToList();
 

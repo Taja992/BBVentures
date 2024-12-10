@@ -1,4 +1,5 @@
-﻿using DataAccess.Interfaces;
+﻿using System.Globalization;
+using DataAccess.Interfaces;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,7 @@ public class GameRepository : IGameRepository
 
     public async Task<Game> AddGame(Game game)
     {
+        game.WeekNumber = ISOWeek.GetWeekOfYear(game.EndedAt ?? DateTime.UtcNow);
         _context.Games.Add(game);
         await _context.SaveChangesAsync();
         return game;
@@ -29,6 +31,7 @@ public class GameRepository : IGameRepository
     {
         try
         {
+            game.WeekNumber = ISOWeek.GetWeekOfYear(game.EndedAt ?? DateTime.UtcNow);
             _context.Games.Update(game);
             await _context.SaveChangesAsync();
             return game;
