@@ -1,6 +1,7 @@
 import {
     createBrowserRouter,
     createRoutesFromElements,
+    Navigate,
     Route,
     RouterProvider,
 } from 'react-router-dom';
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
             <Route element={<MainLayout />}>
                 <Route path="test" element={<ComponentTestPage />} />
                 <Route path="game-board" element={<ProtectedRoute element={GameBoard} />} />
+                <Route path="*" element={<Navigate to="/game-board" />} />
             </Route>
         </Route>
     )

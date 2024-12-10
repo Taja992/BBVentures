@@ -2,11 +2,6 @@
 import { useAtom } from "jotai";
 import { http } from "../http";
 import { userBalance, userInfoAtom, boardStateAtom } from "../atoms/atoms";
-import RegisterUser from "./admin/registerUserComponent";
-import UserHistory from "./player/UserHistory";
-import AllHistory from "./admin/AllHistory";
-import GetAllUsers from "./admin/allUsersComponent";
-import UpdateSelf from "./player/updateSelfComponent";
 import BoardGameComponent from "./player/BoardGameComponent";
 
 
