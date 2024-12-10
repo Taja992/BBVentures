@@ -107,11 +107,10 @@ export interface BBVenturesApiGameDto {
   winnersRevenue?: number;
   /** @format int32 */
   winners?: number;
-  /** @format double */
-  winnerShare?: number;
   winnerUsernames?: string[] | null;
   winnerEmails?: string[] | null;
   winnersUserId?: string[] | null;
+  individualWinnings?: number[] | null;
 }
 
 export interface BBVenturesApiLoginRequest {
