@@ -38,7 +38,6 @@ const router = createBrowserRouter(
                 <Route path="user-account" element={<ProtectedRoute element={UserAccountPage} />} />
                 <Route path="transactions" element={<ProtectedRoute element={TransactionsPage} />} />
                 <Route path="game-board" element={<ProtectedRoute element={GameBoard} />} />
-                
             </Route>
         </Route>
     )

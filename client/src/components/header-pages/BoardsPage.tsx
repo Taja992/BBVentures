@@ -7,7 +7,7 @@ import UserBoardHistoryThisWeek from "../player/userBoardHistoryThisWeek";
 import UserBoardsHistoryComponent from "../player/userBoardsHistoryComponent";
 
 const BoardsPage = () => {
-    const [] = useAtom(userInfoAtom);
+    const [userInfo] = useAtom(userInfoAtom);
     const [, setUsername] = useState<string | null>(null);
     const [, setBalance] = useAtom(userBalance);
     const [boardState] = useAtom(boardStateAtom);
@@ -33,18 +33,28 @@ const BoardsPage = () => {
 
     return (
         <>
+            {userInfo?.isAdmin && (
             <div className={"border border-black p-4 mb-4"}>
+                
                 <AdminBoardsHistoryComponent/>
+              
             </div>
-
+            )}
+            
+            {userInfo?.isPlayer && !userInfo?.isAdmin && (
             <div className="border border-black p-4 mb-4">
+                
                 <UserBoardsHistoryComponent/>
+                
             </div>
+            )}
 
+            {userInfo?.isPlayer && !userInfo?.isAdmin && (
             <div className="border border-black p-4 mb-4">
                 <UserBoardHistoryThisWeek/>
+             
             </div>
-
+            )}
         </>
     );
 };
