@@ -91,14 +91,6 @@ public class GameService : IGameService
             throw new InvalidOperationException("No active game found.");
         }
 
-        // if (IsPastSunday5PM())
-        // {
-        //     currentGame.IsActive = false;
-        //     currentGame.EndedAt = DateTime.UtcNow;
-        //     await _repository.UpdateGame(currentGame);
-        //     throw new InvalidOperationException("The game has closed. No more boards can be added.");
-        // }
-
         var winningBoards = await GetWinningBoards(currentGame.Id, winningNumbers);
         await UpdateWinningBoards(winningBoards);
 
@@ -181,18 +173,6 @@ public class GameService : IGameService
 
         await _gameRepository.UpdateGame(currentGame);
     }
-    
-    // private bool IsPastSunday5PM()
-    // {
-    //     var danishTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-    //     var danishNow = TimeZoneInfo.ConvertTime(DateTime.UtcNow, danishTimeZone);
-    //     var daysUntilSunday = ((int)DayOfWeek.Sunday - (int)danishNow.DayOfWeek + 7) % 7;
-    //     var nextSunday = danishNow.AddDays(daysUntilSunday);
-    //     var sunday5PM = new DateTime(nextSunday.Year, nextSunday.Month, nextSunday.Day, 17, 0, 0, DateTimeKind.Unspecified);
-    //     sunday5PM = TimeZoneInfo.ConvertTime(sunday5PM, danishTimeZone);
-    //
-    //     return danishNow > sunday5PM;
-    // }
     
     private async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
     {
