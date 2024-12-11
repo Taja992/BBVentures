@@ -22,63 +22,78 @@ const schema: yup.ObjectSchema<Credentials> = yup
 
 
 const LoginForm: React.FC = () => {
-    const { user, login, logout } = useAuth(); // Using our useAuth in atoms to get login feature
+    const { user, login, logout } = useAuth();
 
+    const { register, handleSubmit, formState: { errors } } = useForm<Credentials>({ resolver: yupResolver(schema) });
 
-    // Initializing react-hook-form with yup validation schema
-    const { register, // Function to register input fields
-        handleSubmit, // Function to handle form submission
-        formState: { errors }, // Object containing form errors
-    } = useForm<Credentials>({ resolver: yupResolver(schema) }); // Using yupResolver to integrate yup with react-hook-form
-
-    // Function to handle form submission
     const onSubmit: SubmitHandler<Credentials> = async (data) => {
         try {
-            await login(data); // Call the login function with form data
-            toast.success("Login successful!"); // Show success message
+            await login(data);
+            toast.success("Login successful!");
         } catch {
-            toast.error("Login failed. Please check your credentials and try again."); // Show error message
+            toast.error("Login failed. Please check your credentials and try again.");
         }
     };
 
     return (
-        <div>
-            {user ? (
-                <button onClick={logout} className="logout-button">Log Out</button>
-            ) :
-                (
-                    <div className="login-container">
-                        <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-                            <h1>Jerne IF</h1>
-                            <h2>Login to Dead Pigeons</h2>
-                            <div className="form-group">
-                                <label htmlFor="email">Email</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    {...register("email")} // Registering email input field
-                                    required
-                                />
-                                {errors.email && <p className="error-message">{errors.email.message}</p>}
+        <div className="background-container">
+            <div className="square-a-wrapper">
+                {/* Top Border */}
+                <div className="top-border"></div>
+                {/* Main Square */}
+                <div className="square-a flex w-[70%] h-[70%] bg-white">
+                    <div className="flex flex-col w-1/2 p-6">
+                        {user ? (
+                            <div className="flex flex-col items-center justify-center h-full">
+                                <p className="text-lg font-semibold mb-4">You are logged in!</p>
+                                <button
+                                    onClick={logout}
+                                    className="logout-button"
+                                >
+                                    Log Out
+                                </button>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Password</label>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    {...register("password")} // Registering password input field
-                                    required
-                                />
-                                {errors.password && <p className="error-message">{errors.password.message}</p>}
-                            </div>
-                            <button type="submit" className="login-button">Login</button>
-                            <Link to="/request-password">Forgot Password</Link>
-                        </form>
-
+                        ) : (
+                            <form className="w-full h-full flex flex-col justify-center" onSubmit={handleSubmit(onSubmit)}>
+                                <h1 className="text-[#1e3c72] text-3xl font-bold mb-2 text-center">Jerne IF</h1>
+                                <h2 className="text-[#2a5298] text-xl mb-6 text-center">Login to Dead Pigeons</h2>
+                                <div className="form-group mb-4">
+                                    <label htmlFor="email" className="block text-sm text-[#555] mb-2">Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        {...register("email")}
+                                        className="w-full p-3 border border-gray-300 rounded"
+                                        required
+                                    />
+                                    {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>}
+                                </div>
+                                <div className="form-group mb-6">
+                                    <label htmlFor="password" className="block text-sm text-[#555] mb-2">Password</label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        {...register("password")}
+                                        className="w-full p-3 border border-gray-300 rounded"
+                                        required
+                                    />
+                                    {errors.password && <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>}
+                                </div>
+                                <button type="submit" className="login-button">
+                                    Login
+                                </button>
+                                <Link to="/request-password" className="text-blue-500 text-sm mt-4 block text-center">
+                                    Forgot Password
+                                </Link>
+                            </form>
+                        )}
                     </div>
-                )}
+                    <div className="w-1/2"></div>
+                </div>
+            </div>
         </div>
     );
 };
 
 export default LoginForm;
+
