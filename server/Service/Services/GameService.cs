@@ -42,6 +42,17 @@ public class GameService : IGameService
 
         return gameDtos;
     }
+    
+    private async Task<GameDto> ConvertToGameDto(Game game)
+    {
+        var userDictionary = await GetWinnerUsernamesAndEmails(game.WinnersUserId ?? new List<string>());
+
+        var gameDto = GameDto.FromEntity(game);
+        gameDto.WinnerUsernames = userDictionary.Select(u => u.Value.Count > 1 ? $"{u.Value.Username} x{u.Value.Count}" : u.Value.Username).ToList();
+        gameDto.WinnerEmails = userDictionary.Select(u => u.Value.Email).ToList();
+
+        return gameDto;
+    }
 
     private async Task<Dictionary<string, (string Username, string Email, int Count)>> GetWinnerUsernamesAndEmails(List<string> userIds)
     {
@@ -69,16 +80,7 @@ public class GameService : IGameService
         return userDictionary;
     }
 
-    private async Task<GameDto> ConvertToGameDto(Game game)
-    {
-        var userDictionary = await GetWinnerUsernamesAndEmails(game.WinnersUserId ?? new List<string>());
 
-        var gameDto = GameDto.FromEntity(game);
-        gameDto.WinnerUsernames = userDictionary.Select(u => u.Value.Count > 1 ? $"{u.Value.Username} x{u.Value.Count}" : u.Value.Username).ToList();
-        gameDto.WinnerEmails = userDictionary.Select(u => u.Value.Email).ToList();
-
-        return gameDto;
-    }
     #endregion
 
     public async Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers)
@@ -90,23 +92,18 @@ public class GameService : IGameService
         {
             throw new InvalidOperationException("No active game found.");
         }
-
-        // if (IsPastSunday5PM())
-        // {
-        //     currentGame.IsActive = false;
-        //     currentGame.EndedAt = DateTime.UtcNow;
-        //     await _repository.UpdateGame(currentGame);
-        //     throw new InvalidOperationException("The game has closed. No more boards can be added.");
-        // }
+        
 
         var winningBoards = await GetWinningBoards(currentGame.Id, winningNumbers);
         await UpdateWinningBoards(winningBoards);
 
-        await UpdateCurrentGameWithWinningNumbers(currentGame, winningNumbers);
+        var updatedGame = await UpdateCurrentGameWithWinningNumbers(currentGame, winningNumbers);
 
-        var newGameDto = await CreateNewGame(currentGame);
-
-        return newGameDto;
+        await CreateNewGame(currentGame);
+        
+        var gameDto = await ConvertToGameDto(updatedGame);
+        return gameDto;
+        
     }
 
     private void ValidateWinningNumbers(List<int> winningNumbers)
@@ -149,7 +146,7 @@ public class GameService : IGameService
     }
 
     
-    private async Task UpdateCurrentGameWithWinningNumbers(Game currentGame, List<int> winningNumbers)
+    private async Task<Game> UpdateCurrentGameWithWinningNumbers(Game currentGame, List<int> winningNumbers)
     {
         currentGame.WinnerNumbers = winningNumbers;
         currentGame.IsActive = false;
@@ -163,25 +160,14 @@ public class GameService : IGameService
         var winnersUserIds = await GetWinnersDetails(currentGame.Id, winningNumbers);
         currentGame.WinnersUserId = winnersUserIds;
         currentGame.Winners = winnersUserIds.Count;
-        //Currently this is just dividing it evenly something should be done about if the UserId has multiple wins
-        //they get more, this will also kind of make winnershare column redundant so we should think of a better
-        //way to do this
+
         currentGame.WinnerShare = currentGame.Winners > 0 ? currentGame.WinnersRevenue / currentGame.Winners : 0;
 
         await _gameRepository.UpdateGame(currentGame);
+        
+        return currentGame;
     }
     
-    // private bool IsPastSunday5PM()
-    // {
-    //     var danishTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-    //     var danishNow = TimeZoneInfo.ConvertTime(DateTime.UtcNow, danishTimeZone);
-    //     var daysUntilSunday = ((int)DayOfWeek.Sunday - (int)danishNow.DayOfWeek + 7) % 7;
-    //     var nextSunday = danishNow.AddDays(daysUntilSunday);
-    //     var sunday5PM = new DateTime(nextSunday.Year, nextSunday.Month, nextSunday.Day, 17, 0, 0, DateTimeKind.Unspecified);
-    //     sunday5PM = TimeZoneInfo.ConvertTime(sunday5PM, danishTimeZone);
-    //
-    //     return danishNow > sunday5PM;
-    // }
     
     private async Task<decimal> CalculateTotalRevenueForGame(Guid gameId)
     {
@@ -229,7 +215,7 @@ public class GameService : IGameService
     
     #region Create Game Region (This gets confusing due to Auto-Play)
     
-    private async Task<GameDto> CreateNewGame(Game currentGame)
+    private async Task CreateNewGame(Game currentGame)
     {
         //First we create a new game and add it
         var newGame = await InitializeNewGame(currentGame);
@@ -240,8 +226,7 @@ public class GameService : IGameService
         // Board gets the correct update
         var autoplayBoards = await _boardRepository.GetAutoplayBoards();
         await CreateAndDetachAutoplayBoards(newGame.Id, autoplayBoards);
-
-        return MapToGameDto(newGame);
+        
     }
 
     private Task<Game> InitializeNewGame(Game currentGame)

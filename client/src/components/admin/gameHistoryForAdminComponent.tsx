@@ -38,16 +38,16 @@ const GameHistoryForAdminComponent: React.FC = () => {
         { label: 'Winners Revenue', renderCell: (item: BBVenturesApiGameDto) => item.winnersRevenue ?? 'N/A' },
         { label: 'How Many Winners?', renderCell: (item: BBVenturesApiGameDto) => item.winners ?? 'N/A' },
         { label: 'Winners', renderCell: (item: BBVenturesApiGameDto) => {
-                if (item.winnerUsernames && item.individualWinnings) {
+                if (item.winnerUsernames && item.individualWinnings && item.winnerEmails) {
                     return item.winnerUsernames.map((username, index) => (
-                        <div key={index}>
-                            {username}: {item.individualWinnings?.[index]?.toFixed(2)}
+                        <div key={index} className="whitespace-normal break-words">
+                            {username}: {item.individualWinnings?.[index]?.toFixed(2)} <span
+                            className="text-blue-300">{item.winnerEmails?.[index]}</span>
                         </div>
                     ));
                 }
                 return 'N/A';
             }},
-        { label: 'Winner Emails', renderCell: (item: BBVenturesApiGameDto) => item.winnerEmails?.join(', ') ?? 'N/A' },
     ];
 
     return (
