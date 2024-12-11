@@ -98,11 +98,19 @@ namespace Service.Services
                 var userDetails = await GetUserDetails(board.UserId);
                 boardDto.PlayerUsername = userDetails.PlayerUsername;
                 boardDto.PlayerEmail = userDetails.PlayerEmail;
+                boardDto.WeekNumber = await getWeekNumberOfBoard(boardDto);
                 boardDtos.Add(boardDto);
             }
 
             return boardDtos;
 
+        }
+        
+        public async Task<int> getWeekNumberOfBoard(BoardDto boardDto)
+        {
+            Game gameFromBoard = await _gameRepository.GetGameById(boardDto.GameId);
+
+            return gameFromBoard.WeekNumber;
         }
 
         public async Task<List<BoardHistoryDto>> GetBoardHistoryByUserId(string userId)
@@ -174,7 +182,7 @@ namespace Service.Services
             return boardsThisWeek;
 
         }
-        
+
         
         
         
