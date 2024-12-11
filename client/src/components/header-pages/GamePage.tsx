@@ -1,7 +1,7 @@
-﻿import { useEffect, useState } from "react";
+﻿
 import { useAtom } from "jotai";
-import { http } from "../../http";
-import { userBalance, userInfoAtom } from "../../atoms/atoms";
+
+import {  userInfoAtom } from "../../atoms/atoms";
 import GameHistoryForAdminComponent from "../admin/gameHistoryForAdminComponent";
 import GameHistoryForUserComponent from "../player/gameHistoryForUserComponent";
 import InputWinningNumbersComponent from "../admin/inputWinningNumbersComponent";
@@ -10,23 +10,7 @@ import InputWinningNumbersComponent from "../admin/inputWinningNumbersComponent"
 
 const GamePage = () => {
     const [userInfo] = useAtom(userInfoAtom);
-    const [, setUsername] = useState<string | null>(null);
-    const [, setBalance] = useAtom(userBalance);
 
-    //use on every page for auth
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const response = await http.authMeList();
-                setUsername(response.data.userName ?? null); // Assuming the response contains a userName field
-                setBalance(response.data.balance);
-            } catch (error) {
-                console.error('Failed to fetch user info:', error);
-            }
-        };
-
-        fetchUserInfo();
-    }, []);
 
     return (
         <>

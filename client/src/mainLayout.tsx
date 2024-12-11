@@ -1,19 +1,24 @@
-﻿import {useEffect } from 'react';
+﻿import {useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import LoginForm from './components/loginComponent'; // Includes the logout logic
 import { useAtom } from 'jotai';
 import {userBalance, userInfoAtom } from './atoms/atoms';
+import { http } from './http';
 
 
 const MainLayout = () => {
     const [userInfo] = useAtom(userInfoAtom);
-    const [Balance] = useAtom(userBalance);
-   
-   
+    const [Balance, setBalance] = useAtom(userBalance);
+    const [username, setUsername] = useState<string | null>(null);
+    
 
+    //use on every page for auth
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
+                const response = await http.authMeList();
+                setUsername(response.data.userName ?? null);
+                setBalance(response.data.balance);
             } catch (error) {
                 console.error('Failed to fetch user info:', error);
             }
@@ -21,6 +26,7 @@ const MainLayout = () => {
 
         fetchUserInfo();
     }, []);
+    
 
     return (
         <div>
@@ -29,11 +35,14 @@ const MainLayout = () => {
                     <div className="relative flex h-16 items-center justify-between">
                         <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                         </div>
-                        <div className="flex flex-1 space-x-4 items-center justify-center sm:items-stretch sm:justify-start">
+                        <div
+                            className="flex flex-1 space-x-4 items-center justify-center sm:items-stretch sm:justify-start">
                             <div className="flex flex-shrink-0 items-center">
-                                <h2 className="text-white font-bold text-l">Balance: {Balance}</h2>
+                                <div className="text-white">
+                                    <h1 className="text-lg">{username ? `Welcome ${username}` : 'Welcome'}</h1>
+                                    <h2 className="text-sm">Your Balance: {Balance}</h2>
+                                </div>
                             </div>
-
                             <img
 
                             />
@@ -92,8 +101,8 @@ const MainLayout = () => {
                 </div>
             </nav>
 
-            <main style={{flex: 1, padding: '1rem' }}>
-                <Outlet />
+            <main style={{flex: 1, padding: '1rem'}}>
+                <Outlet/>
             </main>
         </div>
     );

@@ -30,7 +30,7 @@ export const useAuth = (): AuthHook => {
             const data = response.data;
             const jwt = data.jwt!;
             setJwt(jwt); // Store the JWT in the atom
-            navigate("/dashboard");
+            navigate("/game-board");
             
         } catch (error) {
             console.error("Login failed:", error);

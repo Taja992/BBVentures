@@ -33,15 +33,15 @@ const GameHistoryForAdminComponent: React.FC = () => {
         { label: 'Week Number', renderCell: (item: BBVenturesApiGameDto) => item.weekNumber ?? 'N/A' },
         { label: 'Winner Numbers', renderCell: (item: BBVenturesApiGameDto) => item.winnerNumbers?.join(', ') ?? 'N/A' },
         { label: 'Is Active', renderCell: (item: BBVenturesApiGameDto) => item.isActive ? 'Yes' : 'No' },
-        { label: 'Total Revenue', renderCell: (item: BBVenturesApiGameDto) => item.totalRevenue ?? 'N/A' },
-        { label: 'Club Revenue', renderCell: (item: BBVenturesApiGameDto) => item.clubRevenue ?? 'N/A' },
-        { label: 'Winners Revenue', renderCell: (item: BBVenturesApiGameDto) => item.winnersRevenue ?? 'N/A' },
-        { label: 'How Many Winners?', renderCell: (item: BBVenturesApiGameDto) => item.winners ?? 'N/A' },
+        { label: 'Total Revenue', renderCell: (item: BBVenturesApiGameDto) => item.totalRevenue ? `${item.totalRevenue} kr` : 'N/A' },
+        { label: 'Club Revenue', renderCell: (item: BBVenturesApiGameDto) => item.clubRevenue ? `${item.totalRevenue} kr` : 'N/A' },
+        { label: 'Winners Revenue', renderCell: (item: BBVenturesApiGameDto) => item.winnersRevenue ? `${item.totalRevenue} kr` : 'N/A' },
+        { label: 'How Many Winners?', renderCell: (item: BBVenturesApiGameDto) => item.winners ? `${item.totalRevenue} kr` : 'N/A' },
         { label: 'Winners', renderCell: (item: BBVenturesApiGameDto) => {
                 if (item.winnerUsernames && item.individualWinnings && item.winnerEmails) {
                     return item.winnerUsernames.map((username, index) => (
                         <div key={index} className="whitespace-normal break-words">
-                            {username}: {item.individualWinnings?.[index]?.toFixed(2)} <span
+                            {username}: {item.individualWinnings?.[index]?.toFixed(2)} kr <span
                             className="text-blue-300">{item.winnerEmails?.[index]}</span>
                         </div>
                     ));
