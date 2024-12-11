@@ -64,11 +64,11 @@ const InputWinningNumbersComponent = () => {
             {responseData && (
                 <div className="p-4 border rounded-lg shadow-lg bg-white w-1/3">
                     <h3 className="text-lg font-semibold mb-2">Winning Numbers Result</h3>
-                    <p><strong>Week Number:</strong> {responseData.weekNumber ?? 'N/A'}</p>
-                    <p><strong>Total Revenue:</strong> ${responseData.totalRevenue?.toFixed(2) ?? 'N/A'}</p>
-                    <p><strong>Club Revenue:</strong> ${responseData.clubRevenue?.toFixed(2) ?? 'N/A'}</p>
-                    <p><strong>Winning Total Amount:</strong> ${responseData.winnersRevenue?.toFixed(2) ?? 'N/A'}</p>
-                    <p><strong>Number of Winners:</strong> {responseData.winners ?? 'N/A'}</p>
+                    <p><span className="font-semibold">Week Number:</span> {responseData.weekNumber ?? 'N/A'}</p>
+                    <p><span className="font-semibold">Total Revenue:</span> {responseData.totalRevenue?.toFixed(2) ?? 'N/A'}kr</p>
+                    <p><span className="font-semibold">Club Revenue:</span> {responseData.clubRevenue?.toFixed(2) ?? 'N/A'}kr</p>
+                    <p><span className="font-semibold">Winners Revenue:</span> {responseData.winnersRevenue?.toFixed(2) ?? 'N/A'}kr</p>
+                    <p><span className="font-semibold">Number of Winners:</span> {responseData.winners ?? 'N/A'}</p>
                     {responseData.winnerUsernames && responseData.individualWinnings && responseData.winnerEmails && (
                         <div>
                             <h4 className="font-semibold mt-2">Winners:</h4>
