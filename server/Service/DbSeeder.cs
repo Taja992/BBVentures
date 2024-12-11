@@ -33,7 +33,7 @@ public class DbSeeder
     {
         await CreateRoles(Role.Admin, Role.Player);
         AdminId = await CreateUser(username: "Admin", email: "admin@example.com",balance: 1000, isActive: true, password: "S3cret!!", role: Role.Admin);
-        PlayerId = await CreateUser(username: "Player",email: "player@example.com", balance: 500, isActive: true, password: "S3cret!!", role: Role.Player);
+        PlayerId = await CreateUser(username: "Player",email: "player@example.com", balance: 500, isActive: false, password: "S3cret!!", role: Role.Player);
         var player2Id = await CreateUser(username: "Player2", email: "player2@example.com",balance: 1000, isActive: true, password: "S3cret!!", role: Role.Player);
         var player3Id = await CreateUser(username: "Player3",email: "player3@example.com", balance: 1550, isActive: false, password: "S3cret!!", role: Role.Player);
         var player4Id = await CreateUser(username: "Player4", email: "player4@example.com",balance: 1230, isActive: true, password: "S3cret!!", role: Role.Player);
