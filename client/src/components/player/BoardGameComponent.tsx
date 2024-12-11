@@ -2,19 +2,22 @@
 import { useAtom } from 'jotai';
 import { http } from '../../http';
 import './BoardGameComponent.css';
-import { BBVenturesApiCreateBoardDto } from '../../services/Api';
+import {BBVenturesApiBoardHistoryDto, BBVenturesApiCreateBoardDto } from '../../services/Api';
 import toast from 'react-hot-toast';
-import {boardsAtom, boardStateAtom } from '../../atoms/atoms';
+import {boardHistFromWeekAtom, boardsAtom, boardStateAtom } from '../../atoms/atoms';
 import { userBalance } from '../../atoms/atoms';
 
 const BoardGameComponent = () => {
     const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
-    const [fieldCount, setFieldCount] = useState<number>(5);
+    const [fieldCount, setFieldCount] = useState<5 | 6 | 7 | 8>(5);
     const [gameId, setGameId] = useState<string | null>(null);
     const [, setBalance] = useAtom(userBalance);
     const [, setBoardState] = useAtom(boardStateAtom);
     const [isActive, setIsActive] = useState<boolean | null>(null);
     const [, setBoards] = useAtom(boardsAtom);
+    const [isAutoplay, setIsAutoplay] = useState<boolean>(false);
+    const [autoplayWeeks, setAutoplayWeeks] = useState<number>(1);
+    const [, setBoardHistFromWeek] = useAtom(boardHistFromWeekAtom);
 
     useEffect(() => {
         const fetchActiveGame = async () => {
@@ -59,14 +62,14 @@ const BoardGameComponent = () => {
         });
     };
 
-    const calculateCost = (fieldCount: number): number => {
-        switch (fieldCount) {
-            case 5: return 20;
-            case 6: return 40;
-            case 7: return 80;
-            case 8: return 160;
-            default: throw new Error('Invalid number of fields. Only 5, 6, 7, or 8 fields are allowed.');
-        }
+    const calculateCost = (fieldCount: 5 | 6 | 7 | 8, weeks: number): number => {
+        const costPerField: { [key in 5 | 6 | 7 | 8]: number } = {
+            5: 20,
+            6: 40,
+            7: 80,
+            8: 160
+        };
+        return costPerField[fieldCount] * weeks;
     };
 
     const handleSubmit = async () => {
@@ -86,7 +89,7 @@ const BoardGameComponent = () => {
             userId: "",
             gameId: gameId,
             numbers: sortedNumbers,
-            isAutoplay: false,
+            autoplayWeeks: isAutoplay ? autoplayWeeks : 1,
             fieldCount: fieldCount
         };
 
@@ -95,10 +98,16 @@ const BoardGameComponent = () => {
         try {
             const response = await http.boardCreateCreate(requestBody);
             toast.success("Board bought!");
-            const cost = calculateCost(fieldCount);
+            const cost = calculateCost(fieldCount, isAutoplay ? autoplayWeeks : 1);
             setBalance(prevBalance => (prevBalance ?? 0) - cost);
             setBoardState(prevState => [...prevState, response.data]);
             setBoards(prevBoards => [...prevBoards, response.data]);
+
+            const newBoardHistory: BBVenturesApiBoardHistoryDto = {
+                numbers: sortedNumbers,
+                createdAt: new Date().toISOString()
+            };
+            setBoardHistFromWeek(prevHistory => [...prevHistory, newBoardHistory]);
         } catch (error) {
             console.error('Error buying board:', error);
             toast.error("Error buying board :( Is balance sufficient?");
@@ -118,7 +127,7 @@ const BoardGameComponent = () => {
                             <button
                                 key={count}
                                 className={`field-button ${fieldCount === count ? 'selected' : ''}`}
-                                onClick={() => setFieldCount(count)}
+                                onClick={() => setFieldCount(count as 5 | 6 | 7 | 8)}
                             >
                                 {count} Fields
                             </button>
@@ -134,6 +143,24 @@ const BoardGameComponent = () => {
                                 {number}
                             </button>
                         ))}
+                    </div>
+                    <div className="autoplay-settings flex items-center space-x-2">
+                        <input
+                            type="checkbox"
+                            checked={isAutoplay}
+                            onChange={(e) => setIsAutoplay(e.target.checked)}
+                        />
+                        <label className="ml-2">Auto-play Weeks:</label>
+                        <input
+                            type="number"
+                            value={autoplayWeeks}
+                            onChange={(e) => setAutoplayWeeks(parseInt(e.target.value, 10))}
+                            min="1"
+                            max="52"
+                            className="autoplay-weeks-input ml-2"
+                            placeholder="Weeks"
+                        />
+                        <label className="ml-2">You will be charged immediately</label>
                     </div>
                     <button className="submit-button" onClick={handleSubmit}>Play these numbers</button>
                 </>

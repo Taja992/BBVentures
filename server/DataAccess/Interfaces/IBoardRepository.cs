@@ -13,15 +13,12 @@ public interface IBoardRepository
     Task<List<Board>> GetBoardsByUserId(string userId);
 
     Task<List<Board>> GetBoardsByGameId(Guid gameId);
-    
-    Task<List<Board>> GetAutoplayBoards();
 
     Task<Board> GetBoardById(Guid id);
     
     void Detach(Board board);
+
+    Task<List<Board>> GetBoardsWithAutoplayWeeksGreaterThanOne();
     
-    // void DeleteBoard(Board board);
-    // Task<bool> IsUserActive(string userId);
-    // Task<Board> AddBoard(Board board);
 
 }
