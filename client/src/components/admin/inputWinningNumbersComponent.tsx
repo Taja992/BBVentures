@@ -1,14 +1,15 @@
 ﻿import { useState } from "react";
 import { useAtom } from "jotai";
-import { gamesAtom, userInfoAtom } from "../../atoms/atoms";
+import { userInfoAtom } from "../../atoms/atoms";
 import { http } from "../../http";
 import './InputWinningNumbersComponent.css';
 import toast from "react-hot-toast";
+import { BBVenturesApiGameDto } from "../../services/Api";
 
 const InputWinningNumbersComponent = () => {
     const [winningNumbers, setWinningNumbers] = useState<number[]>([]);
     const [userInfo] = useAtom(userInfoAtom);
-    const [, setGames] = useAtom(gamesAtom);
+    const [responseData, setResponseData] = useState<BBVenturesApiGameDto | null>(null);
 
     const handleInputChange = (index: number, value: string) => {
         const newNumbers = [...winningNumbers];
@@ -25,7 +26,14 @@ const InputWinningNumbersComponent = () => {
         try {
             const response = await http.gameProcessWinningNumbersCreate(winningNumbers);
             toast.success("Winning numbers submitted successfully.");
-            setGames(prevGames => [...prevGames, response.data]);
+            setResponseData(response.data);
+
+            // const winners = response.data.winnerUsernames?.map((username, index) => {
+            //     const winnings = response.data.individualWinnings ? response.data.individualWinnings[index] : 0;
+            //     return `${username}: $${winnings.toFixed(2)}`;
+            // }).join("\n");
+            //
+            // alert(`Winners:\n${winners}`);
         } catch (error) {
             toast.error("Failed to submit winning numbers:");
             console.error("Failed to submit winning numbers:", error);
@@ -37,20 +45,42 @@ const InputWinningNumbersComponent = () => {
     }
 
     return (
-        <div className="input-winning-numbers">
-            <h2>Input Winning Numbers</h2>
-            <div className="input-fields">
-                {Array.from({ length: 3 }).map((_, index) => (
-                    <input
-                        key={index}
-                        type="number"
-                        value={winningNumbers[index] || ""}
-                        onChange={(e) => handleInputChange(index, e.target.value)}
-                        className="winning-number-input"
-                    />
-                ))}
+        <div className="flex space-x-4">
+            <div className="input-winning-numbers">
+                <h2>Input Winning Numbers</h2>
+                <div className="input-fields">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                        <input
+                            key={index}
+                            type="number"
+                            value={winningNumbers[index] || ""}
+                            onChange={(e) => handleInputChange(index, e.target.value)}
+                            className="winning-number-input"
+                        />
+                    ))}
+                </div>
+                <button onClick={handleSubmit} className="submit-button">Submit</button>
             </div>
-            <button onClick={handleSubmit} className="submit-button">Submit</button>
+            {responseData && (
+                <div className="p-4 border rounded-lg shadow-lg bg-white w-1/3">
+                    <h3 className="text-lg font-semibold mb-2">Winning Numbers Result</h3>
+                    <p><strong>Week Number:</strong> {responseData.weekNumber ?? 'N/A'}</p>
+                    <p><strong>Total Revenue:</strong> ${responseData.totalRevenue?.toFixed(2) ?? 'N/A'}</p>
+                    <p><strong>Club Revenue:</strong> ${responseData.clubRevenue?.toFixed(2) ?? 'N/A'}</p>
+                    <p><strong>Winning Total Amount:</strong> ${responseData.winnersRevenue?.toFixed(2) ?? 'N/A'}</p>
+                    <p><strong>Number of Winners:</strong> {responseData.winners ?? 'N/A'}</p>
+                    {responseData.winnerUsernames && responseData.individualWinnings && responseData.winnerEmails && (
+                        <div>
+                            <h4 className="font-semibold mt-2">Winners:</h4>
+                            {responseData.winnerUsernames.map((username, index) => (
+                                <p key={index} className="whitespace-normal break-words">
+                                    {username}: ${responseData.individualWinnings?.[index]?.toFixed(2)} - <span className="text-blue-300">{responseData.winnerEmails?.[index]}</span>
+                                </p>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
