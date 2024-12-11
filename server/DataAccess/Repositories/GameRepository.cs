@@ -19,6 +19,11 @@ public class GameRepository : IGameRepository
         return await _context.Games.ToListAsync();
     }
 
+    public async Task<Game> GetGameById(Guid id)
+    {
+        return await _context.Games.Where(game => game.Id == id).SingleOrDefaultAsync();
+    }
+
     public async Task<Game> AddGame(Game game)
     {
         game.WeekNumber = WeekNumberHelper.GetWeekOfYearStartingOnSunday(game.EndedAt ?? DateTime.UtcNow);

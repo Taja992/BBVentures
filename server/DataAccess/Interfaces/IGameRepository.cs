@@ -10,4 +10,5 @@ public interface IGameRepository
     Task<List<Board>> GetBoardsByGameId(Guid gameId);
     Task<Game?> GetActiveGameAsync();
     Task<List<Board>> GetWinningBoardsForGame(Guid gameId, List<int> winningNumbers);
+    Task<Game> GetGameById(Guid id);
 }

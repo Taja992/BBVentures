@@ -11,6 +11,7 @@ public interface IGameService
 {
     Task<List<GameDto>> GetAllGames();
     Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers);
+    Task<GameDto> GetGameById(string id);
 }
 
 public class GameService : IGameService
@@ -42,6 +43,15 @@ public class GameService : IGameService
         }
 
         return gameDtos;
+    }
+
+    public async Task<GameDto> GetGameById(string id)
+    {
+        Guid gameId = new Guid(id);
+        Game game = await _gameRepository.GetGameById(gameId);
+
+        return GameDto.FromEntity(game);
+
     }
     
     private async Task<GameDto> ConvertToGameDto(Game game)
