@@ -8,6 +8,10 @@ function AllHistory(){
     const [filteredTrans, setFilteredTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [allUsers, setAllUsers] = useState<BBVenturesApiUser[]>([]);
     const [userNameSearch, setUserNameSearch] = useState('');
+    
+    //to refresh the table. so that u can't press "approve" multiple times
+    const[refreshKey, setRefreshKey] = useState(1);
+    const refreshTable = () => {setRefreshKey(refreshKey + 1)}
 
     useEffect(() => {getAllTrans(); getAllUsers()}, [])
     async function getAllTrans(){
@@ -57,14 +61,6 @@ function AllHistory(){
         
     }
 
-    /*async function filterTransactions(){
-        if(userNameSearch === ""){
-            getAllTrans();
-            return;
-        }
-        const response = await http.transactionTransactionsFromNameList({searchVal: userNameSearch})
-        setAllTrans(response.data)
-    }*/
 
     async function approveTransaction(trans: BBVenturesApiTransaction) {
         trans.isPending = false;
@@ -81,7 +77,7 @@ function AllHistory(){
         
         
         await http.userUpdateBalanceUpdate(player, {transactionAmount: amount})
-        
+        refreshTable();
     }
     
     function getUserNameById(id: string){
