@@ -74,7 +74,7 @@ const InputWinningNumbersComponent = () => {
                             <h4 className="font-semibold mt-2">Winners:</h4>
                             {responseData.winnerUsernames.map((username, index) => (
                                 <p key={index} className="whitespace-normal break-words">
-                                    {username}: ${responseData.individualWinnings?.[index]?.toFixed(2)} - <span className="text-blue-300">{responseData.winnerEmails?.[index]}</span>
+                                    {username}: {responseData.individualWinnings?.[index]?.toFixed(2)}kr - <span className="text-blue-300">{responseData.winnerEmails?.[index]}</span>
                                 </p>
                             ))}
                         </div>

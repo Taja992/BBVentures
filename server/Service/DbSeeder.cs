@@ -33,7 +33,7 @@ public class DbSeeder
     {
         await CreateRoles(Role.Admin, Role.Player);
         AdminId = await CreateUser(username: "Admin", email: "admin@example.com",balance: 1000, isActive: true, password: "S3cret!!", role: Role.Admin);
-        PlayerId = await CreateUser(username: "Player",email: "player@example.com", balance: 500, isActive: false, password: "S3cret!!", role: Role.Player);
+        PlayerId = await CreateUser(username: "Player",email: "player@example.com", balance: 500, isActive: true, password: "S3cret!!", role: Role.Player);
         var player2Id = await CreateUser(username: "Player2", email: "player2@example.com",balance: 1000, isActive: true, password: "S3cret!!", role: Role.Player);
         var player3Id = await CreateUser(username: "Player3",email: "player3@example.com", balance: 1550, isActive: false, password: "S3cret!!", role: Role.Player);
         var player4Id = await CreateUser(username: "Player4", email: "player4@example.com",balance: 1230, isActive: true, password: "S3cret!!", role: Role.Player);
@@ -52,16 +52,16 @@ public class DbSeeder
         );
         
         await CreateBoards(
-            new List<(Guid Id, string UserId, Guid GameId, List<int> Numbers, bool IsAutoplay)>
+            new List<(Guid Id, string UserId, Guid GameId, List<int> Numbers, int AutoplayWeeks)>
             {
-                (Guid.NewGuid(), PlayerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 1, 2, 3, 4, 5 }, false),
-                (Guid.NewGuid(), AdminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, false),
-                (Guid.NewGuid(), PlayerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, false),
-                (Guid.NewGuid(), AdminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, false),
-                (Guid.NewGuid(), player2Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 6, 7, 8, 11, 2, 6 }, true),
-                (Guid.NewGuid(), player2Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, false),
-                (Guid.NewGuid(), AdminId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, false),
-                (Guid.NewGuid(), player4Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9, 1, 2 }, true)
+                (Guid.NewGuid(), PlayerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 1, 2, 3, 4, 5 }, 1),
+                (Guid.NewGuid(), AdminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, 3),
+                (Guid.NewGuid(), PlayerId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, 1),
+                (Guid.NewGuid(), AdminId, new Guid("11111111-1111-1111-1111-111111111111"), new List<int> { 5, 2, 10, 11, 3, 4, 1 }, 2),
+                (Guid.NewGuid(), player2Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 6, 7, 8, 11, 2, 6 }, 1),
+                (Guid.NewGuid(), player2Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, 1),
+                (Guid.NewGuid(), AdminId, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 8, 9, 10, 11, 1, 2, 3, 4 }, 1),
+                (Guid.NewGuid(), player4Id, new Guid("22222222-2222-2222-2222-222222222222"), new List<int> { 7, 8, 9, 1, 2 }, 1)
             }
         );
         
@@ -130,9 +130,9 @@ public class DbSeeder
         await context.SaveChangesAsync();
     }
     
-    private async Task CreateBoards(List<(Guid Id, string UserId, Guid GameId, List<int> Numbers, bool IsAutoplay)> boards)
+    private async Task CreateBoards(List<(Guid Id, string UserId, Guid GameId, List<int> Numbers, int AutoplayWeeks)> boards)
     {
-        foreach (var (id, userId, gameId, numbers, isAutoplay) in boards)
+        foreach (var (id, userId, gameId, numbers, autoplayWeeks) in boards)
         {
             var board = new Board
             {
@@ -140,7 +140,7 @@ public class DbSeeder
                 UserId = userId,
                 GameId = gameId,
                 Numbers = numbers,
-                IsAutoplay = isAutoplay,
+                AutoplayWeeks = autoplayWeeks,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

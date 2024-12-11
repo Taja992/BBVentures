@@ -12,8 +12,8 @@ public class Board
     public Guid GameId { get; set; }
 
     public List<int>? Numbers { get; set; }
-
-    public bool IsAutoplay { get; set; }
+    
+    public int AutoplayWeeks { get; set; } = 1;
 
     public DateTime CreatedAt { get; set; }
 
