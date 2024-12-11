@@ -3,6 +3,7 @@ using DataAccess.Interfaces;
 using DataAccess.Models;
 using Service.TransferModels.DTOs;
 using System.Linq;
+using DataAccess.Repositories;
 
 namespace Service.Services;
 
@@ -235,7 +236,7 @@ public class GameService : IGameService
         {
             Id = Guid.NewGuid(),
             IsActive = true,
-            WeekNumber = ISOWeek.GetWeekOfYear(DateTime.UtcNow),
+            WeekNumber = GameRepository.WeekNumberHelper.GetWeekOfYearStartingOnSunday(DateTime.UtcNow),
             WinnerNumbers = null
         };
         return Task.FromResult(newGame);
@@ -315,5 +316,6 @@ public class GameService : IGameService
             WinnerEmails = null
         };
     }
+    
     #endregion
 }

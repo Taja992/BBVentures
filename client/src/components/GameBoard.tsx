@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { http } from "../http";
 import { userBalance, userInfoAtom, boardStateAtom } from "../atoms/atoms";
 import BoardGameComponent from "./player/BoardGameComponent";
+import UserBoardHistoryThisWeek from "./player/userBoardHistoryThisWeek";
 
 
 const GameBoard = () => {
@@ -36,7 +37,10 @@ const GameBoard = () => {
                 <h4>Game</h4>
                 <BoardGameComponent/>
             </div>
-            
+
+            <div className="border border-black p-4 mb-4">
+                 <UserBoardHistoryThisWeek/>
+            </div>
 
         </>
     );
