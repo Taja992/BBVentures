@@ -45,7 +45,7 @@ jspm_packages/
 # Build output directories
 dist/
 .cache/
-public/
+
 
 # .NET directories
 bin/
