@@ -23,6 +23,8 @@ export interface BBVenturesApiBoard {
   gameId?: string;
   numbers?: number[] | null;
   isAutoplay?: boolean;
+  /** @format int32 */
+  autoplayWeeks?: number;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -40,6 +42,8 @@ export interface BBVenturesApiBoardDto {
   gameId?: string;
   numbers?: number[] | null;
   isAutoplay?: boolean;
+  /** @format int32 */
+  autoplayWeeks?: number;
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -65,6 +69,8 @@ export interface BBVenturesApiCreateBoardDto {
   gameId?: string;
   numbers?: number[] | null;
   isAutoplay?: boolean;
+  /** @format int32 */
+  autoplayWeeks?: number;
   /** @format int32 */
   fieldCount?: number;
 }

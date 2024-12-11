@@ -6,7 +6,7 @@
         public string? UserId { get; set; }
         public Guid GameId { get; set; }
         public List<int>? Numbers { get; set; }
-        public bool IsAutoplay { get; set; }
+        public int AutoplayWeeks { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsWon { get; set; }
@@ -24,7 +24,7 @@
                 UserId = UserId ?? string.Empty,
                 GameId = GameId,
                 Numbers = Numbers,
-                IsAutoplay = IsAutoplay,
+                AutoplayWeeks = AutoplayWeeks,
                 CreatedAt = CreatedAt,
                 UpdatedAt = UpdatedAt,
                 isWon = IsWon
@@ -39,7 +39,7 @@
                 UserId = board.UserId,
                 GameId = board.GameId,
                 Numbers = board.Numbers,
-                IsAutoplay = board.IsAutoplay,
+                AutoplayWeeks = board.AutoplayWeeks,
                 CreatedAt = board.CreatedAt,
                 UpdatedAt = board.UpdatedAt,
                 IsWon = board.isWon
