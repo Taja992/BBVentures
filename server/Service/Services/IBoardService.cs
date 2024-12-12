@@ -8,7 +8,6 @@ namespace Service.Services
         Task<BoardDto> CreateBoard(CreateBoardDto createBoardDto);
         Task<List<BoardDto>> GetAllBoards();
         Task<List<BoardHistoryDto>> GetBoardHistoryByUserId(string userId);
-        int CalculateCost(int fieldCount);
         public Task<List<BoardDto>> GetBoardsFromThisWeek(string userId);
     }
 }

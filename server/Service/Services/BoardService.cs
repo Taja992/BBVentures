@@ -4,7 +4,6 @@ using DataAccess.Interfaces;
 using FluentValidation;
 using Service.TransferModels.DTOs;
 using Service.TransferModels.Requests.Create;
-using System.Threading.Tasks;
 using DataAccess.Models;
 
 namespace Service.Services
@@ -33,7 +32,7 @@ namespace Service.Services
         {
             await _createValidator.ValidateAndThrowAsync(createBoardDto);
 
-            int cost = CalculateCost(createBoardDto.FieldCount);
+            int cost = CalculateCost(createBoardDto.FieldCount, createBoardDto.AutoplayWeeks);
 
             var user = await _userRepository.GetUserById(createBoardDto.UserId);
             if (user == null)
@@ -54,14 +53,13 @@ namespace Service.Services
                 UserId = createBoardDto.UserId,
                 GameId = createBoardDto.GameId,
                 Numbers = createBoardDto.Numbers,
-                IsAutoplay = createBoardDto.IsAutoplay,
+                AutoplayWeeks = createBoardDto.AutoplayWeeks,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
 
             var newBoard = await _boardRepository.CreateBoard(board);
-
-
+            
 
             return new BoardDto
             {
@@ -69,7 +67,7 @@ namespace Service.Services
                 UserId = newBoard.UserId,
                 GameId = newBoard.GameId,
                 Numbers = newBoard.Numbers,
-                IsAutoplay = newBoard.IsAutoplay,
+                AutoplayWeeks = newBoard.AutoplayWeeks,
                 CreatedAt = newBoard.CreatedAt,
                 UpdatedAt = newBoard.UpdatedAt,
                 PlayerUsername = user.UserName,
@@ -77,9 +75,9 @@ namespace Service.Services
             };
         }
         
-        public int CalculateCost(int fieldCount)
+        private int CalculateCost(int fieldCount, int weeks)
         {
-            return fieldCount switch
+            int baseCost = fieldCount switch
             {
                 5 => 20,
                 6 => 40,
@@ -87,6 +85,7 @@ namespace Service.Services
                 8 => 160,
                 _ => throw new ArgumentException("Invalid number of fields")
             };
+            return baseCost * weeks;
         }
 
         public async Task<List<BoardDto>> GetAllBoards()
@@ -99,11 +98,19 @@ namespace Service.Services
                 var userDetails = await GetUserDetails(board.UserId);
                 boardDto.PlayerUsername = userDetails.PlayerUsername;
                 boardDto.PlayerEmail = userDetails.PlayerEmail;
+                boardDto.WeekNumber = await getWeekNumberOfBoard(boardDto);
                 boardDtos.Add(boardDto);
             }
 
             return boardDtos;
 
+        }
+        
+        public async Task<int> getWeekNumberOfBoard(BoardDto boardDto)
+        {
+            Game gameFromBoard = await _gameRepository.GetGameById(boardDto.GameId);
+
+            return gameFromBoard.WeekNumber;
         }
 
         public async Task<List<BoardHistoryDto>> GetBoardHistoryByUserId(string userId)
@@ -175,7 +182,7 @@ namespace Service.Services
             return boardsThisWeek;
 
         }
-        
+
         
         
         

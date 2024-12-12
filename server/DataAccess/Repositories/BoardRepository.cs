@@ -35,25 +35,6 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
         return board;
     }
 
-    // public void DeleteBoard(Board board)
-    // {
-    //     context.Boards.Remove(board);
-    //     context.SaveChanges();
-    // }
-    
-    // public async Task<bool> IsUserActive(string userId)
-    // {
-    //     var user = await context.Users.FindAsync(userId);
-    //     return user?.IsActive ?? false;
-    // }
-    
-    // public async Task<Board> AddBoard(Board board)
-    // {
-    //     context.Boards.Add(board);
-    //     await context.SaveChangesAsync();
-    //     return board;
-    // }
-
     public async Task<List<Board>> GetBoardsByUserId(string userId)
     {
         return await context.Boards.Where(board => board.UserId == userId).ToListAsync();
@@ -64,10 +45,6 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
         return await context.Boards.Where(b => b.GameId == gameId).ToListAsync();
     }
     
-    public async Task<List<Board>> GetAutoplayBoards()
-    {
-        return await context.Boards.Where(b => b.IsAutoplay).ToListAsync();
-    }
     
     public async Task<Board> GetBoardById(Guid id)
     {
@@ -85,6 +62,12 @@ public class BoardRepository(AppDbContext context) : IBoardRepository
         context.Entry(board).State = EntityState.Detached;
     }
     
+    public async Task<List<Board>> GetBoardsWithAutoplayWeeksGreaterThanOne()
+    {
+        return await context.Boards
+            .Where(b => b.AutoplayWeeks > 1)
+            .ToListAsync();
+    }
     
 
 }

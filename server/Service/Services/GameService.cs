@@ -1,8 +1,6 @@
-﻿using System.Globalization;
-using DataAccess.Interfaces;
+﻿using DataAccess.Interfaces;
 using DataAccess.Models;
 using Service.TransferModels.DTOs;
-using System.Linq;
 using DataAccess.Repositories;
 
 namespace Service.Services;
@@ -11,6 +9,7 @@ public interface IGameService
 {
     Task<List<GameDto>> GetAllGames();
     Task<GameDto> ProcessWinningNumbers(List<int> winningNumbers);
+    Task<GameDto> GetGameById(string id);
 }
 
 public class GameService : IGameService
@@ -42,6 +41,15 @@ public class GameService : IGameService
         }
 
         return gameDtos;
+    }
+
+    public async Task<GameDto> GetGameById(string id)
+    {
+        Guid gameId = new Guid(id);
+        Game game = await _gameRepository.GetGameById(gameId);
+
+        return GameDto.FromEntity(game);
+
     }
     
     private async Task<GameDto> ConvertToGameDto(Game game)
@@ -100,7 +108,7 @@ public class GameService : IGameService
 
         var updatedGame = await UpdateCurrentGameWithWinningNumbers(currentGame, winningNumbers);
 
-        await CreateNewGame(currentGame);
+        await CreateNewGame();
         
         var gameDto = await ConvertToGameDto(updatedGame);
         return gameDto;
@@ -216,21 +224,17 @@ public class GameService : IGameService
     
     #region Create Game Region (This gets confusing due to Auto-Play)
     
-    private async Task CreateNewGame(Game currentGame)
+    private async Task CreateNewGame()
     {
-        //First we create a new game and add it
-        var newGame = await InitializeNewGame(currentGame);
+        var newGame = await InitializeNewGame();
         await _gameRepository.AddGame(newGame);
-        // We fetch all the autoplay boards and create new boards with the same numbers on the new game ID
-        // Then Disable auto-play on the old boards and detach them 
-        // Detach tells Microsoft Entity to stop tracking them so there is no overlap and the correct
-        // Board gets the correct update
-        var autoplayBoards = await _boardRepository.GetAutoplayBoards();
-        await CreateAndDetachAutoplayBoards(newGame.Id, autoplayBoards);
-        
+
+        // Fetch all boards with AutoplayWeeks > 1 and create new boards for the new game
+        var autoplayBoards = await _boardRepository.GetBoardsWithAutoplayWeeksGreaterThanOne();
+        await CreateNewAutoplayBoards(newGame.Id, autoplayBoards);
     }
 
-    private Task<Game> InitializeNewGame(Game currentGame)
+    private Task<Game> InitializeNewGame()
     {
         var newGame = new Game
         {
@@ -242,23 +246,25 @@ public class GameService : IGameService
         return Task.FromResult(newGame);
     }
 
-    private async Task CreateAndDetachAutoplayBoards(Guid newGameId, List<Board> autoplayBoards)
+    private async Task CreateNewAutoplayBoards(Guid newGameId, List<Board> autoplayBoards)
     {
         foreach (var board in autoplayBoards)
         {
             await CreateNewAutoplayBoard(newGameId, board);
-            await DetachAndDisableAutoplay(board);
+            await UpdateAutoplayWeeks(board);
         }
     }
 
     private async Task CreateNewAutoplayBoard(Guid newGameId, Board board)
     {
-        
         if (board.Numbers == null)
         {
             throw new ArgumentException("Board numbers cannot be null.");
         }
         
+        var existingBoard = await _boardRepository.GetBoardById(board.Id);
+        _boardRepository.Detach(existingBoard);
+
         var newBoard = new Board
         {
             Id = Guid.NewGuid(),
@@ -266,56 +272,20 @@ public class GameService : IGameService
             UserId = board.UserId,
             Numbers = board.Numbers,
             CreatedAt = DateTime.UtcNow,
-            IsAutoplay = true,
+            AutoplayWeeks = 1,
             isWon = false
         };
-
-        
-        var cost = _boardService.CalculateCost(newBoard.Numbers.Count);
-        
-        var user = await _userRepository.GetUserById(newBoard.UserId);
-        if (user == null)
-        {
-            throw new Exception("User not found");
-        }
-
-        if (user.Balance < cost)
-        {
-            throw new Exception("Insufficient balance");
-        }
-
-        user.Balance -= cost;
-        await _userRepository.UpdateUser(user);
 
         await _boardRepository.CreateBoard(newBoard);
     }
 
-    private async Task DetachAndDisableAutoplay(Board board)
+    private async Task UpdateAutoplayWeeks(Board board)
     {
-        var existingBoard = await _boardRepository.GetBoardById(board.Id);
-
-        _boardRepository.Detach(existingBoard);
-
-        board.IsAutoplay = false;
+        board.AutoplayWeeks = board.AutoplayWeeks > 1 ? board.AutoplayWeeks - 1 : 1;
+        Console.WriteLine($"Updating AutoplayWeeks for Board {board.Id}: {board.AutoplayWeeks}");
         await _boardRepository.UpdateBoard(board);
     }
-
-    private GameDto MapToGameDto(Game newGame)
-    {
-        return new GameDto
-        {
-            Id = newGame.Id,
-            WinnerNumbers = null,
-            IsActive = newGame.IsActive,
-            WeekNumber = newGame.WeekNumber,
-            TotalRevenue = 0,
-            ClubRevenue = 0,
-            WinnersRevenue = 0,
-            Winners = 0,
-            WinnerUsernames = null,
-            WinnerEmails = null
-        };
-    }
+    
     
     #endregion
 }

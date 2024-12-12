@@ -2,17 +2,22 @@ import {useEffect, useState} from "react";
 import { http } from "../../http";
 import {BBVenturesApiTransaction, BBVenturesApiUser} from "../../services/Api";
 
-
 function AllHistory(){
 
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
+    const [filteredTrans, setFilteredTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [allUsers, setAllUsers] = useState<BBVenturesApiUser[]>([]);
-    const[userNameSearch, setUserNameSearch] = useState("")
+    const [userNameSearch, setUserNameSearch] = useState('');
+    
+    //to refresh the table. so that u can't press "approve" multiple times
+    const[refreshKey, setRefreshKey] = useState(1);
+    const refreshTable = () => {setRefreshKey(refreshKey + 1)}
 
     useEffect(() => {getAllTrans(); getAllUsers()}, [])
     async function getAllTrans(){
         const response = await http.transactionGetTransactionsList();
         setAllTrans(response.data);
+        setFilteredTrans(response.data)
         //console.log(response.data);
     }
 
@@ -23,13 +28,39 @@ function AllHistory(){
     }
     
     async function filterTransactions(){
-        if(userNameSearch === ""){
-            getAllTrans();
+        
+        setFilteredTrans([]);
+        
+        if(!userNameSearch){
+            setFilteredTrans(allTrans);
             return;
         }
-        const response = await http.transactionTransactionsFromNameList({searchVal: userNameSearch})
-        setAllTrans(response.data)
+        
+        //getting users with a name containing the search
+        let filteredUsers = allUsers.filter(user => user.userName!.includes(userNameSearch));
+        
+        console.log("ALL TRANSACTIONS")
+        console.log(allTrans);
+        
+        
+        let newFilteredTrans = allTrans.filter(trans => {
+            for (let i = 0; i <= filteredUsers.length - 1; i++){
+                if(trans.userId == filteredUsers.at(i)!.id){
+                    return trans;
+                }
+            }
+        })
+        setFilteredTrans(newFilteredTrans);
+        
+        console.log("filtered transactions: " + filteredTrans);
+        console.log(filteredTrans);
+        console.log()
+        console.log("the users it found: " + filteredUsers);
+        console.log(filteredUsers);
+        
+        
     }
+
 
     async function approveTransaction(trans: BBVenturesApiTransaction) {
         trans.isPending = false;
@@ -46,7 +77,7 @@ function AllHistory(){
         
         
         await http.userUpdateBalanceUpdate(player, {transactionAmount: amount})
-        
+        refreshTable();
     }
     
     function getUserNameById(id: string){
@@ -103,7 +134,7 @@ function AllHistory(){
                 </tr>
                 </thead>
                 <tbody>
-                {allTrans.map((trans) => (
+                {filteredTrans.map((trans) => (
                     <tr key={trans.id} className={"text-center"}>
                         <td className={"py-2 px-4 border border-black"}> {trans.amount} </td>
                         <td className={"py-2 px-4 border border-black"}> {getUserNameById(trans.userId!)} </td>
