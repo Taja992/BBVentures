@@ -61,7 +61,7 @@ public class TransactionControllerTests(ITestOutputHelper output) : ApiTestBase
             Amount = 500,
             UserId = PlayerId, //from DbSeeder.cs (assigned in SeedAsync()
             isPending = true,
-            MobilePayTransactionNumber = "fffffffffffffffffff"
+            MobilePayTransactionNumber = "12345678911"
         };
 
         //Adding the transaction
@@ -102,7 +102,7 @@ public class TransactionControllerTests(ITestOutputHelper output) : ApiTestBase
             Amount = 500,
             UserId = PlayerId, //from DbSeeder.cs (assigned in SeedAsync()
             isPending = false,
-            MobilePayTransactionNumber = "fffffffffffffffffff"
+            MobilePayTransactionNumber = "12345678911"
         };
 
         //
@@ -191,5 +191,29 @@ public class TransactionControllerTests(ITestOutputHelper output) : ApiTestBase
         
     }
 
+    [Theory]
+    [InlineData(-100, "12345678911")]
+    [InlineData(10, "ffffffff")]
+    [InlineData(200, "12345")]
+    [InlineData(-444, "12345678911")]
+    public async Task AddTransaction_ThrowsCorrectly(int amount, string mobilePayNum)
+    {
+        await AuthorizeClient("Player");
+
+        TransactionDto trans = new TransactionDto()
+        {
+            Amount = amount,
+            UserId = PlayerId, //from DbSeeder.cs (assigned in SeedAsync()
+            isPending = false,
+            MobilePayTransactionNumber = mobilePayNum
+        };
+        
+        var content = JsonContent.Create(trans); //so the data is sent as a json (PostAsync doesnt allow raw data, has to be json)
+        var response = await Client.PostAsync("api/Transaction/addTransaction", content);
+        
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        
+    }
+    
 
 }
