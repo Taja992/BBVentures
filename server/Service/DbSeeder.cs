@@ -68,10 +68,10 @@ public class DbSeeder
         await CreateTransactions(
             new List<(Guid Id, string UserId, decimal Amount, string TransactionNumber, bool IsPending, DateTime transactions)>
             {
-                (Guid.NewGuid(), PlayerId, 100, "Transaction001", true, DateTime.UtcNow),
-                (Guid.NewGuid(), AdminId, 200, "Transaction002", true, DateTime.UtcNow),
-                (Guid.NewGuid(), PlayerId, 300, "Transaction003", false, DateTime.UtcNow),
-                (Guid.NewGuid(), AdminId, 400, "Transaction004", false, DateTime.UtcNow)
+                (Guid.NewGuid(), PlayerId, 100, "Trans000001", true, DateTime.UtcNow),
+                (Guid.NewGuid(), AdminId, 200, "Trans000002", true, DateTime.UtcNow),
+                (Guid.NewGuid(), PlayerId, 300, "Trans000003", false, DateTime.UtcNow),
+                (Guid.NewGuid(), AdminId, 400, "Trans000004", false, DateTime.UtcNow)
             }
         );
     }

@@ -2,7 +2,9 @@
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using DataAccess.Repositories;
+using FluentValidation;
 using Service.TransferModels.DTOs;
+using Service.Validators;
 
 namespace Service.Services;
 
@@ -19,9 +21,8 @@ public interface ITransactionService
 }
 
 
-public class TransactionService(ITransactionRepository repository, IUserService userService) : ITransactionService
+public class TransactionService(ITransactionRepository repository, IUserService userService, IValidator<TransactionDto> _validator) : ITransactionService
 {
-    
     
     
     public async Task<List<TransactionResponseDto>> GetAllTransactions()
@@ -54,7 +55,9 @@ public class TransactionService(ITransactionRepository repository, IUserService 
     
     public async Task<Transaction> CreateTransaction(TransactionDto dto)
     {
-        //use validator to validate and throw if we want
+        //this should throw the correct errors. check the "network" tab in f12 to see them in full
+        await _validator.ValidateAndThrowAsync(dto);
+        
         Transaction trans = dto.ToTransaction();
         trans.CreatedAt = DateTime.UtcNow;
         trans.isPending = true;
