@@ -37,7 +37,8 @@ function AllHistory(){
         }
         
         //getting users with a name containing the search
-        let filteredUsers = allUsers.filter(user => user.userName!.includes(userNameSearch));
+        let filteredUsers = allUsers.filter(user => user.userName!.toLowerCase().includes(userNameSearch.toLowerCase()));
+        //also made both lowercase so that a search like "admin" could still return transactions from user "Admin", even if strings aren't the same
         
         console.log("ALL TRANSACTIONS")
         console.log(allTrans);

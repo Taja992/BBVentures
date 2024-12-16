@@ -16,7 +16,9 @@ public class UserRepository(AppDbContext context, UserManager<User> userManager)
     {
         //right now it uses ".Contains" which means if u search for "Player" it'll also return "Player2", "Player3" etc.
         //to make it more accurate we could change it to equals instead
-        return await context.Users.Where(u => u.UserName!.Contains(searchVal)).ToListAsync();
+        return await context.Users.Where(u => u.UserName!.ToLower().Contains(searchVal.ToLower())).ToListAsync();
+        //.ToLower to make the text lowercase so it's hopefully case-sensitive
+        //(i.e. if someone searches "admin" they can still get the user "Admin", even if the strings aren't exactly the same)
     }
 
     public async Task<User?> GetUserById(string id)
