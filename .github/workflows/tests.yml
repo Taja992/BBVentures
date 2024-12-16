@@ -40,4 +40,4 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: Development
           ConnectionStrings__AppDb: Host=localhost;Port=5432;Database=bbventure_db;Username=postgres;Password=postgres
-          RUN_SEEDER: true
+          RUN_HOST: true

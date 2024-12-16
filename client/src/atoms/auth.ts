@@ -48,7 +48,7 @@ export const useAuth = (): AuthHook => {
     };
 
     return {
-        user, // Current user info
+        user, // we add the user info here for our login component to show log out instead of login
         login,
         logout,
     };

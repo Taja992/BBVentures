@@ -1,4 +1,3 @@
-
 using API.Misc;
 using DataAccess;
 using DataAccess.Interfaces;
@@ -31,24 +30,24 @@ public class Program
 
         Configure(app);
 
-        try
+        // Check if the environment is not testing
+        if (!app.Environment.IsEnvironment("Testing"))
         {
             app.Run();
         }
-        catch (OperationCanceledException)
+        else
         {
-            var logger = app.Services.GetRequiredService<ILogger<Program>>();
-            logger.LogInformation( "Application is shutting down...");
+            // Seed the database for testing purposes
+            SeedDatabase(app.Services);
+            Console.WriteLine("Host built for testing purposes.");
         }
     }
 
     public static void ConfigureServices(WebApplicationBuilder builder)
     {
-// var builder = WebApplication.CreateBuilder(args);
-
         #region Configuration
 
-//set up options pattern ensuring options are validated
+        //set up options pattern ensuring options are validated
         builder
             .Services.AddOptionsWithValidateOnStart<AppOptions>()
             //binds the AppOptions setting with appsettings.json
@@ -67,13 +66,11 @@ public class Program
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
         );
 
-
         builder.Services.AddScoped<DbSeeder>();
 
         #endregion
 
         #region Security
-
 
         builder
             .Services.AddIdentityApiEndpoints<User>()
@@ -83,8 +80,7 @@ public class Program
         builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
         builder.Services.AddValidatorsFromAssemblyContaining<RegisterPasswordRequestValidator>();
 
-
-//Setting up Authorization using AppOptions class to store secrets and JwtTokenClaimService to add a way to customize the tokens to what we want
+        //Setting up Authorization using AppOptions class to store secrets and JwtTokenClaimService to add a way to customize the tokens to what we want
         var appOptions = builder.Configuration.GetSection(nameof(AppOptions)).Get<AppOptions>()!;
 
         builder
@@ -102,8 +98,7 @@ public class Program
 
         builder.Services.AddScoped<ITokenClaimsService, JwtTokenClaimService>();
 
-
-//Adds authorization requiring all end points to define who accesses them
+        //Adds authorization requiring all end points to define who accesses them
         builder.Services.AddAuthorization(options =>
         {
             options.FallbackPolicy = new AuthorizationPolicyBuilder()
@@ -113,15 +108,9 @@ public class Program
 
         builder.Services.AddSingleton<IEmailSender<User>, AppEmailSender>();
 
-
         #endregion
 
         #region Services
-
-
-
-// builder.Services.AddValidatorsFromAssemblyContaining<ServiceAssembly>();
-
 
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IBoardService, BoardService>();
@@ -131,34 +120,30 @@ public class Program
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<IPasswordService, PasswordService>();
 
-
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
         builder.Services.AddScoped<IBoardRepository, BoardRepository>();
         builder.Services.AddScoped<IGameRepository, GameRepository>();
 
-
         builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
-
 
         #endregion
 
         #region Swagger
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
         builder.Services.AddEndpointsApiExplorer();
+        
         builder.Services.AddSwaggerGen(c =>
         {
+            //This was originally an attempt to help us with naming because of a conflict
+            //but later we didnt use Identity defaults anymore so it was not needed but too much
+            //front end was in place to swap it back
             c.CustomSchemaIds(type =>
             {
-
                 var customPrefix = "BBVenturesApi";
-
                 var identityPrefix = "MicrosoftIdentity";
-
                 var typeNamespace = type.Namespace;
-
                 var simpleName = type.Name;
 
                 // Check if the type is from the Microsoft.AspNetCore.Identity namespace
@@ -174,13 +159,8 @@ public class Program
 
         #endregion
 
-
-
-
-
-// Add services to the container.
+        // Add services to the container.
         builder.Services.AddControllers();
-
 
         builder.Services.AddCors(options =>
         {
@@ -200,14 +180,40 @@ public class Program
         });
     }
 
-    public static void Configure(WebApplication app) 
-{
-// var app = builder.Build();
-
-
-    if (app.Environment.IsDevelopment() || Environment.GetEnvironmentVariable("RUN_SEEDER") == "true")
+    public static void Configure(WebApplication app)
     {
-        using (var scope = app.Services.CreateScope())
+        if (app.Environment.IsDevelopment())
+        {
+            SeedDatabase(app.Services);
+        }
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+        // Add this to be able to get client ID from reverse proxy services such as "Google Cloud Run"
+        // and the back-end will respond correctly to forwarded requests
+        app.UseForwardedHeaders(
+            new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            }
+        );
+
+        app.UseCors(app.Environment.IsDevelopment() ? "DevelopmentCorsPolicy" : "ProductionCorsPolicy");
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapControllers();
+    }
+
+    private static void SeedDatabase(IServiceProvider services)
+    {
+        using (var scope = services.CreateScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             context.Database.EnsureDeleted();
@@ -218,42 +224,10 @@ public class Program
             // Console.WriteLine(sql); //this will print the SQL to build the exact DB from what the context looks like
         }
 
-        using (var scope = app.Services.CreateScope())
+        using (var scope = services.CreateScope())
         {
             var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
             dbSeeder.SeedAsync().Wait();
         }
-    }
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-// Add this to be able to get client ID from reverse proxy services such as "Google Cloud Run"
-// and the back-end will respond correctly to forwarded requests
-app.UseForwardedHeaders(
-    new ForwardedHeadersOptions
-    {
-        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-    }
-);
-
-
-//UseRouting adds routing middleware to match incoming HTTP requests to endpoints.
-// app.UseRouting();
-
-
-app.UseCors(app.Environment.IsDevelopment() ? "DevelopmentCorsPolicy" : "ProductionCorsPolicy");
-
-app.UseAuthentication();
-app.UseAuthorization();
-//app.MapIdentityApi<Player>().AllowAnonymous();
-app.MapControllers();
-
-app.Run();
     }
 }
