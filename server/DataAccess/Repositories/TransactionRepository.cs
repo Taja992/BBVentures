@@ -35,8 +35,6 @@ public class TransactionRepository(AppDbContext context) : ITransactionRepositor
 
     public Transaction UpdateTransaction(Transaction trans)
     {
-        Console.WriteLine("ID in repository down below");
-        Console.WriteLine(trans.Id);
         context.Transactions.Update(trans);
         context.SaveChanges();
         return trans;

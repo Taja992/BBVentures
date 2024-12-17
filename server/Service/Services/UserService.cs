@@ -10,9 +10,9 @@ public interface IUserService
 {
     Task<IEnumerable<UserDto>> GetAllUsers();
     Task<bool> UpdateUser(UserDto userDto, bool isAdmin);
-    Task<UserDto?> GetUserById(string id);
+    Task<UserDto> GetUserById(string id);
     Task<bool> AssignRole(string userId, string role);
-    public Task<bool> UpdateBalance(UserDto dto, decimal transactionAmount);
+    public Task<bool> UpdateBalance(int id, decimal transactionAmount);
     public Task<IEnumerable<UserDto>> GetAllUsersWithName(string searchVal);
 }
 
@@ -51,17 +51,17 @@ public class UserService(IUserRepository userRepository) : IUserService
         return userDtos;
     }
 
-    public async Task<UserDto?> GetUserById(string id)
+    public async Task<UserDto> GetUserById(string id)
     {
         var user = await userRepository.GetUserById(id);
-        
+
         if (user == null)
         {
-            return null;
+            throw new Exception("user not found");
         }
         
-        var userDto = UserDto.FromEntity(user);
-        var roles = await userRepository.GetUserRoles(user);
+        var userDto = UserDto.FromEntity(user!);
+        var roles = await userRepository.GetUserRoles(user!);
         userDto.Role = roles.FirstOrDefault();
         return userDto;
     }
@@ -89,7 +89,7 @@ public class UserService(IUserRepository userRepository) : IUserService
         var user = await userRepository.GetUserById(userDto.Id);
         if (user == null)
         {
-            return false;
+            throw new Exception("user not found");
         }
 
         if (isAdmin)
@@ -125,17 +125,17 @@ public class UserService(IUserRepository userRepository) : IUserService
         return await userRepository.UpdateUser(user);
     }
 
-    public async Task<bool> UpdateBalance(UserDto dto, decimal transactionAmount)
+    public async Task<bool> UpdateBalance(int id, decimal transactionAmount)
     {
         
-        var user = await userRepository.GetUserById(dto.Id);
+        var user = await userRepository.GetUserById(id.ToString());
 
         if (user == null)
         {
-            return false;
+            throw new Exception("user not found");
         }
         
-        user.Balance = dto.Balance + transactionAmount;
+        user.Balance += transactionAmount;
 
         return await userRepository.UpdateUser(user);
 
