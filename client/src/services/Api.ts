@@ -22,7 +22,6 @@ export interface BBVenturesApiBoard {
   /** @format uuid */
   gameId?: string;
   numbers?: number[] | null;
-  isAutoplay?: boolean;
   /** @format int32 */
   autoplayWeeks?: number;
   /** @format date-time */
@@ -41,7 +40,6 @@ export interface BBVenturesApiBoardDto {
   /** @format uuid */
   gameId?: string;
   numbers?: number[] | null;
-  isAutoplay?: boolean;
   /** @format int32 */
   autoplayWeeks?: number;
   /** @format date-time */
@@ -562,16 +560,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name BoardGetBoardsFromThisWeekList
      * @request GET:/api/Board/get-boards-from-this-week
      */
-    boardGetBoardsFromThisWeekList: (
-      query?: {
-        userId?: string;
-      },
-      params: RequestParams = {},
-    ) =>
+    boardGetBoardsFromThisWeekList: (params: RequestParams = {}) =>
       this.request<BBVenturesApiBoardDto[], any>({
         path: `/api/Board/get-boards-from-this-week`,
         method: "GET",
-        query: query,
         format: "json",
         ...params,
       }),
@@ -790,8 +782,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/User/updateBalance
      */
     userUpdateBalanceUpdate: (
-      data: BBVenturesApiUserDto,
       query?: {
+        id?: string;
         /** @format double */
         transactionAmount?: number;
       },
@@ -801,8 +793,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/User/updateBalance`,
         method: "PUT",
         query: query,
-        body: data,
-        type: ContentType.Json,
         ...params,
       }),
 

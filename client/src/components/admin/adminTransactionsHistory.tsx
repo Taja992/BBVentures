@@ -72,15 +72,12 @@ function AllHistory(){
         http.transactionUpdateTransactionUpdate(trans);
 
         //updating that players balance now that the transaction has gone through
-        let id : string  = trans.userId!
-
-        const response = await http.userGetByIdList({id});
-        let player = response.data
+        const id : string | undefined = trans.userId!;
         
         const amount: number | undefined = trans.amount!;
         
-        
-        await http.userUpdateBalanceUpdate(player, {transactionAmount: amount})
+        console.log(id);
+        await http.userUpdateBalanceUpdate({id: id, transactionAmount: amount})
         refreshTable();
     }
     

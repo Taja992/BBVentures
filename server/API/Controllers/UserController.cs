@@ -92,7 +92,7 @@ public class UserController(IUserService userService, UserManager<User> userMana
     [HttpPut]
     [Authorize(Roles = "Admin")]
     [Route("updateBalance")]
-    public async Task<ActionResult> UpdateBalance([FromBody] int id, decimal transactionAmount)
+    public async Task<ActionResult> UpdateBalance(string id, decimal transactionAmount)
     {
         
 

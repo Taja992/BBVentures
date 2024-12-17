@@ -12,7 +12,7 @@ public interface IUserService
     Task<bool> UpdateUser(UserDto userDto, bool isAdmin);
     Task<UserDto> GetUserById(string id);
     Task<bool> AssignRole(string userId, string role);
-    public Task<bool> UpdateBalance(int id, decimal transactionAmount);
+    public Task<bool> UpdateBalance(string id, decimal transactionAmount);
     public Task<IEnumerable<UserDto>> GetAllUsersWithName(string searchVal);
 }
 
@@ -125,10 +125,10 @@ public class UserService(IUserRepository userRepository) : IUserService
         return await userRepository.UpdateUser(user);
     }
 
-    public async Task<bool> UpdateBalance(int id, decimal transactionAmount)
+    public async Task<bool> UpdateBalance(string id, decimal transactionAmount)
     {
         
-        var user = await userRepository.GetUserById(id.ToString());
+        var user = await userRepository.GetUserById(id);
 
         if (user == null)
         {
