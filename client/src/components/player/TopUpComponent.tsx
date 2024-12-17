@@ -62,7 +62,7 @@ function TopUp() {
 
         <input type="text" placeholder={"top up amount"} value={topUpAmount} onChange={(e) => setTopUpAmount(e.target.value)}/>
         <input type="text" placeholder={"mobile pay number"} value={mobilePayNum} onChange={(e) => setMobilePayNum(e.target.value)}/>
-        <button onClick={() => topUp()}> PRESS THIS BUTTON NOW!!!!!!!!!!!!!</button>
+        <button onClick={() => topUp()}> top up </button>
 
     </>
 
