@@ -94,8 +94,6 @@ public class UserController(IUserService userService, UserManager<User> userMana
     [Route("updateBalance")]
     public async Task<ActionResult> UpdateBalance(string id, decimal transactionAmount)
     {
-        
-
         var response = await userService.UpdateBalance(id, transactionAmount);
         
         if (response)

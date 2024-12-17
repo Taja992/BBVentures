@@ -47,6 +47,7 @@ export interface BBVenturesApiBoardDto {
   /** @format date-time */
   updatedAt?: string | null;
   isWon?: boolean;
+  isAutoplay?: boolean;
   /** @format int32 */
   weekNumber?: number;
   playerUsername?: string | null;
