@@ -72,15 +72,12 @@ function AllHistory(){
         http.transactionUpdateTransactionUpdate(trans);
 
         //updating that players balance now that the transaction has gone through
-        let id : string  = trans.userId!
-
-        const response = await http.userGetByIdList({id});
-        let player = response.data
+        const id : string | undefined = trans.userId!;
         
         const amount: number | undefined = trans.amount!;
         
-        
-        await http.userUpdateBalanceUpdate(player, {transactionAmount: amount})
+        console.log(id);
+        await http.userUpdateBalanceUpdate({id: id, transactionAmount: amount})
         refreshTable();
     }
     
@@ -135,11 +132,8 @@ function AllHistory(){
 
 
     return <>
-
         <h1 className={"text-2xl font-bold mb-4"}> All Transactions </h1>
 
-        {/*<button onClick={getAllTrans}>this is a test button</button>
-        <br/>*/}
         <label className={"mr-3"}>From User:</label>
         <input className={"py-1 px-1 my-1 mb-2 border border-grey"} value={userNameSearch}
                onChange={e => setUserNameSearch(e.target.value)}/>
@@ -148,41 +142,6 @@ function AllHistory(){
         <div className="max-h-64 overflow-y-auto">
             <CompactTable columns={columns} data={{nodes: filteredTrans}} theme={theme}/>
         </div>
-
-        {/*<div className={"table-container"}>
-            <table className={"table-auto bg-white border border-black"}>
-                <thead>
-                <tr>
-                    <th className={"py-2 px-4 border border-black"}>Transaction Amount</th>
-                    <th className={"py-2 px-4 border border-black"}>Player Name</th>
-                    <th className={"py-2 px-4 border border-black"}>Player Email</th>
-                    <th className={"py-2 px-4 border border-black"}>Is Pending</th>
-                    <th className={"py-2 px-4 border border-black"}>Mobile Pay Number</th>
-                    <th className={"py-2 px-4 border border-black"}>Made At</th>
-                </tr>
-                </thead>
-                <tbody>
-                {filteredTrans.map((trans) => (
-                    <tr key={trans.id} className={"text-center"}>
-                        <td className={"py-2 px-4 border border-black"}> {trans.amount} </td>
-                        <td className={"py-2 px-4 border border-black"}> {getUserNameById(trans.userId!)} </td>
-                        <td className={"py-2 px-4 border border-black"}> {getUserEmailById(trans.userId!)} </td>
-                        <td className={"py-2 px-4 border border-black"}>
-                            <div>
-                                {trans.isPending ? "pending" : "approved"} <br/>
-                                {trans.isPending ?
-                                    <button className={"button"}
-                                            onClick={() => approveTransaction(trans)}>approve</button> : <></>}
-                            </div>
-                        </td>
-                        <td className={"py-2 px-4 border border-black"}> {trans.mobilePayTransactionNumber} </td>
-                        <td className={"py-2 px-4 border border-black"}> {trans.createdAt ? new Date(trans.createdAt).toLocaleString() : "N/A"} </td>
-                    </tr>
-                ))}
-                </tbody>
-
-            </table>
-        </div>*/}
 
     </>
 
