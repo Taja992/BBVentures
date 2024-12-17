@@ -94,6 +94,10 @@ public class UserController(IUserService userService, UserManager<User> userMana
     [Route("updateBalance")]
     public async Task<ActionResult> UpdateBalance(string id, decimal transactionAmount)
     {
+        if (string.IsNullOrEmpty(id))
+        {
+            return BadRequest("Invalid player data.");
+        }
         var response = await userService.UpdateBalance(id, transactionAmount);
         
         if (response)
