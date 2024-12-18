@@ -4,6 +4,7 @@ import {BBVenturesApiTransaction, BBVenturesApiUser} from "../../services/Api";
 import {CompactTable} from "@table-library/react-table-library/compact";
 import {useTheme} from "@table-library/react-table-library/theme";
 import tableTheme from "../../themes/tableTheme";
+import "../../themes/TableStyles.css";
 
 function AllHistory(){
     const theme = useTheme(tableTheme);
@@ -100,8 +101,8 @@ function AllHistory(){
                 <button className="button" onClick={filterTransactions}>Search</button>
             </div>
 
-            <div className="max-h-64 overflow-y-auto">
-                <CompactTable columns={columns} data={{nodes: filteredTrans}} theme={theme} />
+            <div className="full-height-table-container">
+                <CompactTable columns={columns} data={{nodes: filteredTrans}} theme={theme}/>
             </div>
         </>
     );

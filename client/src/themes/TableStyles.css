@@ -1,0 +1,8 @@
+﻿.full-height-table-container {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.full-height-table-container .Table {
+    display: block;
+}
