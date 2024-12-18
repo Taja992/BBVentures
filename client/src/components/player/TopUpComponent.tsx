@@ -58,22 +58,11 @@ function TopUp() {
             }}
         >
             <h2
-                className="text-2xl font-bold mb-4 text-center"
+                className="text-2xl font-bold mb-4 text-center pb-4"
                 style={{ color: "#7E8FA9" }}
             >
-                Top-Up
+                Top-Up Your Balance
             </h2>
-
-            {/* Add Image below the Top-Up heading */}
-            <div className="text-center mb-6">
-                <img
-                    src="/mb.png"
-                    alt="Logo"
-                    className="mx-auto"
-                    style={{ width: "120px", height: "auto" }}
-                />
-            </div>
-
             <div className="flex flex-col space-y-6">
                 <input
                     type="text"
@@ -91,7 +80,7 @@ function TopUp() {
                 />
                 <input
                     type="text"
-                    placeholder="Mobile Pay Number"
+                    placeholder="Phone Number"
                     value={mobilePayNum}
                     onChange={(e) => setMobilePayNum(e.target.value)}
                     className="p-4 border rounded-lg w-full"
@@ -103,6 +92,14 @@ function TopUp() {
                         color: "#7E8FA9",
                     }}
                 />
+                <div className="text-center mb-6">
+                    <img
+                        src="/mb.png"
+                        alt="Logo"
+                        className="mx-auto"
+                        style={{width: "150px", height: "auto"}}
+                    />
+                </div>
                 <button
                     onClick={() => topUp()}
                     className="py-3 px-6 rounded-lg font-semibold text-white transition-transform transform hover:scale-105"
