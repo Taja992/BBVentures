@@ -3,6 +3,7 @@ using DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic.CompilerServices;
 using Service.Auth;
 using Service.Services;
 using Service.TransferModels.DTOs;
@@ -91,14 +92,13 @@ public class UserController(IUserService userService, UserManager<User> userMana
     [HttpPut]
     [Authorize(Roles = "Admin")]
     [Route("updateBalance")]
-    public async Task<ActionResult> UpdateBalance([FromBody] UserDto dto, decimal transactionAmount)
+    public async Task<ActionResult> UpdateBalance(string id, decimal transactionAmount)
     {
-        if (string.IsNullOrEmpty(dto.Id))
+        if (string.IsNullOrEmpty(id))
         {
-            return NotFound("user not found");
+            return BadRequest("Invalid player data.");
         }
-
-        var response = await userService.UpdateBalance(dto, transactionAmount);
+        var response = await userService.UpdateBalance(id, transactionAmount);
         
         if (response)
         {

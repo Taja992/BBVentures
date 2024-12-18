@@ -14,7 +14,7 @@ const TransactionsPage = () => {
     return (
         <>
             <div className="border border-black p-4 mb-4">
-                {userInfo?.isPlayer && !userInfo?.isAdmin && <TopUpComponent/>}
+                <TopUpComponent/>
             </div>
             <div className="border border-black p-4 mb-4">
                 {userInfo?.isPlayer && !userInfo?.isAdmin && <UserTransactionsHistory/>}

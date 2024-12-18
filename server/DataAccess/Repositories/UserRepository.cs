@@ -21,7 +21,7 @@ public class UserRepository(AppDbContext context, UserManager<User> userManager)
         //(i.e. if someone searches "admin" they can still get the user "Admin", even if the strings aren't exactly the same)
     }
 
-    public async Task<User?> GetUserById(string id)
+    public async Task<User> GetUserById(string id)
     {
         return await context.Users.FindAsync(id);
     }
