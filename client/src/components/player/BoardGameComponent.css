@@ -11,6 +11,7 @@
     max-width: 600px;
     text-align: center;
     margin: auto;
+    color: #000000; /* Ensure text inside this component is black */
 }
 
 .number-grid {
@@ -26,22 +27,22 @@
 
 .number-button {
     padding: 1rem;
-    border: 2px solid black; /* Black border around each number */
+    border: 3px solid black; /* Black border around each number */
     border-radius: 8px;
-    background-color: #007bff;
-    color: white;
+    background-color: rgb(255, 255, 255);
+    color: #000000; /* Black text */
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .number-button:hover {
-    background-color: #0056b3;
+    background-color: rgba(118, 75, 162, 0.75);
     transform: scale(1.1); /* Slight zoom on hover */
 }
 
 .number-button.selected {
-    background-color: #28a745;
+    background-color: rgba(149, 121, 185, 0.75);
     transform: scale(1.1); /* Slight zoom for selected numbers */
 }
 
@@ -49,8 +50,8 @@
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 8px;
-    background-color: #162a47;
-    color: white;
+    background-color: #764ba2;
+    color: #000000; /* Black text */
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -71,15 +72,15 @@
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 8px;
-    background-color: #007bff;
-    color: white;
+    background-color: #764ba2;
+    color: #000000; /* Black text */
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .field-button:hover {
-    background-color: #0056b3;
+    background-color: #764ba2;
 }
 
 .field-button.selected {

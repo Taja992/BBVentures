@@ -26,12 +26,18 @@ function UserBoardHistoryThisWeek() {
         {label: 'Date Bought', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.createdAt ? new Date(item.createdAt).toLocaleString() : "N/A"},
     ];
 
-    return <>
-        <h2 className={"text-2xl font-bold mb-4"}>Your Boards This Week</h2>
-        <div className={"max-h-64 overflow-y-auto"}>
-            <CompactTable columns={columns} data={{nodes: boardHistFromWeek}} theme={theme}/>
-        </div>
-    </>
+    return (
+        <>
+            <div className="p-4 bg-white rounded-lg shadow-md">
+                <h2 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase">
+                    Your Boards This Week
+                </h2>
+                <div className="max-h-64 overflow-y-auto">
+                    <CompactTable columns={columns} data={{ nodes: boardHistFromWeek }} theme={theme} />
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default UserBoardHistoryThisWeek;
