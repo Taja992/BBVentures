@@ -45,24 +45,29 @@ const InputWinningNumbersComponent = () => {
     }
 
     return (
-        <div className="flex space-x-4">
-            <div className="input-winning-numbers">
-                <h2>Input Winning Numbers</h2>
-                <div className="input-fields">
-                    {Array.from({ length: 3 }).map((_, index) => (
-                        <input
-                            key={index}
-                            type="number"
-                            value={winningNumbers[index] || ""}
-                            onChange={(e) => handleInputChange(index, e.target.value)}
-                            className="winning-number-input"
-                        />
-                    ))}
-                </div>
-                <button onClick={handleSubmit} className="submit-button">Submit</button>
+        <div className="space-y-6">
+            <h2 className="text-2xl font-bold mb-4">Input Winning Numbers</h2>
+            <div className="flex space-x-4">
+                {Array.from({ length: 3 }).map((_, index) => (
+                    <input
+                        key={index}
+                        type="number"
+                        value={winningNumbers[index] || ""}
+                        onChange={(e) => handleInputChange(index, e.target.value)}
+                        className="shadow-md appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
+                        placeholder={`Number ${index + 1}`}
+                    />
+                ))}
             </div>
+            <button
+                onClick={handleSubmit}
+                className="mt-4 bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition"
+            >
+                Submit
+            </button>
+
             {responseData && (
-                <div className="p-4 border rounded-lg shadow-lg bg-white w-1/3">
+                <div className="mt-6 p-6 border rounded-lg shadow-lg bg-white">
                     <h3 className="text-lg font-semibold mb-2">Winning Numbers Result</h3>
                     <p><span className="font-semibold">Week Number:</span> {responseData.weekNumber ?? 'N/A'}</p>
                     <p><span className="font-semibold">Total Revenue:</span> {responseData.totalRevenue?.toFixed(2) ?? 'N/A'}kr</p>
