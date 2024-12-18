@@ -71,7 +71,7 @@ public class UserService(IUserRepository userRepository) : IUserService
         var user = await userRepository.GetUserById(userId);
         if (user == null)
         {
-            return false;
+            throw new Exception("user not found");
         }
 
         var currentRoles = await userRepository.GetUserRoles(user);
