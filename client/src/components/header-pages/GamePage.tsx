@@ -1,6 +1,5 @@
 ﻿
 import { useAtom } from "jotai";
-
 import {  userInfoAtom } from "../../atoms/atoms";
 import GameHistoryForAdminComponent from "../admin/gameHistoryForAdminComponent";
 import GameHistoryForUserComponent from "../player/gameHistoryForUserComponent";

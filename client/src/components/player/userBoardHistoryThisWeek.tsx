@@ -1,15 +1,14 @@
-﻿import {useEffect } from "react";
+﻿import { useEffect } from "react";
 import { BBVenturesApiBoardHistoryDto } from "../../services/Api";
 import { http } from '../../http';
-import {CompactTable} from "@table-library/react-table-library/compact";
+import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { getTheme } from "@table-library/react-table-library/baseline";
 import { useAtom } from "jotai";
 import { boardHistFromWeekAtom } from "../../atoms/atoms";
-
+import tableTheme from "../../themes/tableTheme"; 
 
 function UserBoardHistoryThisWeek() {
-    const theme = useTheme(getTheme());
+    const theme = useTheme(tableTheme); 
     const [boardHistFromWeek, setBoardHistFromWeek] = useAtom(boardHistFromWeekAtom);
 
     useEffect(() => {
@@ -27,18 +26,12 @@ function UserBoardHistoryThisWeek() {
         {label: 'Date Bought', renderCell: (item: BBVenturesApiBoardHistoryDto) => item.createdAt ? new Date(item.createdAt).toLocaleString() : "N/A"},
     ];
 
-
     return <>
-
         <h2 className={"text-2xl font-bold mb-4"}>Your Boards This Week</h2>
-
         <div className={"max-h-64 overflow-y-auto"}>
-            <CompactTable columns = {columns} data = {{nodes: boardHistFromWeek}} theme ={theme}/>
+            <CompactTable columns={columns} data={{nodes: boardHistFromWeek}} theme={theme}/>
         </div>
-
     </>
-
-
 }
 
 export default UserBoardHistoryThisWeek;
