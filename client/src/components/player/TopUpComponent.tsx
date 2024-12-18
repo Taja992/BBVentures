@@ -63,6 +63,17 @@ function TopUp() {
             >
                 Top-Up
             </h2>
+
+            {/* Add Image below the Top-Up heading */}
+            <div className="text-center mb-6">
+                <img
+                    src="/mb.png"
+                    alt="Logo"
+                    className="mx-auto"
+                    style={{ width: "120px", height: "auto" }}
+                />
+            </div>
+
             <div className="flex flex-col space-y-6">
                 <input
                     type="text"
