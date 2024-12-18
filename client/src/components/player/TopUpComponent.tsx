@@ -63,18 +63,18 @@ function TopUp() {
             >
                 Top-Up
             </h2>
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-6">
                 <input
                     type="text"
                     placeholder="Top-up Amount"
                     value={topUpAmount}
                     onChange={(e) => setTopUpAmount(e.target.value)}
-                    className="p-3 border rounded-lg"
+                    className="p-4 border rounded-lg w-full"
                     style={{
                         border: "1px solid #DFDFDF",
                         borderRadius: "8px",
-                        padding: "12px 16px",
-                        fontSize: "0.9rem",
+                        padding: "16px 20px",
+                        fontSize: "1.1rem",
                         color: "#7E8FA9",
                     }}
                 />
@@ -83,12 +83,12 @@ function TopUp() {
                     placeholder="Mobile Pay Number"
                     value={mobilePayNum}
                     onChange={(e) => setMobilePayNum(e.target.value)}
-                    className="p-3 border rounded-lg"
+                    className="p-4 border rounded-lg w-full"
                     style={{
                         border: "1px solid #DFDFDF",
                         borderRadius: "8px",
-                        padding: "12px 16px",
-                        fontSize: "0.9rem",
+                        padding: "16px 20px",
+                        fontSize: "1.1rem",
                         color: "#7E8FA9",
                     }}
                 />
