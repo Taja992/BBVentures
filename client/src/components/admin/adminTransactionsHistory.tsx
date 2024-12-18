@@ -3,10 +3,10 @@ import { http } from "../../http";
 import {BBVenturesApiTransaction, BBVenturesApiUser} from "../../services/Api";
 import {CompactTable} from "@table-library/react-table-library/compact";
 import {useTheme} from "@table-library/react-table-library/theme";
-import {getTheme} from "@table-library/react-table-library/baseline";
+import tableTheme from "../../themes/tableTheme";
 
 function AllHistory(){
-    const theme = useTheme(getTheme());
+    const theme = useTheme(tableTheme);
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [filteredTrans, setFilteredTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [allUsers, setAllUsers] = useState<BBVenturesApiUser[]>([]);

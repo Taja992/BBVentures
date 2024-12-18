@@ -1,16 +1,16 @@
 ﻿import React, { useEffect } from 'react';
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { getTheme } from "@table-library/react-table-library/baseline";
 import { http } from '../../http.ts';
 import { BBVenturesApiBoardDto } from '../../services/Api';
 import { useAtom } from 'jotai';
 import { boardsAtom } from '../../atoms/atoms';
 import toast from 'react-hot-toast';
+import tableTheme from '../../themes/tableTheme.ts';
 
 
 const AdminBoardsHistoryComponent: React.FC = () => {
-    const theme = useTheme(getTheme());
+    const theme = useTheme(tableTheme);
     const [boards, setBoards] = useAtom(boardsAtom);
     
     

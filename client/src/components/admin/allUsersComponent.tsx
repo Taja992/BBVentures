@@ -3,16 +3,14 @@ import { allUsersAtom } from "../../atoms/atoms";
 import { http } from "../../http";
 import { useEffect, useState } from "react";
 import { BBVenturesApiUserDto } from "../../services/Api";
-//for the tables
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { getTheme } from "@table-library/react-table-library/baseline";
-//end
 import toast from 'react-hot-toast';
+import tableTheme from "../../themes/tableTheme";
 
 const GetAllUsers: React.FC = () => {
     const [allUsers, setAllUsers] = useAtom(allUsersAtom);
-    const theme = useTheme(getTheme());
+    const theme = useTheme(tableTheme);
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
     const [formData, setFormData] = useState<{ [key: string]: BBVenturesApiUserDto }>({});
     const [searchTerm, setSearchTerm] = useState<string>('');
