@@ -1,72 +1,112 @@
-﻿import {useEffect, useState} from "react";
+﻿import { useEffect, useState } from "react";
 import { BBVenturesApiTransactionDto } from "../../services/Api";
 import { http } from "../../http";
 
 function TopUp() {
-    
-    //const [topupNumbers] = useState([10,20,40,60,80,100,120,200,400])
-    
-    const [topUpAmount, setTopUpAmount] = useState('');
-    const [mobilePayNum, setMobilePayNum] = useState('');
+    const [topUpAmount, setTopUpAmount] = useState("");
+    const [mobilePayNum, setMobilePayNum] = useState("");
     const [playerId, setPlayerId] = useState<string | null>(null);
-    
+
     useEffect(() => {
         const getPlayerId = async () => {
-            try{
+            try {
                 const response = await http.authMeList();
-                if(response.data && response.data.id){
+                if (response.data && response.data.id) {
                     setPlayerId(response.data.id);
                 } else {
-                    console.error("couldn't find user ID in http response. very unfortunate");
-                    console.log("id not found, NERD!!")
+                    console.error("Couldn't find user ID in http response.");
                 }
-            } catch(error){
-                console.error('failed to get player Id. sucks to suck')
+            } catch (error) {
+                console.error("Failed to get player Id.");
             }
-        }
-        
+        };
+
         getPlayerId();
-    }, [])
-    
+    }, []);
+
     async function topUp() {
-        
-        var finalAmount: number = parseInt(topUpAmount)
-        
-        //if values are  null or empty
-        if(finalAmount === null || !finalAmount){
-            alert('top up amount entered is not valid. please try again');
+        const finalAmount: number = parseInt(topUpAmount);
+
+        if (!finalAmount) {
+            alert("Top-up amount entered is not valid. Please try again.");
             return;
         }
-        if(mobilePayNum === null || !mobilePayNum){
-            alert('mobile pay number entered is not valid. please try again');
+        if (!mobilePayNum) {
+            alert("Mobile pay number entered is not valid. Please try again.");
             return;
         }
-        
-        
-        
-        
-        const trans : BBVenturesApiTransactionDto = {
+
+        const trans: BBVenturesApiTransactionDto = {
             userId: playerId,
             amount: finalAmount,
             mobilePayTransactionNumber: mobilePayNum,
             isPending: true,
-        } 
-        
-        console.log("request body : ", trans);
-        
-        await http.transactionAddTransactionCreate(trans)
-        
+        };
+
+        console.log("Request body: ", trans);
+
+        await http.transactionAddTransactionCreate(trans);
     }
-    
-    return <>
 
-        <input type="text" placeholder={"top up amount"} value={topUpAmount} onChange={(e) => setTopUpAmount(e.target.value)}/>
-        <input type="text" placeholder={"mobile pay number"} value={mobilePayNum} onChange={(e) => setMobilePayNum(e.target.value)}/>
-        <button onClick={() => topUp()}> top up </button>
-
-    </>
-
-
+    return (
+        <div
+            className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto"
+            style={{
+                backgroundColor: "#FFFFFF",
+                borderRadius: "8px",
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+            }}
+        >
+            <h2
+                className="text-2xl font-bold mb-4 text-center"
+                style={{ color: "#7E8FA9" }}
+            >
+                Top-Up
+            </h2>
+            <div className="flex flex-col space-y-4">
+                <input
+                    type="text"
+                    placeholder="Top-up Amount"
+                    value={topUpAmount}
+                    onChange={(e) => setTopUpAmount(e.target.value)}
+                    className="p-3 border rounded-lg"
+                    style={{
+                        border: "1px solid #DFDFDF",
+                        borderRadius: "8px",
+                        padding: "12px 16px",
+                        fontSize: "0.9rem",
+                        color: "#7E8FA9",
+                    }}
+                />
+                <input
+                    type="text"
+                    placeholder="Mobile Pay Number"
+                    value={mobilePayNum}
+                    onChange={(e) => setMobilePayNum(e.target.value)}
+                    className="p-3 border rounded-lg"
+                    style={{
+                        border: "1px solid #DFDFDF",
+                        borderRadius: "8px",
+                        padding: "12px 16px",
+                        fontSize: "0.9rem",
+                        color: "#7E8FA9",
+                    }}
+                />
+                <button
+                    onClick={() => topUp()}
+                    className="py-3 px-6 rounded-lg font-semibold text-white transition-transform transform hover:scale-105"
+                    style={{
+                        background: "linear-gradient(135deg, #667eea, #764ba2)",
+                        borderRadius: "8px",
+                        color: "#FFFFFF",
+                        cursor: "pointer",
+                    }}
+                >
+                    Top Up
+                </button>
+            </div>
+        </div>
+    );
 }
 
-export default TopUp
+export default TopUp;

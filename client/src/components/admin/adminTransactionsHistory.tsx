@@ -11,104 +11,60 @@ function AllHistory(){
     const [filteredTrans, setFilteredTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [allUsers, setAllUsers] = useState<BBVenturesApiUser[]>([]);
     const [userNameSearch, setUserNameSearch] = useState('');
-    
-    //to refresh the table. so that u can't press "approve" multiple times
-    const[refreshKey, setRefreshKey] = useState(1);
-    const refreshTable = () => {setRefreshKey(refreshKey + 1)}
+    const [refreshKey, setRefreshKey] = useState(1);
 
-    useEffect(() => {getAllTrans(); getAllUsers()}, [])
+    const refreshTable = () => {setRefreshKey(refreshKey + 1)};
+
+    useEffect(() => {
+        getAllTrans();
+        getAllUsers();
+    }, []);
+
     async function getAllTrans(){
         const response = await http.transactionGetTransactionsList();
         setAllTrans(response.data);
-        setFilteredTrans(response.data)
-        //console.log(response.data);
+        setFilteredTrans(response.data);
     }
 
     async function getAllUsers(){
         const response = await http.userGetallList();
         setAllUsers(response.data);
-        //console.log(response.data);
     }
-    
+
     async function filterTransactions(){
-        
         setFilteredTrans([]);
-        
-        if(!userNameSearch){
+        if (!userNameSearch) {
             setFilteredTrans(allTrans);
             return;
         }
-        
-        //getting users with a name containing the search
-        let filteredUsers = allUsers.filter(user => user.userName!.toLowerCase().includes(userNameSearch.toLowerCase()));
-        //also made both lowercase so that a search like "admin" could still return transactions from user "Admin", even if strings aren't the same
-        
-        console.log("ALL TRANSACTIONS")
-        console.log(allTrans);
-        
-        
-        let newFilteredTrans = allTrans.filter(trans => {
-            for (let i = 0; i <= filteredUsers.length - 1; i++){
-                if(trans.userId == filteredUsers.at(i)!.id){
-                    return trans;
-                }
-            }
-        })
-        setFilteredTrans(newFilteredTrans);
-        
-        console.log("filtered transactions: " + filteredTrans);
-        console.log(filteredTrans);
-        console.log()
-        console.log("the users it found: " + filteredUsers);
-        console.log(filteredUsers);
-        
-        
-    }
 
+        let filteredUsers = allUsers.filter(user =>
+            user.userName!.toLowerCase().includes(userNameSearch.toLowerCase())
+        );
+
+        let newFilteredTrans = allTrans.filter(trans =>
+            filteredUsers.some(user => trans.userId === user.id)
+        );
+        setFilteredTrans(newFilteredTrans);
+    }
 
     async function approveTransaction(trans: BBVenturesApiTransaction) {
         trans.isPending = false;
-
         http.transactionUpdateTransactionUpdate(trans);
-
-        //updating that players balance now that the transaction has gone through
-        const id : string | undefined = trans.userId!;
-        
+        const id: string | undefined = trans.userId!;
         const amount: number | undefined = trans.amount!;
-        
-        console.log(id);
-        await http.userUpdateBalanceUpdate({id: id, transactionAmount: amount})
+        await http.userUpdateBalanceUpdate({id, transactionAmount: amount});
         refreshTable();
     }
-    
+
     function getUserNameById(id: string){
-        let name;
-        allUsers.map((user) => {
-            if(user.id === id){
-                name = user.userName;
-            }
-        })
-        
-        if(!name){
-            return "N/A"
-        }
-        
-        return name;
+        let name = allUsers.find(user => user.id === id)?.userName;
+        return name || "N/A";
     }
 
     function getUserEmailById(id: string){
-        let email;
-        allUsers.map((user) => {
-            if(user.id === id){
-                email = user.email;
-            }
-        })
-
-        if(!email){
-            return "N/A"
-        }
-
-        return email;
+        let email = allUsers.find(user => user.id === id)?.email;
+        return email || "N/A";
     }
 
     const columns = [
@@ -116,36 +72,39 @@ function AllHistory(){
         {label: 'Player Name', renderCell: (item: BBVenturesApiTransaction) => getUserNameById(item.userId!)},
         {label: 'Player Email', renderCell: (item: BBVenturesApiTransaction) => getUserEmailById(item.userId!)},
         {label: 'Is Pending', renderCell: (item: BBVenturesApiTransaction) =>
-                <div>
-                    {item.isPending ? "pending" : "approved"} <br/>
-                    {item.isPending ?
-                        <button className={"button"}
-                                onClick={() => approveTransaction(item)}>approve</button> : <></>}
+                <div className="flex flex-col items-center justify-center">
+                    <span>{item.isPending ? "pending" : "approved"}</span>
+                    {item.isPending &&
+                        <button className="button mt-2" onClick={() => approveTransaction(item)}>
+                            Approve
+                        </button>}
                 </div>
         },
+
         {label: 'Mobile Pay Number', renderCell: (item: BBVenturesApiTransaction) => item.mobilePayTransactionNumber},
-        {
-            label: 'Made At',
-            renderCell: (item: BBVenturesApiTransaction) => item.createdAt ? new Date(item.createdAt).toLocaleString() : "N/A"
-        }
-    ]
+        {label: 'Made At', renderCell: (item: BBVenturesApiTransaction) => item.createdAt ? new Date(item.createdAt).toLocaleString() : "N/A"}
+    ];
 
+    return (
+        <>
+            <h1 className="text-2xl font-bold mb-4">All Transactions</h1>
 
-    return <>
-        <h1 className={"text-2xl font-bold mb-4"}> All Transactions </h1>
+            <div className="flex items-center mb-4">
+                <label className="mr-3">From User:</label>
+                <input
+                    className="py-1 px-3 my-1 mb-2 border border-gray-300 rounded"
+                    value={userNameSearch}
+                    onChange={e => setUserNameSearch(e.target.value)}
+                    placeholder="Search by username"
+                />
+                <button className="button" onClick={filterTransactions}>Search</button>
+            </div>
 
-        <label className={"mr-3"}>From User:</label>
-        <input className={"py-1 px-1 my-1 mb-2 border border-grey"} value={userNameSearch}
-               onChange={e => setUserNameSearch(e.target.value)}/>
-        <button className={"button"} onClick={filterTransactions}>search</button>
-
-        <div className="max-h-64 overflow-y-auto">
-            <CompactTable columns={columns} data={{nodes: filteredTrans}} theme={theme}/>
-        </div>
-
-    </>
-
-
+            <div className="max-h-64 overflow-y-auto">
+                <CompactTable columns={columns} data={{nodes: filteredTrans}} theme={theme} />
+            </div>
+        </>
+    );
 }
 
-export default AllHistory
+export default AllHistory;
