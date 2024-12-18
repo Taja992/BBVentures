@@ -203,18 +203,23 @@ const GetAllUsers: React.FC = () => {
                 <h1 className="text-2xl font-bold">All Users</h1>
                 <input
                     type="text"
-                    placeholder="Username or Email"
+                    placeholder="Search..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="border p-2 ml-4"
+                    className="border p-2 ml-4 w-1/4"
                 />
             </div>
             <div className="max-h-64 overflow-y-auto">
-                <CompactTable columns={columns} data={{nodes: filteredUsers}} theme={theme}
-                              className="w-full border-collapse"/>
+                <CompactTable
+                    columns={columns}
+                    data={{ nodes: filteredUsers }}
+                    theme={theme}
+                    className="w-full border-collapse"
+                />
             </div>
-            </div>
-            );
-            };
+        </div>
+    );
+
+};
 
             export default GetAllUsers;
