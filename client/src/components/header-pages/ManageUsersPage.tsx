@@ -8,7 +8,7 @@ const ManageUsersPage = () => {
     const [userInfo] = useAtom(userInfoAtom);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 pb-24">
+        <div className="min-h-screen flex items-center justify-center bg-violet-200 pb-24">
             <div className="container flex space-x-8 p-10 bg-gray-50 rounded-lg shadow-2xl">
                 {/* Admin Section */}
                 {userInfo?.isAdmin && (
