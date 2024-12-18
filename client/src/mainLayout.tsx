@@ -33,17 +33,17 @@ const MainLayout = () => {
                         {/* Left: Welcome Message and Balance */}
                         <div className="flex items-center space-x-4">
                             <div className="text-left">
-                                <h1 className="text-2xl font-extrabold center">
+                                <h1 className="text-2xl font-extrabold flex-justify pr-5 ps-8">
                                     {username ? `Welcome, ${username}` : 'Welcome'}
                                 </h1>
-                                <h2 className="text-xl font-semibold mt-1">
+                                <h2 className="text-xl font-semibold mt-1 ps-8">
                                     Balance: <span className="font-extrabold">${Balance}</span>
                                 </h2>
                             </div>
                         </div>
 
                         {/* Center: Navigation Links */}
-                        <div className="flex-grow hidden sm:flex justify-center space-x-8">
+                        <div className="flex-grow flex justify-center space-x-8">
                             <Link
                                 to="/game-board"
                                 className="text-lg font-semibold px-4 py-2 rounded-md hover:bg-indigo-500 transition">
@@ -96,4 +96,5 @@ const MainLayout = () => {
 };
 
 export default MainLayout;
+
 
