@@ -29,7 +29,7 @@ const RegisterUser: React.FC = () => {
 
     return (
         <div className="max-w-sm mx-auto mt-8 text-center">
-            <h4 className="text-2xl font-bold mb-4 pb-6">Register User</h4>
+            <h4 className="text-2xl font-bold mb-4 pb-6">Register New User</h4>
             <form noValidate autoComplete="off">
                 <div className="mb-4">
                     <label className="block font-bold text-left mb-2">Username</label>

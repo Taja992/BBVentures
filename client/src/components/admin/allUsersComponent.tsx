@@ -209,10 +209,10 @@ const GetAllUsers: React.FC = () => {
                     className="border p-2 ml-4 w-1/4"
                 />
             </div>
-            <div className="max-h-64 overflow-y-auto">
+            <div className="full-height-table-container">
                 <CompactTable
                     columns={columns}
-                    data={{ nodes: filteredUsers }}
+                    data={{nodes: filteredUsers}}
                     theme={theme}
                     className="w-full border-collapse"
                 />
@@ -222,4 +222,4 @@ const GetAllUsers: React.FC = () => {
 
 };
 
-            export default GetAllUsers;
+export default GetAllUsers;

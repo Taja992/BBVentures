@@ -8,18 +8,18 @@ const ManageUsersPage = () => {
     const [userInfo] = useAtom(userInfoAtom);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-violet-200 pb-24">
-            <div className="container flex space-x-8 p-10 bg-gray-50 rounded-lg shadow-2xl">
+        <div className="flex items-center justify-center py-4 px-4">
+            <div className="flex space-x-4 p-4 bg-gray-50 rounded-lg shadow-md">
                 {/* Admin Section */}
                 {userInfo?.isAdmin && (
                     <>
                         {/* Register New User */}
-                        <section className="flex-1 bg-white p-10 rounded-lg shadow-lg max-w-sm">
+                        <section className="flex-1 bg-white p-4 rounded-lg shadow-md max-w-xs">
                             <RegisterUser />
                         </section>
 
                         {/* All Users */}
-                        <section className="flex-1 bg-white p-10 rounded-lg shadow-lg flex-grow">
+                        <section className="flex-1 bg-white p-4 rounded-lg shadow-md flex-grow">
                             <GetAllUsers />
                         </section>
                     </>
@@ -27,7 +27,7 @@ const ManageUsersPage = () => {
 
                 {/* Player Section */}
                 {userInfo?.isPlayer && !userInfo?.isAdmin && (
-                    <section className="flex-1 bg-white p-10 rounded-lg shadow-lg flex-grow">
+                    <section className="flex-1 bg-white p-4 rounded-lg shadow-md flex-grow">
                         <UpdateSelf />
                     </section>
                 )}

@@ -44,8 +44,8 @@ const AdminBoardsHistoryComponent: React.FC = () => {
     return (
         <div>
             <h2 className="text-2xl font-bold mb-4">Boards History For Admin</h2>
-            <div className="max-h-64 overflow-y-auto">
-            <CompactTable columns={columns} data={{ nodes: boards }} theme={theme} />
+            <div className="full-height-table-container">
+                <CompactTable columns={columns} data={{nodes: boards}} theme={theme}/>
             </div>
         </div>
     );
