@@ -28,13 +28,13 @@ const MainLayout = () => {
     return (
         <div>
             <nav className="bg-indigo-600 text-white shadow-md">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-20">
                         {/* Left: Welcome Message and Balance */}
                         <div className="flex items-center space-x-4">
                             <div className="text-left">
-                                <h1 className="text-2xl font-extrabold flex-justify pr-5 ps-8">
-                                    {username ? `Welcome, ${username}` : 'Welcome'}
+                                <h1 className="text-2xl font-extrabold flex-justify pr-10">
+                                    {username ? `Welcome, ${username}!` : 'Welcome'}
                                 </h1>
                                 <h2 className="text-xl font-semibold mt-1 ps-8">
                                     Balance: <span className="font-extrabold">${Balance}</span>
