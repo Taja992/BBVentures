@@ -12,14 +12,24 @@ const InputWinningNumbersComponent = () => {
     const [responseData, setResponseData] = useState<BBVenturesApiGameDto | null>(null);
 
     const handleInputChange = (index: number, value: string) => {
-        const newNumbers = [...winningNumbers];
-        newNumbers[index] = parseInt(value, 10);
-        setWinningNumbers(newNumbers);
+        const newValue = parseInt(value, 10);
+        if (newValue >= 1 && newValue <= 16) {
+            const newNumbers = [...winningNumbers];
+            newNumbers[index] = newValue;
+            setWinningNumbers(newNumbers);
+        } else {
+            toast.error("Please enter a number between 1 and 16.");
+        }
     };
 
     const handleSubmit = async () => {
         if (winningNumbers.length !== 3) {
             toast.error("Please enter exactly 3 winning numbers.");
+            return;
+        }
+
+        if (winningNumbers.some(num => num < 1 || num > 16)) {
+            toast.error("All numbers must be between 1 and 16.");
             return;
         }
 
