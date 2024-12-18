@@ -23,7 +23,7 @@ public class UserRepository(AppDbContext context, UserManager<User> userManager)
 
     public async Task<User> GetUserById(string id)
     {
-        return await context.Users.FindAsync(id);
+        return await context.Users.Where(user => user.Id == id).SingleAsync();
     }
 
     public async Task<bool> UpdateUser(User user)

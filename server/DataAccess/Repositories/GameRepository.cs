@@ -21,7 +21,7 @@ public class GameRepository : IGameRepository
 
     public async Task<Game> GetGameById(Guid id)
     {
-        return await _context.Games.Where(game => game.Id == id).SingleOrDefaultAsync();
+        return await _context.Games.Where(game => game.Id == id).SingleAsync();
     }
 
     public async Task<Game> AddGame(Game game)

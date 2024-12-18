@@ -76,7 +76,6 @@ function AllHistory(){
         
         const amount: number | undefined = trans.amount!;
         
-        console.log(id);
         await http.userUpdateBalanceUpdate({id: id, transactionAmount: amount})
         refreshTable();
     }
