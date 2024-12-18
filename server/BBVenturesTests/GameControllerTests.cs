@@ -47,7 +47,7 @@ public async Task ProcessWinningNumbers_ProcessesNumbersAndReturnsNewGame()
     await AuthorizeClient("Admin");
 
     // Define winning numbers
-    List<int> winningNumbers = new List<int> { 1, 2, 3, 4, 5 };
+    List<int> winningNumbers = new List<int> { 1, 2, 3 };
 
     // Send POST request to process winning numbers
     var content = JsonContent.Create(winningNumbers);
