@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 button {
-    background: linear-gradient(135deg, #667eea, #764ba2); /* Match the login button gradient */
+    background: linear-gradient(135deg, #667eea, #764ba2); /* Gradient background */
     border: none;
     color: white;
     padding: 15px 32px;
