@@ -18,7 +18,7 @@ public class GameControllerTests(ITestOutputHelper output) : ApiTestBase
         // Send GET request to fetch all games
         var response = await Client.GetAsync("api/Game");
         var body = await response.Content.ReadAsStringAsync();
-        List<GameDto> games = JsonSerializer.Deserialize<List<GameDto>>(body, 
+        List<GameDto> games = JsonSerializer.Deserialize<List<GameDto>>(body,
             new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })!;
 
         // Assert that the response is not null and contains games
@@ -40,61 +40,64 @@ public class GameControllerTests(ITestOutputHelper output) : ApiTestBase
         Assert.Empty(body);
     }
 
-   [Fact]
-public async Task ProcessWinningNumbers_ProcessesNumbersAndReturnsNewGame()
-{
-    // Authorize as an Admin
-    await AuthorizeClient("Admin");
+    [Fact]
+    public async Task ProcessWinningNumbers_ProcessesNumbersAndReturnsNewGame()
+    {
+        // Authorize as an Admin
+        await AuthorizeClient("Admin");
 
-    // Define winning numbers
-    List<int> winningNumbers = new List<int> { 1, 2, 3 };
+        // Define winning numbers
+        List<int> winningNumbers = new List<int> { 1, 2, 3 };
 
-    // Send POST request to process winning numbers
-    var content = JsonContent.Create(winningNumbers);
-    var response = await Client.PostAsync("api/Game/processWinningNumbers", content);
-    var body = await response.Content.ReadAsStringAsync();
-    GameDto newGame = JsonSerializer.Deserialize<GameDto>(body,
-        new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })!;
+        // Send POST request to process winning numbers
+        var content = JsonContent.Create(winningNumbers);
+        var response = await Client.PostAsync("api/Game/processWinningNumbers", content);
+        var body = await response.Content.ReadAsStringAsync();
+        var newGame = JsonSerializer.Deserialize<GameDto>(body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-    // Assert that the new game is not null and contains the expected data
-    Assert.NotNull(newGame);
-    Assert.Equal(winningNumbers, newGame.WinnerNumbers);//problemmmmmm
-    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        // Assert that the response status is OK
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        // Assert that the new game is not null and contains the expected data
+        Assert.NotNull(newGame);
+        Assert.NotNull(newGame.WinnerNumbers);
+        Assert.Equal(winningNumbers, newGame.WinnerNumbers);
+    }
+
+    [Fact]
+    public async Task ProcessWinningNumbers_ReturnsBadRequestForInvalidNumbers()
+    {
+        // Authorize as an Admin
+        await AuthorizeClient("Admin");
+
+        // Define invalid winning numbers
+        List<int> invalidNumbers = new List<int> { -1, 0, 100 };
+
+        // Send POST request to process invalid winning numbers
+        var content = JsonContent.Create(invalidNumbers);
+        var response = await Client.PostAsync("api/Game/processWinningNumbers", content);
+        var body = await response.Content.ReadAsStringAsync();
+
+        // Assert that the response status is BadRequest
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Contains("Invalid winning numbers", body);
+    }
+    
+
+    [Fact]
+    public async Task ProcessWinningNumbers_ReturnsInternalServerErrorForException()
+    {
+        // Authorize as an Admin
+        await AuthorizeClient("Admin");
+
+        // Define winning numbers that cause an exception
+        List<int> exceptionNumbers = new List<int> { 999, 1000, 1001 };
+
+        // Send POST request to process numbers that cause an exception
+        var content = JsonContent.Create(exceptionNumbers);
+        var response = await Client.PostAsync("api/Game/processWinningNumbers", content);
+
+        // Assert that the response status is InternalServerError
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+    }
 }
-
-// [Fact]
-// public async Task ProcessWinningNumbers_ReturnsBadRequestForInvalidNumbers()
-// {
-//     // Authorize as an Admin
-//     await AuthorizeClient("Admin");
-//
-//     // Define invalid winning numbers
-//     List<int> invalidNumbers = new List<int> { -1, 0, 100 };
-//
-//     // Send POST request to process invalid winning numbers
-//     var content = JsonContent.Create(invalidNumbers);
-//     var response = await Client.PostAsync("api/Game/processWinningNumbers", content);
-//     var body = await response.Content.ReadAsStringAsync();
-//
-//     // Assert that the response status is BadRequest
-//     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-//     Assert.Contains("Invalid winning numbers", body);
-// }
-//
-// [Fact]
-// public async Task ProcessWinningNumbers_ReturnsInternalServerErrorForException()
-// {
-//     // Authorize as an Admin
-//     await AuthorizeClient("Admin");
-//
-//     // Define winning numbers that cause an exception
-//     List<int> exceptionNumbers = new List<int> { 999, 1000, 1001 };
-//
-//     // Send POST request to process numbers that cause an exception
-//     var content = JsonContent.Create(exceptionNumbers);
-//     var response = await Client.PostAsync("api/Game/processWinningNumbers", content);
-//
-//     // Assert that the response status is InternalServerError
-//     Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-// }
- }

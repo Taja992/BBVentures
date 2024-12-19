@@ -30,6 +30,11 @@ namespace API.Controllers;
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<GameDto>> ProcessWinningNumbers([FromBody] List<int> winningNumbers)
         {
+            if (winningNumbers == null || winningNumbers.Count != 3 || winningNumbers.Any(n => n < 1 || n > 16))
+            {
+                return BadRequest(new { message = "Invalid winning numbers. Winning numbers must be exactly 3 and between 1 and 16." });
+            }
+
             try
             {
                 var newGameDto = await _service.ProcessWinningNumbers(winningNumbers);
