@@ -53,10 +53,10 @@ const LoginForm: React.FC = () => {
                                     className="w-full flex flex-col justify-center items-center space-y-4"
                                     onSubmit={handleSubmit(onSubmit)}
                                 >
-                                    <h1 className="text-[#1e3c72] text-3xl font-bold mb-2 text-center">Jerne IF</h1>
-                                    <h2 className="text-[#2a5298] text-xl mb-6 text-center">Login to Dead Pigeons</h2>
+                                    <h1 className="text-[#1e3c72] text-5xl font-bold mb-2 text-center">Jerne IF</h1>
+                                    <h2 className="text-[#2a5298] text-3xl mb-6 text-center">Login to Dead Pigeons</h2>
                                     <div className=" w-full">
-                                        <label htmlFor="email" className="block text-sm text-[#555] mb-2">Email</label>
+                                        <label htmlFor="email" className=" pt-8 block text-lg text-[#555] mb-2">Email</label>
                                         <input
                                             type="email"
                                             id="email"
@@ -71,7 +71,7 @@ const LoginForm: React.FC = () => {
                                         )}
                                     </div>
                                     <div className="justify-center w-full">
-                                        <label htmlFor="password" className="block text-sm text-[#555] mb-2">Password</label>
+                                        <label htmlFor="password" className="block text-lg text-[#555] mb-2">Password</label>
                                         <input
                                             type="password"
                                             id="password"
@@ -88,8 +88,8 @@ const LoginForm: React.FC = () => {
                                     <button type="submit" className="login-button w-full max-w-xs rounded-lg">
                                         Login
                                     </button>
-                                    <Link to="/request-password" className="text-blue-500 text-sm mt-4 block text-center">
-                                        Forgot Password
+                                    <Link to="/request-password" className="text-blue-500 text-md mt-4 block text-center">
+                                        Forgot Password?
                                     </Link>
                                 </form>
                             </div>
