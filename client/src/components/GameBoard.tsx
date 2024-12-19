@@ -33,12 +33,11 @@ const GameBoard = () => {
 
     return (
         <>
-            <div className="border border-black p-4 mb-4">
-                <h4>Game</h4>
+            <div>
                 <BoardGameComponent/>
             </div>
 
-            <div className="border border-black p-4 mb-4">
+            <div>
                  <UserBoardHistoryThisWeek/>
             </div>
 

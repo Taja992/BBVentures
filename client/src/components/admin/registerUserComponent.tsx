@@ -29,10 +29,10 @@ const RegisterUser: React.FC = () => {
 
     return (
         <div className="max-w-sm mx-auto mt-8 text-center">
-            <h4 className="text-2xl font-bold mb-4">Register User</h4>
+            <h4 className="text-2xl font-bold mb-4 pb-6">Register New User</h4>
             <form noValidate autoComplete="off">
                 <div className="mb-4">
-                    <label className="block text-left mb-2">Username</label>
+                    <label className="block font-bold text-left mb-2">Username</label>
                     <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded"
@@ -41,7 +41,7 @@ const RegisterUser: React.FC = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-left mb-2">Phone #</label>
+                    <label className="block font-bold text-left mb-2">Phone Number</label>
                     <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded"
@@ -50,7 +50,7 @@ const RegisterUser: React.FC = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-left mb-2">Email</label>
+                    <label className="block font-bold text-left mb-2">Email</label>
                     <input
                         type="email"
                         className="w-full px-3 py-2 border border-gray-300 rounded"

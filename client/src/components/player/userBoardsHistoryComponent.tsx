@@ -4,10 +4,10 @@ import { BBVenturesApiBoardHistoryDto } from '../../services/Api';
 import toast from 'react-hot-toast';
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { getTheme } from "@table-library/react-table-library/baseline";
+import tableTheme from '../../themes/tableTheme';
 
 const userBoardsHistoryComponent = () => {
-    const theme = useTheme(getTheme());
+    const theme = useTheme(tableTheme);
     const [boards, setBoards] = useState<BBVenturesApiBoardHistoryDto[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);

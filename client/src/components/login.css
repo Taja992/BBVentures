@@ -1,69 +1,95 @@
-.login-container {
+.background-container {
+    background-color: #BC99EB;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
 }
 
-.login-form {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+/* Wrapper for top border and square */
+.square-a-wrapper {
+    width: 70%;
+    height: 70%;
+    position: relative;
+}
+
+/* Top border styling */
+.top-border {
     width: 100%;
-    max-width: 400px;
+    height: 20px; /* Thickness of the top border */
+    background-color: #7E8FA9; /* Color of the top border */
+}
+
+/* Main square container */
+.square-a {
+    width: 100%;
+    height: calc(100% - 20px); /* Subtract the height of the top border */
+    display: flex;
+    background: #DFDFDF; /* Background color of the main square */
+    border: 4px solid #7E8FA9; /* Optional border for the main square */
+    border-top: none; /* No border at the top (top-border is separate) */
+}
+
+/* Left content area styling */
+.square-a .flex {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+/* Right blank area */
+.square-a .w-1/2 {
+    flex: 1;
+    background: none; /* Placeholder for potential background or empty side */
+}
+
+/* Form alignment within the left content */
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+form h1, form h2 {
     text-align: center;
-}
-
-.login-form h1 {
-    margin-bottom: 0.5rem;
-    color: #1e3c72;
-    font-size: 2rem;
-}
-
-.login-form h2 {
-    margin-bottom: 1.5rem;
-    color: #2a5298;
-    font-size: 1.5rem;
-}
-
-
-.form-group {
     margin-bottom: 1rem;
-    text-align: left;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #555;
+form .form-group {
+    margin-bottom: 1.5rem;
 }
 
-.form-group input {
+form input {
     width: 100%;
     padding: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 8px;
-    font-size: 1rem;
 }
 
-.login-button {
+form .login-button {
     width: 100%;
     padding: 0.75rem;
     border: none;
     border-radius: 8px;
-    background-color: #007bff;
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.login-button:hover {
-    background-color: #0056b3;
+form .login-button:hover {
+    background: linear-gradient(135deg, rgba(118, 75, 162, 0.75), #667eea);
+    transform: translateY(-2px);
 }
 
-.error-message {
-    color: red;
+form a {
+    text-align: center;
+    color: #2a5298;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+form a:hover {
+    text-decoration: underline;
 }

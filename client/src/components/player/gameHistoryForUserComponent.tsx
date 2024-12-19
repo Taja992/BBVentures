@@ -1,15 +1,15 @@
 ﻿import React, { useEffect } from 'react';
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { getTheme } from "@table-library/react-table-library/baseline";
 import { http } from '../../http.ts';
 import { BBVenturesApiGameDto } from '../../services/Api';
 import { useAtom } from 'jotai';
 import { gamesAtom } from '../../atoms/atoms';
+import tableTheme from '../../themes/tableTheme.ts';
 
 
 const GameHistoryForUserComponent: React.FC = () => {
-    const theme = useTheme(getTheme());
+    const theme = useTheme(tableTheme);
     const [games, setGames] = useAtom(gamesAtom);
 
 

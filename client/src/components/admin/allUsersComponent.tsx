@@ -3,16 +3,14 @@ import { allUsersAtom } from "../../atoms/atoms";
 import { http } from "../../http";
 import { useEffect, useState } from "react";
 import { BBVenturesApiUserDto } from "../../services/Api";
-//for the tables
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { getTheme } from "@table-library/react-table-library/baseline";
-//end
 import toast from 'react-hot-toast';
+import tableTheme from "../../themes/tableTheme";
 
 const GetAllUsers: React.FC = () => {
     const [allUsers, setAllUsers] = useAtom(allUsersAtom);
-    const theme = useTheme(getTheme());
+    const theme = useTheme(tableTheme);
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
     const [formData, setFormData] = useState<{ [key: string]: BBVenturesApiUserDto }>({});
     const [searchTerm, setSearchTerm] = useState<string>('');
@@ -205,18 +203,23 @@ const GetAllUsers: React.FC = () => {
                 <h1 className="text-2xl font-bold">All Users</h1>
                 <input
                     type="text"
-                    placeholder="Username or Email"
+                    placeholder="Search..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="border p-2 ml-4"
+                    className="border p-2 ml-4 w-1/4"
                 />
             </div>
-            <div className="max-h-64 overflow-y-auto">
-                <CompactTable columns={columns} data={{nodes: filteredUsers}} theme={theme}
-                              className="w-full border-collapse"/>
+            <div className="full-height-table-container">
+                <CompactTable
+                    columns={columns}
+                    data={{nodes: filteredUsers}}
+                    theme={theme}
+                    className="w-full border-collapse"
+                />
             </div>
-            </div>
-            );
-            };
+        </div>
+    );
 
-            export default GetAllUsers;
+};
+
+export default GetAllUsers;
