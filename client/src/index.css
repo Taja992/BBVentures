@@ -17,6 +17,27 @@ button {
     transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
+.button.small {
+    background: linear-gradient(135deg, #667eea, #764ba2); /* Gradient background */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    padding: 7.5px 16px; /* 50% reduction */
+    font-size: 15px; /* Fixed font size */
+    margin: 3px 1.5px; /* Reduced margin */
+    cursor: pointer;
+    border-radius: 6px; /* Slightly smaller border radius */
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+/* Add a left margin to the small button */
+.button.small {
+    margin-left: 8px; 
+    margin-top: 8px;
+}
+
 button:hover {
     background: linear-gradient(135deg, rgba(118, 75, 162, 0.75), #667eea); /* Slightly transparent hover effect */
     transform: scale(1.05); /* Slight zoom on hover */
@@ -96,4 +117,3 @@ form input {
     border: 1px solid #ccc;
     border-radius: 8px;
 }
-

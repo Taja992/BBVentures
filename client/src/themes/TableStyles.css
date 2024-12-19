@@ -6,3 +6,7 @@
 .full-height-table-container .Table {
     display: block;
 }
+
+.board-history-week {
+    width: 100%
+}

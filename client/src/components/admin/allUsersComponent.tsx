@@ -200,7 +200,7 @@ const GetAllUsers: React.FC = () => {
     return (
         <div className="p-4">
             <div className="flex items-center mb-4">
-                <h1 className="text-2xl font-bold">All Users</h1>
+                <h1 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase pt-4">All Users</h1>
                 <input
                     type="text"
                     placeholder="Search..."

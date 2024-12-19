@@ -8,7 +8,7 @@
     border-radius: 12px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 600px;
+    max-width: 1200px;
     text-align: center;
     margin: auto;
     color: #000000; /* Ensure text inside this component is black */
@@ -20,7 +20,7 @@
     gap: 0.5rem;
     margin-bottom: 1rem;
     background-color: #ffffff; /* White background for the board */
-    padding: 1rem;
+    padding: 1.5rem;
     border: 2px solid black; /* Black border around the board */
     border-radius: 8px;
 }
@@ -29,15 +29,15 @@
     padding: 1rem;
     border: 3px solid black; /* Black border around each number */
     border-radius: 8px;
-    background-color: rgb(255, 255, 255);
+    background: rgb(255, 255, 255);
     color: #000000; /* Black text */
-    font-size: 1rem;
+    font-size: 1.5rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .number-button:hover {
-    background-color: rgba(118, 75, 162, 0.75);
+    background: #9579B9BF;
     transform: scale(1.1); /* Slight zoom on hover */
 }
 
@@ -58,7 +58,7 @@
 }
 
 .submit-button:hover {
-    background-color: #0f1e33;
+    background: #9579B9BF;
 }
 
 .field-selection {
@@ -72,22 +72,36 @@
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 8px;
-    background-color: #764ba2;
+    background: #ffffff;
     color: #000000; /* Black text */
-    font-size: 1rem;
+    font-size: 1.25rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .field-button:hover {
-    background-color: #764ba2;
+    background: rgba(149, 121, 185, 0.75);
 }
 
 .field-button.selected {
-    background-color: #28a745;
+    background: rgb(149, 121, 185);
 }
 
-/* Optional: For a more polished look, add shadows or glow effects */
+
+.board-game-component label {
+    font-size: 120%; /* Increase font size by 20% */
+    font-weight: bold; /* Make the text bold */
+    color: #462086; /* Dark purple color */
+}
+
+/* Scale the checkbox to make it 50% bigger */
+.board-game-component .autoplay-settings input[type="checkbox"] {
+    transform: scale(2); /* Make the checkbox 50% larger */
+    margin-left: 20px; /* Optional: Add some space between the checkbox and label */
+}
+
+
+
 .number-button,
 .submit-button {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -95,5 +109,5 @@
 
 .number-button.selected,
 .field-button.selected {
-    box-shadow: 0 0 10px rgba(40, 167, 69, 0.6); /* Green glow for selected */
+    box-shadow: 0 0 10px rgb(218, 189, 227); /* Green glow for selected */
 }

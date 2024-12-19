@@ -6,13 +6,12 @@ import UserBoardHistoryThisWeek from "../components/allUsers/userBoardHistoryThi
 
 
 
+
 const BoardsPage = () => {
     const [userInfo] = useAtom(userInfoAtom);
 
-
-
     return (
-        <>
+        <div className="space-y-4">
             {userInfo?.isAdmin && (
             <div>
                 <AdminBoardsHistoryComponent/>
@@ -26,7 +25,7 @@ const BoardsPage = () => {
                 <UserBoardHistoryThisWeek/>
             </div>
 
-        </>
+        </div>
     );
 };
 

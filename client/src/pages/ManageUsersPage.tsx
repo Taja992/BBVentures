@@ -10,7 +10,7 @@ const ManageUsersPage = () => {
 
     return (
         <div className="flex items-center justify-center py-4 px-4">
-            <div className="flex space-x-4 p-4 bg-gray-50 rounded-lg shadow-md">
+            <div className="flex space-x-4 p-4 rounded-lg shadow-md">
                 {/* Admin Section */}
                 {userInfo?.isAdmin && (
                     <>

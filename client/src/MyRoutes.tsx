@@ -16,7 +16,6 @@ import PasswordPageLayout from './components/passwordManagement/PasswordPageLayo
 
 import ErrorPage from "./pages/errorPage";
 import GameBoard from './pages/GameBoard.tsx';
-import GamePage from './pages/GamePage.tsx';
 import BoardsPage from './pages/BoardsPage.tsx';
 import ManageUsersPage from './pages/ManageUsersPage.tsx';
 import UserAccountPage from './pages/UserAccountPage.tsx';
@@ -34,7 +33,6 @@ const router = createBrowserRouter(
             </Route>
             
             <Route element={<MainLayout />}>
-                <Route path="game" element={<ProtectedRoute element={GamePage} />} />
                 <Route path="boards" element={<ProtectedRoute element={BoardsPage} />} />
                 <Route path="manage-users" element={<ProtectedRoute element={ManageUsersPage} />} />
                 <Route path="user-account" element={<ProtectedRoute element={UserAccountPage} />} />

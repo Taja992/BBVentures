@@ -35,7 +35,7 @@ const UpdateSelf: React.FC = () => {
     return (
         <>
             <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-                <label className="block text-gray-700 text-lg font-bold mb-2"> Update your Info:</label>
+                <h1 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase"> Update Account Info </h1>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                         Username:
