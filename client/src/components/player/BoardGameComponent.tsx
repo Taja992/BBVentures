@@ -2,12 +2,13 @@
 import { useAtom } from 'jotai';
 import { http } from '../../http';
 import './BoardGameComponent.css';
-import {BBVenturesApiBoardHistoryDto, BBVenturesApiCreateBoardDto } from '../../services/Api';
+import { BBVenturesApiBoardHistoryDto, BBVenturesApiCreateBoardDto } from '../../services/Api';
 import toast from 'react-hot-toast';
-import {boardHistFromWeekAtom, boardsAtom, boardStateAtom } from '../../atoms/atoms';
+import { boardHistFromWeekAtom, boardsAtom, boardStateAtom } from '../../atoms/atoms';
 import { userBalance } from '../../atoms/atoms';
 
 const BoardGameComponent = () => {
+    // State variables for selected numbers, field count, game ID, user balance, board state, and other UI states
     const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
     const [fieldCount, setFieldCount] = useState<5 | 6 | 7 | 8>(5);
     const [gameId, setGameId] = useState<string | null>(null);
@@ -19,6 +20,7 @@ const BoardGameComponent = () => {
     const [autoplayWeeks, setAutoplayWeeks] = useState<number>(1);
     const [, setBoardHistFromWeek] = useAtom(boardHistFromWeekAtom);
 
+    // Fetch active game and user status on component mount
     useEffect(() => {
         const fetchActiveGame = async () => {
             try {
@@ -50,6 +52,7 @@ const BoardGameComponent = () => {
         fetchUserStatus();
     }, []);
 
+    // Toggle the selection of a number
     const toggleNumber = (number: number) => {
         setSelectedNumbers(prevSelectedNumbers => {
             if (prevSelectedNumbers.includes(number)) {
@@ -62,6 +65,7 @@ const BoardGameComponent = () => {
         });
     };
 
+    // Calculate the cost based on field count and weeks
     const calculateCost = (fieldCount: 5 | 6 | 7 | 8, weeks: number): number => {
         const costPerField: { [key in 5 | 6 | 7 | 8]: number } = {
             5: 20,
@@ -72,6 +76,7 @@ const BoardGameComponent = () => {
         return costPerField[fieldCount] * weeks;
     };
 
+    // Handle the submission of the selected numbers
     const handleSubmit = async () => {
         if (selectedNumbers.length !== fieldCount) {
             toast.error(`Please select exactly ${fieldCount} numbers.`);
