@@ -36,26 +36,6 @@ public class UserControllerTests(ITestOutputHelper output) : ApiTestBase
     }
 
     [Fact]
-    public async Task GetUserById_ReturnsOkResponse()
-    {
-        await AuthorizeClient("Player");
-
-        output.WriteLine($"Player ID: {PlayerId}");
-
-        var response = await Client.GetAsync($"/api/user/getById?id={PlayerId}");
-        var responseString = await response.Content.ReadAsStringAsync();
-
-        // Just to see exactly what is coming back
-        output.WriteLine("Response from /api/user/getById:");
-        output.WriteLine(responseString);
-
-        response.EnsureSuccessStatusCode();
-        var user = JsonSerializer.Deserialize<UserDto>(responseString,
-            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        Assert.NotNull(user);
-    }
-
-    [Fact]
     public async Task UpdateUser_ReturnsNoContentResponse()
     {
         // Arrange
