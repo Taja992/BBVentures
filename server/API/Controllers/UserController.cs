@@ -32,16 +32,6 @@ public class UserController(IUserService userService, UserManager<User> userMana
         return await userService.GetAllUsersWithName(searchVal);
     }
 
-    
-    [HttpGet]
-    [Authorize]
-    [Route("getById")]
-    public async Task<ActionResult<UserDto>> GetUserById(string id)
-    {
-        return Ok(await userService.GetUserById(id));
-    }
-    
-
     [HttpPut]
     [Authorize(Roles = "Admin")]
     [Route("update")]
