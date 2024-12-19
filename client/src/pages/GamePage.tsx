@@ -9,29 +9,29 @@ const GamePage = () => {
     const [userInfo] = useAtom(userInfoAtom);
 
     return (
-        <div className="min-h-screen flex items-start justify-center bg-gray-100 py-10">
-            <div className="container flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6 p-8 bg-gray-50 rounded-lg shadow-xl max-w-6xl w-full">
+        <div className="min-h-screen bg-gray-100 flex items-start justify-center py-10 px-4">
+            <div className="w-full max-w-7xl">
                 {/* Admin Section */}
                 {userInfo?.isAdmin && (
-                    <div className="flex-2 bg-white p-8 rounded-lg shadow-md h-full">
-                        <h2 className="text-2xl font-bold mb-4">Admin Game History</h2>
-                        <GameHistoryForAdminComponent />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {/* Admin Game History (80%) */}
+                        <section className="bg-white p-6 rounded-lg shadow-md lg:col-span-2">
+                            <GameHistoryForAdminComponent />
+                        </section>
+
+                        {/* Input Winning Numbers (20%) */}
+                        <section className="bg-white p-6 rounded-lg shadow-md lg:col-span-1">
+                            <InputWinningNumbersComponent />
+                        </section>
                     </div>
                 )}
 
                 {/* Player Section */}
                 {userInfo?.isPlayer && !userInfo?.isAdmin && (
-                    <div className="flex-1 bg-white p-8 rounded-lg shadow-md h-full">
-                        <h2 className="text-2xl font-bold mb-4">User Game History</h2>
+                    <section className="bg-white p-6 rounded-lg shadow-md w-full">
+                        <h2 className="text-xl font-bold mb-4">User Game History</h2>
                         <GameHistoryForUserComponent />
-                    </div>
-                )}
-
-                {/* Input Winning Numbers Section */}
-                {userInfo?.isAdmin && (
-                    <div className="flex-1 bg-white p-8 rounded-lg shadow-md h-full">
-                        <InputWinningNumbersComponent />
-                    </div>
+                    </section>
                 )}
             </div>
         </div>

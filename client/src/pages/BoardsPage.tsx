@@ -5,36 +5,23 @@ import UserBoardsHistoryComponent from "../components/player/userBoardsHistoryCo
 import UserBoardHistoryThisWeek from "../components/player/userBoardHistoryThisWeek";
 
 
+
 const BoardsPage = () => {
     const [userInfo] = useAtom(userInfoAtom);
 
-
-
     return (
-        <>
+        <div className="space-y-4">
             {userInfo?.isAdmin && (
-            <div className={"border border-black p-4 mb-4"}>
-                
-                <AdminBoardsHistoryComponent/>
-              
-            </div>
-            )}
-            
-            {userInfo?.isPlayer && !userInfo?.isAdmin && (
-            <div className="border border-black p-4 mb-4">
-                
-                <UserBoardsHistoryComponent/>
-                
-            </div>
+                <AdminBoardsHistoryComponent />
             )}
 
             {userInfo?.isPlayer && !userInfo?.isAdmin && (
-            <div className="border border-black p-4 mb-4">
-                <UserBoardHistoryThisWeek/>
-             
-            </div>
+                <>
+                    <UserBoardsHistoryComponent />
+                    <UserBoardHistoryThisWeek />
+                </>
             )}
-        </>
+        </div>
     );
 };
 
