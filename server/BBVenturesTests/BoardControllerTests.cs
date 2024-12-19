@@ -3,12 +3,11 @@ using System.Text;
 using System.Text.Json;
 using Service.TransferModels.DTOs;
 using Service.TransferModels.Requests.Create;
-using Xunit.Abstractions;
 
 namespace BBVenturesTests;
 
 [Collection("Sequential")]
-public class BoardControllerTests(ITestOutputHelper output) : ApiTestBase
+public class BoardControllerTests : ApiTestBase
 {
     [Fact]
     public async Task GetAllBoards_ReturnsOkResponse()
