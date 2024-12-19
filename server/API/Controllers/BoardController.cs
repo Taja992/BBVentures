@@ -33,6 +33,7 @@ namespace API.Controllers
         {
             try
             {
+                // Retrieve the user ID from the claims of the authenticated use
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (userId == null)
                 {
@@ -41,7 +42,7 @@ namespace API.Controllers
 
                 createBoardDto.UserId = userId;
                 
-
+                
                 var boardDto = await _boardService.CreateBoard(createBoardDto);
                 return Ok(boardDto);
             }
@@ -60,6 +61,7 @@ namespace API.Controllers
         [Authorize]
         public async Task<ActionResult<List<BoardHistoryDto>>> GetBoardHistoryByUserId()
         {
+            // Retrieve the user ID from the claims of the authenticated user
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
@@ -75,6 +77,7 @@ namespace API.Controllers
         [Authorize]
         public async Task<ActionResult<List<BoardDto>>> GetBoardsFromThisWeek()
         {
+            // Retrieve the user ID from the claims of the authenticated user
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
