@@ -30,7 +30,7 @@ function UserBoardHistoryThisWeek() {
     return (
         <>
             <div className="p-4 bg-white rounded-lg shadow-md">
-                <h2 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase">
+                <h2 className="text-xl text-center font-bold text-[#7E8FA9] mb-4 uppercase">
                     Your Boards This Week
                 </h2>
                 <div className="board-history-week">

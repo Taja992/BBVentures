@@ -29,7 +29,7 @@
     padding: 1rem;
     border: 3px solid black; /* Black border around each number */
     border-radius: 8px;
-    background-color: rgb(255, 255, 255);
+    background: rgb(255, 255, 255);
     color: #000000; /* Black text */
     font-size: 1rem;
     cursor: pointer;
@@ -72,7 +72,7 @@
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 8px;
-    background-color: #667eea;
+    background: #ffffff;
     color: #000000; /* Black text */
     font-size: 1rem;
     cursor: pointer;
