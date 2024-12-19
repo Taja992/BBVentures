@@ -39,11 +39,15 @@ export const useAuth = (): AuthHook => {
 
 // Function to handle logout
     const logout = async () => {
-        //without start transition was getting sent to Error page, The error said to add this and it worked!
-        startTransition(() => {
-            setJwt(null); // Clear the JWT in the atom
-            navigate("/"); // Navigate to the login page
-        });
+        try {
+            await http.authLogoutCreate(); // Notify the server about the logout
+            startTransition(() => {
+                setJwt(null); // Clear the JWT in the atom
+                navigate("/"); // Navigate to the login page
+            });
+        } catch {
+            console.error("Logout failed:");
+        }
     };
 
     return {
