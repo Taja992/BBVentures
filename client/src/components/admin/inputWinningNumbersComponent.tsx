@@ -11,6 +11,8 @@ const InputWinningNumbersComponent = () => {
     const [userInfo] = useAtom(userInfoAtom);
     const [responseData, setResponseData] = useState<BBVenturesApiGameDto | null>(null);
 
+    // Handle input change for winning numbers,
+    // It ensures that the input is within the valid range (1 to 16)
     const handleInputChange = (index: number, value: string) => {
         const newValue = parseInt(value, 10);
         if (newValue >= 1 && newValue <= 16) {
