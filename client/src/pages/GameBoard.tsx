@@ -38,12 +38,12 @@ const GameBoard = () => {
             {/* Board Game Section */}
             <div className="w-full mx-auto flex flex-col lg:flex-row gap-8">
                 {/* Board Game */}
-                <div className="flex-1 flex-center lg:basis-1/2 bg-white p-6 rounded-lg shadow-md">
+                <div className="flex-1 flex-center pb-8 lg:basis-1/2 bg-white p-6 rounded-lg shadow-md">
                     <BoardGameComponent/>
                 </div>
 
                 {/* User Weekly History and Winning Numbers */}
-                <div className="flex-1 lg:basis-1/2 bg-white p-6 rounded-lg shadow-md">
+                <div className="  bg-white p-6 rounded-lg shadow-md">
                     <UserBoardHistoryThisWeek/>
                     <div className="mt-6">
                         <InputWinningNumbersComponent/>

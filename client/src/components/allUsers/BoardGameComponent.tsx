@@ -140,7 +140,7 @@ const BoardGameComponent = () => {
                             </button>
                         ))}
                     </div>
-                    <div className="number-grid">
+                    <div className="number-grid w-fit">
                         {Array.from({ length: 16 }, (_, i) => i + 1).map(number => (
                             <button
                                 key={number}
