@@ -97,20 +97,27 @@ namespace Service.Services
 
         public async Task<List<BoardDto>> GetAllBoards()
         {
+            // Retrieve all boards from the repository
             var boards = await _boardRepository.GetAllBoards();
             var boardDtos = new List<BoardDto>();
+
+            // Iterate through each board and convert it to a BoardDto
             foreach (var board in boards)
             {
                 var boardDto = BoardDto.FromEntity(board);
+
+                // Retrieve user details for the board
                 var userDetails = await GetUserDetails(board.UserId);
                 boardDto.PlayerUsername = userDetails.PlayerUsername;
                 boardDto.PlayerEmail = userDetails.PlayerEmail;
+
+                // Get the week number of the board
                 boardDto.WeekNumber = await getWeekNumberOfBoard(boardDto);
                 boardDtos.Add(boardDto);
             }
 
+            // Return the list of BoardDto objects
             return boardDtos;
-
         }
         
         public async Task<int> getWeekNumberOfBoard(BoardDto boardDto)
