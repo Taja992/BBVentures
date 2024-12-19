@@ -136,7 +136,7 @@ const BoardGameComponent = () => {
                                 className={`field-button ${fieldCount === count ? 'selected' : ''}`}
                                 onClick={() => setFieldCount(count as 5 | 6 | 7 | 8)}
                             >
-                                {count} Fields
+                                {count} Numbers
                             </button>
                         ))}
                     </div>
@@ -156,6 +156,7 @@ const BoardGameComponent = () => {
                             type="checkbox"
                             checked={isAutoplay}
                             onChange={(e) => setIsAutoplay(e.target.checked)}
+                          
                         />
                         <label className="ml-2">Auto-play Weeks:</label>
                         <input
@@ -167,7 +168,7 @@ const BoardGameComponent = () => {
                             className="autoplay-weeks-input ml-2"
                             placeholder="Weeks"
                         />
-                        <label className="ml-2">You will be charged immediately</label>
+                        <label className="ml-2">You will be charged immediately!</label>
                     </div>
                     <button className="submit-button" onClick={handleSubmit}>Play these numbers</button>
                 </>

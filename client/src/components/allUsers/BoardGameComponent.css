@@ -20,7 +20,7 @@
     gap: 0.5rem;
     margin-bottom: 1rem;
     background-color: #ffffff; /* White background for the board */
-    padding: 1rem;
+    padding: 1.5rem;
     border: 2px solid black; /* Black border around the board */
     border-radius: 8px;
 }
@@ -31,7 +31,7 @@
     border-radius: 8px;
     background: rgb(255, 255, 255);
     color: #000000; /* Black text */
-    font-size: 1rem;
+    font-size: 1.5rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -74,7 +74,7 @@
     border-radius: 8px;
     background: #ffffff;
     color: #000000; /* Black text */
-    font-size: 1rem;
+    font-size: 1.25rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -84,8 +84,22 @@
 }
 
 .field-button.selected {
-    background: rgba(149, 121, 185, 0.75);
+    background: rgb(149, 121, 185);
 }
+
+
+.board-game-component label {
+    font-size: 120%; /* Increase font size by 20% */
+    font-weight: bold; /* Make the text bold */
+    color: #633aad; /* Dark purple color */
+}
+
+/* Scale the checkbox to make it 50% bigger */
+.board-game-component .autoplay-settings input[type="checkbox"] {
+    transform: scale(2); /* Make the checkbox 50% larger */
+    margin-left: 20px; /* Optional: Add some space between the checkbox and label */
+}
+
 
 
 .number-button,
@@ -95,5 +109,5 @@
 
 .number-button.selected,
 .field-button.selected {
-    box-shadow: 0 0 10px rgba(149, 121, 185, 0.75); /* Green glow for selected */
+    box-shadow: 0 0 10px rgb(218, 189, 227); /* Green glow for selected */
 }
