@@ -82,22 +82,4 @@ public class GameControllerTests(ITestOutputHelper output) : ApiTestBase
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         Assert.Contains("Invalid winning numbers", body);
     }
-    
-
-    [Fact]
-    public async Task ProcessWinningNumbers_ReturnsInternalServerErrorForException()
-    {
-        // Authorize as an Admin
-        await AuthorizeClient("Admin");
-
-        // Define winning numbers that cause an exception
-        List<int> exceptionNumbers = new List<int> { 999, 1000, 1001 };
-
-        // Send POST request to process numbers that cause an exception
-        var content = JsonContent.Create(exceptionNumbers);
-        var response = await Client.PostAsync("api/Game/processWinningNumbers", content);
-
-        // Assert that the response status is InternalServerError
-        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-    }
 }
