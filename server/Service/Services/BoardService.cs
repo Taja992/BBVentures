@@ -127,18 +127,20 @@ namespace Service.Services
         {
             var boards = await _boardRepository.GetBoardsByUserId(userId);
 
-            var activeGame = await _gameRepository.GetActiveGameAsync();
-            if (activeGame == null)
+            var boardHistoryDtos = new List<BoardHistoryDto>();
+
+            foreach (var board in boards)
             {
-                throw new Exception("No active game found");
+                var weekNumber = await GetWeekNumberOfBoard(BoardDto.FromEntity(board));
+                boardHistoryDtos.Add(new BoardHistoryDto
+                {
+                    Numbers = board.Numbers ?? new List<int>(), // Ensure Numbers is not null
+                    CreatedAt = board.CreatedAt,
+                    WeekNumber = weekNumber // Use the week number from the GetWeekNumberOfBoard method
+                });
             }
 
-            return boards.Select(board => new BoardHistoryDto
-            {
-                Numbers = board.Numbers ?? new List<int>(), // Ensure Numbers is not null
-                CreatedAt = board.CreatedAt,
-                WeekNumber = activeGame.WeekNumber // Ensure Game is not null
-            }).ToList();
+            return boardHistoryDtos;
         }
 
         private async Task<(string? PlayerUsername, string? PlayerEmail)> GetUserDetails(string userId)

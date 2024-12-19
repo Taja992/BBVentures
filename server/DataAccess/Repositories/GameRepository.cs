@@ -36,7 +36,7 @@ public class GameRepository : IGameRepository
     {
         try
         {
-            game.WeekNumber = WeekNumberHelper.GetWeekOfYearStartingOnSunday(game.EndedAt ?? DateTime.UtcNow);
+            // Do not update the WeekNumber here
             _context.Games.Update(game);
             await _context.SaveChangesAsync();
             return game;
