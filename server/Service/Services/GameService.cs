@@ -19,14 +19,12 @@ public class GameService : IGameService
     private readonly IGameRepository _gameRepository;
     private readonly IBoardRepository _boardRepository;
     private readonly IUserRepository _userRepository;
-    private readonly IBoardService _boardService;
 
-    public GameService(IGameRepository gameRepository, IBoardRepository boardRepository, IUserRepository userRepository, IBoardService boardService )
+    public GameService(IGameRepository gameRepository, IBoardRepository boardRepository, IUserRepository userRepository )
     {
         _gameRepository = gameRepository;
         _boardRepository = boardRepository;
         _userRepository = userRepository;
-        _boardService = boardService;
     }
     
     #region Get All Games and Convert to Username/Emails

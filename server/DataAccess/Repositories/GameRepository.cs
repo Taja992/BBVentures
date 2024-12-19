@@ -62,10 +62,10 @@ public class GameRepository : IGameRepository
         }
     }
 
-    public async Task<List<Board>> GetBoardsByGameId(Guid gameId)
-    {
-        return await _context.Boards.Where(b => b.GameId == gameId).ToListAsync();
-    }
+    // public async Task<List<Board>> GetBoardsByGameId(Guid gameId)
+    // {
+    //     return await _context.Boards.Where(b => b.GameId == gameId).ToListAsync();
+    // }
 
     public async Task<Game?> GetActiveGameAsync()
     {

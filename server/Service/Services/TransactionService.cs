@@ -1,10 +1,8 @@
-﻿using DataAccess;
-using DataAccess.Interfaces;
+﻿using DataAccess.Interfaces;
 using DataAccess.Models;
-using DataAccess.Repositories;
 using FluentValidation;
 using Service.TransferModels.DTOs;
-using Service.Validators;
+
 
 namespace Service.Services;
 
@@ -21,20 +19,20 @@ public interface ITransactionService
 }
 
 
-public class TransactionService(ITransactionRepository repository, IUserService userService, IValidator<TransactionDto> _validator) : ITransactionService
+public class TransactionService(ITransactionRepository transactionRepository, IUserService userService, IValidator<TransactionDto> validator) : ITransactionService
 {
     
     
     public async Task<List<TransactionResponseDto>> GetAllTransactions()
     {
-        List<Transaction> allTrans = await repository.GetAllTransactions();
+        List<Transaction> allTrans = await transactionRepository.GetAllTransactions();
         List<TransactionResponseDto> trans = new TransactionResponseDto().FromEntities(allTrans);
         return trans;
     }
     
     public async Task<List<TransactionResponseDto>> GetAllTransactionsFromUser(string guid)
     {
-        List<Transaction> transFromUser = await repository.GetAllTransactionsFromUser(guid);
+        List<Transaction> transFromUser = await transactionRepository.GetAllTransactionsFromUser(guid);
         List<TransactionResponseDto> trans = new TransactionResponseDto().FromEntities(transFromUser);
         return trans;
     }
@@ -56,19 +54,19 @@ public class TransactionService(ITransactionRepository repository, IUserService 
     public async Task<Transaction> CreateTransaction(TransactionDto dto)
     {
         //this should throw the correct errors. check the "network" tab in f12 to see them in full
-        await _validator.ValidateAndThrowAsync(dto);
+        await validator.ValidateAndThrowAsync(dto);
         
         Transaction trans = dto.ToTransaction();
         trans.CreatedAt = DateTime.UtcNow;
         trans.isPending = true;
-        Transaction newTrans = await repository.AddTransaction(trans);
+        Transaction newTrans = await transactionRepository.AddTransaction(trans);
         return newTrans;
     }
 
     public TransactionResponseDto UpdateTransaction(TransactionResponseDto dto)
     {
         Transaction trans = dto.ToTransaction();
-        repository.UpdateTransaction(trans);
+        transactionRepository.UpdateTransaction(trans);
         return new TransactionResponseDto().FromEntity(trans);
     }
 }
