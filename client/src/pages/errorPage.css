@@ -11,7 +11,7 @@
 
 .error-title {
     font-size: 3rem;
-    color: #ff6f61;
+    color: #667eea;
     margin-bottom: 1rem;
 }
 
@@ -25,7 +25,7 @@
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     color: #fff;
-    background-color: #ff6f61;
+    background-color: #dabde3;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -33,5 +33,5 @@
 }
 
 .error-button:hover {
-    background-color: #ff3b2f;
+    background-color: #9579b9;
 }

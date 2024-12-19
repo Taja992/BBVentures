@@ -27,7 +27,7 @@ const MainLayout = () => {
 
     return (
         <div>
-            <nav className="bg-indigo-600 text-white shadow-md">
+            <nav className="bg-violet-400 text-white shadow-md">
                 <div className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-20">
                         {/* Left: Welcome Message and Balance */}
@@ -43,7 +43,7 @@ const MainLayout = () => {
                         </div>
 
                         {/* Center: Navigation Links */}
-                        <div className="flex-grow flex justify-center space-x-8">
+                        <div className="ml-6 flex-grow flex justify-start space-x-8">
                             <Link
                                 to="/game-board"
                                 className="text-lg font-semibold px-4 py-2 rounded-md hover:bg-indigo-500 transition">
@@ -74,6 +74,7 @@ const MainLayout = () => {
                                 Transactions
                             </Link>
                         </div>
+
 
                         {/* Right: Login/Logout */}
                         <div className="flex items-center">

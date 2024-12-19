@@ -36,6 +36,7 @@ button {
 .button.small {
     margin-left: 8px; 
     margin-top: 8px;
+    margin-bottom: 20px;
 }
 
 button:hover {

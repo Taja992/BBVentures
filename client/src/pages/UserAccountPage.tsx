@@ -12,7 +12,7 @@ const UserAccountPage = () => {
     
     return (
         <>
-            <div className="border border-black p-4 mb-4">
+            <div className="pt-24 p-4 mb-4">
                 {userInfo?.isPlayer && !userInfo?.isAdmin && <UpdateSelf/>}
             </div>
         </>
