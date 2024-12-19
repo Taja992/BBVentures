@@ -37,13 +37,6 @@ const InputWinningNumbersComponent = () => {
             const response = await http.gameProcessWinningNumbersCreate(winningNumbers);
             toast.success("Winning numbers submitted successfully.");
             setResponseData(response.data);
-
-            // const winners = response.data.winnerUsernames?.map((username, index) => {
-            //     const winnings = response.data.individualWinnings ? response.data.individualWinnings[index] : 0;
-            //     return `${username}: $${winnings.toFixed(2)}`;
-            // }).join("\n");
-            //
-            // alert(`Winners:\n${winners}`);
         } catch (error) {
             toast.error("Failed to submit winning numbers:");
             console.error("Failed to submit winning numbers:", error);
