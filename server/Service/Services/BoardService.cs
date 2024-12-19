@@ -30,24 +30,30 @@ namespace Service.Services
 
         public async Task<BoardDto> CreateBoard(CreateBoardDto createBoardDto)
         {
+            // Validate the createBoardDto object using the validator
             await _createValidator.ValidateAndThrowAsync(createBoardDto);
 
+            // Calculate the cost based on the field count and autoplay weeks
             int cost = CalculateCost(createBoardDto.FieldCount, createBoardDto.AutoplayWeeks);
 
+            // Retrieve the user by userId
             var user = await _userRepository.GetUserById(createBoardDto.UserId);
             if (user == null)
             {
                 throw new Exception("User not found");
             }
 
+            // Check if the user has sufficient balance
             if (user.Balance < cost)
             {
                 throw new Exception("Insufficient balance");
             }
 
+            // Deduct the cost from the user's balance and update the user
             user.Balance -= cost;
             await _userRepository.UpdateUser(user);
 
+            // Create a new board entity
             var board = new Board
             {
                 UserId = createBoardDto.UserId,
@@ -58,9 +64,10 @@ namespace Service.Services
                 UpdatedAt = DateTime.UtcNow
             };
 
+            // Save the new board to the repository
             var newBoard = await _boardRepository.CreateBoard(board);
-            
 
+            // Return the created board as a BoardDto
             return new BoardDto
             {
                 Id = newBoard.Id,
