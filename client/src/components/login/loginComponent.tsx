@@ -1,4 +1,5 @@
-﻿import './login.css';
+﻿import React, { useEffect, useState } from 'react';
+import './login.css';
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,8 +24,20 @@ const schema: yup.ObjectSchema<Credentials> = yup
 
 const LoginForm: React.FC = () => {
     const { user, login, logout } = useAuth();
+    const [loading, setLoading] = useState(true);
 
     const { register, handleSubmit, formState: { errors } } = useForm<Credentials>({ resolver: yupResolver(schema) });
+
+    useEffect(() => {
+        // Simulate checking user authentication status
+        const checkAuthStatus = async () => {
+            // Simulate a delay to check authentication status
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            setLoading(false);
+        };
+
+        checkAuthStatus();
+    }, []);
 
     const onSubmit: SubmitHandler<Credentials> = async (data) => {
         try {
@@ -35,6 +48,10 @@ const LoginForm: React.FC = () => {
         }
     };
 
+    if (loading) {
+        return <div className="spinner"></div>;
+    }
+
     return (
         <div>
             {user ? (
@@ -42,7 +59,7 @@ const LoginForm: React.FC = () => {
             ) : (
                 <div className="background-container">
                     <div className="square-a-wrapper">
-                        
+
                         {/* <div className="top-border border-t-4 border-[#1e3c72]"></div> */}
 
                         {/* Main Square with rounded corners */}
