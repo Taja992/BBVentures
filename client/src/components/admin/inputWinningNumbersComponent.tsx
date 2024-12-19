@@ -50,16 +50,16 @@ const InputWinningNumbersComponent = () => {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 text-center">
             <h2 className="text-2xl font-bold mb-4">Input Winning Numbers</h2>
-            <div className="flex space-x-4">
+            <div className="space-y-4 flex flex-col items-center justify-center"> {/* Center the input fields */}
                 {Array.from({ length: 3 }).map((_, index) => (
                     <input
                         key={index}
                         type="number"
                         value={winningNumbers[index] || ""}
                         onChange={(e) => handleInputChange(index, e.target.value)}
-                        className="shadow-md appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
+                        className="shadow-md appearance-none border rounded w-1/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
                         placeholder={`Number ${index + 1}`}
                     />
                 ))}
@@ -70,8 +70,11 @@ const InputWinningNumbersComponent = () => {
             >
                 Submit
             </button>
+        
 
-            {responseData && (
+
+
+    {responseData && (
                 <div className="mt-6 p-6 border rounded-lg shadow-lg bg-white">
                     <h3 className="text-lg font-semibold mb-2">Winning Numbers Result</h3>
                     <p><span className="font-semibold">Week Number:</span> {responseData.weekNumber ?? 'N/A'}</p>

@@ -118,7 +118,7 @@ function AllHistory(){
                 <div>
                     {item.isPending ? "pending" : "approved"} <br/>
                     {item.isPending ?
-                        <button className={"button"}
+                        <button className={".sma"}
                                 onClick={() => approveTransaction(item)}>approve</button> : <></>}
                 </div>
         },
@@ -136,7 +136,8 @@ function AllHistory(){
         <label className={"mr-3"}>From User:</label>
         <input className={"py-1 px-1 my-1 mb-2 border border-grey"} value={userNameSearch}
                onChange={e => setUserNameSearch(e.target.value)}/>
-        <button className={"button"} onClick={filterTransactions}>search</button>
+        <button className={"button small"} onClick={filterTransactions}>search</button>
+
 
         <div className="full-height-table-container">
             <CompactTable columns={columns} data={{nodes: filteredTrans}} theme={theme}/>
