@@ -15,7 +15,6 @@ public interface ITransactionService
     public Task<Transaction> CreateTransaction(TransactionDto dto);
 
     public Task<TransactionResponseDto> UpdateTransaction(TransactionResponseDto dto);
-    public Task<List<TransactionResponseDto>> GetAllTransactionsFromUsersName(string searchVal);
 }
 
 
@@ -35,20 +34,6 @@ public class TransactionService(ITransactionRepository transactionRepository, IU
         List<Transaction> transFromUser = await transactionRepository.GetAllTransactionsFromUser(guid);
         List<TransactionResponseDto> trans = new TransactionResponseDto().FromEntities(transFromUser);
         return trans;
-    }
-
-    public async Task<List<TransactionResponseDto>> GetAllTransactionsFromUsersName(string searchVal)
-    {
-        var userDtos = await userService.GetAllUsersWithName(searchVal);
-        List<TransactionResponseDto> allTransFromSearch = new List<TransactionResponseDto>();
-        
-        foreach (var user in userDtos)
-        {
-            allTransFromSearch.AddRange(await GetAllTransactionsFromUser(user.Id));
-        }
-
-        return allTransFromSearch;
-
     }
     
     public async Task<Transaction> CreateTransaction(TransactionDto dto)
