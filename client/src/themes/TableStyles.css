@@ -1,12 +1,13 @@
-﻿/*.full-height-table-container {*/
-/*    height: 100vh;*/
-/*    overflow-y: auto;*/
-/*}*/
-
-.full-height-table-container .Table {
+﻿.full-height-table-container .Table {
     display: block;
 }
 
 .board-history-week {
     width: 100%
 }
+
+.max-table-height {
+    height: 75%
+}
+
+

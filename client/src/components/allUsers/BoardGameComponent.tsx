@@ -7,9 +7,7 @@ import { boardHistFromWeekAtom, boardsAtom, boardStateAtom } from '../../atoms/a
 import { userBalance } from '../../atoms/atoms';
 import { http } from '../../services/http';
 
-
 const BoardGameComponent = () => {
-    // State variables for selected numbers, field count, game ID, user balance, board state, and other UI states
     const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
     const [fieldCount, setFieldCount] = useState<5 | 6 | 7 | 8>(5);
     const [gameId, setGameId] = useState<string | null>(null);
@@ -20,8 +18,8 @@ const BoardGameComponent = () => {
     const [isAutoplay, setIsAutoplay] = useState<boolean>(false);
     const [autoplayWeeks, setAutoplayWeeks] = useState<number>(1);
     const [, setBoardHistFromWeek] = useAtom(boardHistFromWeekAtom);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    // Fetch active game and user status on component mount
     useEffect(() => {
         const fetchActiveGame = async () => {
             try {
@@ -53,7 +51,6 @@ const BoardGameComponent = () => {
         fetchUserStatus();
     }, []);
 
-    // Toggle the selection of a number
     const toggleNumber = (number: number) => {
         setSelectedNumbers(prevSelectedNumbers => {
             if (prevSelectedNumbers.includes(number)) {
@@ -66,7 +63,6 @@ const BoardGameComponent = () => {
         });
     };
 
-    // Calculate the cost based on field count and weeks
     const calculateCost = (fieldCount: 5 | 6 | 7 | 8, weeks: number): number => {
         const costPerField: { [key in 5 | 6 | 7 | 8]: number } = {
             5: 20,
@@ -77,7 +73,6 @@ const BoardGameComponent = () => {
         return costPerField[fieldCount] * weeks;
     };
 
-    // Handle the submission of the selected numbers
     const handleSubmit = async () => {
         if (selectedNumbers.length !== fieldCount) {
             toast.error(`Please select exactly ${fieldCount} numbers.`);
@@ -88,6 +83,8 @@ const BoardGameComponent = () => {
             toast.error('No active game found.');
             return;
         }
+
+        setIsLoading(true);
 
         // Create a sorted copy of the selectedNumbers array in ascending order
         const sortedNumbers = [...selectedNumbers].sort((a, b) => a - b);
@@ -118,6 +115,8 @@ const BoardGameComponent = () => {
         } catch (error) {
             console.error('Error buying board:', error);
             toast.error("Error buying board :( Is balance sufficient?");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -148,7 +147,7 @@ const BoardGameComponent = () => {
                         ))}
                     </div>
                     <div className="number-grid w-fit">
-                        {Array.from({length: 16}, (_, i) => i + 1).map(number => (
+                        {Array.from({ length: 16 }, (_, i) => i + 1).map(number => (
                             <button
                                 key={number}
                                 className={`number-button ${selectedNumbers.includes(number) ? 'selected' : ''}`}
@@ -163,7 +162,6 @@ const BoardGameComponent = () => {
                             type="checkbox"
                             checked={isAutoplay}
                             onChange={(e) => setIsAutoplay(e.target.checked)}
-
                         />
                         <label className="ml-2">Auto-play Weeks:</label>
                         <input
@@ -177,7 +175,13 @@ const BoardGameComponent = () => {
                         />
                         <label className="ml-2">You will be charged immediately!</label>
                     </div>
-                    <button className="submit-button" onClick={handleSubmit}>Play these numbers</button>
+                    <button
+                        className="submit-button"
+                        onClick={handleSubmit}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Processing...' : 'Play these numbers'}
+                    </button>
                 </>
             ) : (
                 <p>This user is not active</p>

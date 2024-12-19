@@ -9,7 +9,7 @@ const TransactionsPage = () => {
     const [userInfo] = useAtom(userInfoAtom);
 
     return (
-        <div className="h-screen pt-10 flex bg-gray-100 p-6 items-start">
+        <div className="min-h-screen bg-gray-100 p-6 flex items-start">
             {/* Left Side: Top-Up Component */}
             <div className="w-1/5 bg-white p-4 pt-14 rounded-lg shadow-md">
                 <TopUpComponent />

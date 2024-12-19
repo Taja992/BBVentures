@@ -7,6 +7,7 @@ import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
 import toast from 'react-hot-toast';
 import tableTheme from "../../themes/tableTheme";
+import "../../themes/TableStyles.css";
 
 const GetAllUsers: React.FC = () => {
     const [allUsers, setAllUsers] = useAtom(allUsersAtom);
@@ -198,7 +199,7 @@ const GetAllUsers: React.FC = () => {
     );
 
     return (
-        <div className="p-4">
+        <div className="h-screen p-4 overflow-hidden">
             <div className="flex items-center mb-4">
                 <h1 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase pt-4">All Users</h1>
                 <input
@@ -209,7 +210,7 @@ const GetAllUsers: React.FC = () => {
                     className="border p-2 ml-4 w-1/4"
                 />
             </div>
-            <div className="full-height-table-container">
+            <div className="h-full overflow-y-auto">
                 <CompactTable
                     columns={columns}
                     data={{nodes: filteredUsers}}
@@ -219,7 +220,6 @@ const GetAllUsers: React.FC = () => {
             </div>
         </div>
     );
-
 };
 
 export default GetAllUsers;

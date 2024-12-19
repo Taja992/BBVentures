@@ -127,18 +127,28 @@ function AllHistory(){
         }
     ]
 
-    return <>
-        <h1 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase"> All Transactions </h1>
-
-        <label className={"mr-3"}>From User:</label>
-        <input className={"py-1 px-1 my-1 mb-2 border border-grey"} value={userNameSearch}
-               onChange={e => setUserNameSearch(e.target.value)}/>
-        <button className="button small" onClick={filterTransactions}>Search</button>
-
-        <div className="full-height-table-container">
-            <CompactTable columns={columns} data={{nodes: filteredTrans}} theme={theme}/>
+    return (
+        <div className="h-screen p-4 overflow-hidden">
+            <h1 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase">All Transactions</h1>
+            <div className="flex items-center mb-4">
+                <label className="mr-3">From User:</label>
+                <input
+                    className="py-1 px-1 my-1 mb-2 border border-grey"
+                    value={userNameSearch}
+                    onChange={e => setUserNameSearch(e.target.value)}
+                />
+                <button className="button small" onClick={filterTransactions}>Search</button>
+            </div>
+            <div className="h-full overflow-y-auto">
+                <CompactTable
+                    columns={columns}
+                    data={{ nodes: filteredTrans }}
+                    theme={theme}
+                    className="w-full border-collapse"
+                />
+            </div>
         </div>
-    </>
+    );
 }
 
 export default AllHistory
