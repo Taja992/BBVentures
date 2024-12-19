@@ -18,7 +18,7 @@ public interface ITransactionService
 }
 
 
-public class TransactionService(ITransactionRepository transactionRepository, IUserService userService, IValidator<TransactionDto> validator) : ITransactionService
+public class TransactionService(ITransactionRepository transactionRepository, IValidator<TransactionDto> validator) : ITransactionService
 {
     
     

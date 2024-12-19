@@ -108,7 +108,7 @@ namespace Service.Services
                 boardDto.PlayerEmail = userDetails.PlayerEmail;
 
                 // Get the week number of the board
-                boardDto.WeekNumber = await getWeekNumberOfBoard(boardDto);
+                boardDto.WeekNumber = await GetWeekNumberOfBoard(boardDto);
                 boardDtos.Add(boardDto);
             }
 
@@ -116,7 +116,7 @@ namespace Service.Services
             return boardDtos;
         }
 
-        public async Task<int> getWeekNumberOfBoard(BoardDto boardDto)
+        private async Task<int> GetWeekNumberOfBoard(BoardDto boardDto)
         {
             Game gameFromBoard = await _gameRepository.GetGameById(boardDto.GameId);
 
@@ -141,7 +141,7 @@ namespace Service.Services
             }).ToList();
         }
 
-        public async Task<(string? PlayerUsername, string? PlayerEmail)> GetUserDetails(string userId)
+        private async Task<(string? PlayerUsername, string? PlayerEmail)> GetUserDetails(string userId)
         {
             var user = await _userRepository.GetUserById(userId);
             if (user == null)
@@ -152,7 +152,7 @@ namespace Service.Services
             return (user.UserName, user.Email);
         }
 
-        public int GetCurrentWeekNumber()
+        private int GetCurrentWeekNumber()
         {
             DateTime today = DateTime.UtcNow;
             Calendar calendar = new GregorianCalendar();
@@ -166,7 +166,7 @@ namespace Service.Services
         }
 
 
-        public async Task<List<BoardDto>> GetBoardsFromWeek(int weekNum, string userId)
+        private async Task<List<BoardDto>> GetBoardsFromWeek(int weekNum, string userId)
         {
             List<Board> allboards = await _boardRepository.GetBoardsByUserId(userId);
             List<BoardDto> boardsThisWeek = new List<BoardDto>(); //list that will be returned
