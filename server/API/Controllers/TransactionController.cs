@@ -1,13 +1,7 @@
 ﻿using System.Security.Claims;
-using DataAccess;
 using DataAccess.Models;
-using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using Service;
-using Service.Security;
 using Service.Services;
 using Service.TransferModels.DTOs;
 
