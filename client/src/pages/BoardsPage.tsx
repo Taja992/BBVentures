@@ -1,8 +1,9 @@
 ﻿import { useAtom } from "jotai";
 import { userInfoAtom } from "../atoms/atoms";
 import AdminBoardsHistoryComponent from "../components/admin/adminBoardsHistoryComponent";
-import UserBoardsHistoryComponent from "../components/player/userBoardsHistoryComponent";
-import UserBoardHistoryThisWeek from "../components/player/userBoardHistoryThisWeek";
+import UserBoardsHistoryComponent from "../components/allUsers/userBoardsHistoryComponent";
+import UserBoardHistoryThisWeek from "../components/allUsers/userBoardHistoryThisWeek";
+
 
 
 
@@ -12,16 +13,19 @@ const BoardsPage = () => {
     return (
         <div className="space-y-4">
             {userInfo?.isAdmin && (
-                <AdminBoardsHistoryComponent />
+            <div>
+                <AdminBoardsHistoryComponent/>
+            </div>
             )}
+            <div>
+                <UserBoardsHistoryComponent/>
+            </div>
+            
+            <div>
+                <UserBoardHistoryThisWeek/>
+            </div>
 
-            {userInfo?.isPlayer && !userInfo?.isAdmin && (
-                <>
-                    <UserBoardsHistoryComponent />
-                    <UserBoardHistoryThisWeek />
-                </>
-            )}
-        </div>
+        </>
     );
 };
 

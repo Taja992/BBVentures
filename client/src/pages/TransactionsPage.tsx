@@ -1,8 +1,8 @@
 ﻿import { useAtom } from "jotai";
 import { userInfoAtom } from "../atoms/atoms";
-import TopUpComponent from "../components/player/TopUpComponent";
 import UserTransactionsHistory from "../components/player/userTransactionsHistory";
 import AdminTransactionsHistory from "../components/admin/adminTransactionsHistory";
+import TopUpComponent from "../components/allUsers/TopUpComponent";
 
 
 const TransactionsPage = () => {
@@ -12,7 +12,6 @@ const TransactionsPage = () => {
         <div className="h-screen flex bg-gray-100 p-6">
             {/* Left Side: Top-Up Component */}
             <div className="w-1/5 bg-white p-4 rounded-lg shadow-md flex flex-col">
-                
                 <TopUpComponent />
             </div>
 
