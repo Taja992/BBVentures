@@ -36,14 +36,6 @@ public class TransactionController(ITransactionService service) : ControllerBase
         
         return Ok(await service.GetAllTransactionsFromUser(userId));
     }
-    
-    [HttpGet]
-    [Authorize]
-    [Route("transactionsFromName")]
-    public async Task<ActionResult<List<TransactionResponseDto>>> GetAllTransactionsFromUsersName(string searchVal)
-    {
-        return Ok(await service.GetAllTransactionsFromUsersName(searchVal));
-    }
 
     [HttpPost]
     [Authorize]
@@ -57,7 +49,7 @@ public class TransactionController(ITransactionService service) : ControllerBase
     [HttpPut]
     [Authorize(Roles = "Admin")]
     [Route("updateTransaction")]
-    public ActionResult<TransactionDto> UpdateTransaction([FromBody] TransactionResponseDto dto)
+    public async Task<ActionResult<TransactionDto>> UpdateTransaction([FromBody] TransactionResponseDto dto)
     {
         if (string.IsNullOrEmpty(dto.Id.ToString()))
         {
@@ -68,7 +60,7 @@ public class TransactionController(ITransactionService service) : ControllerBase
             return NotFound("user not found");
         }
         
-        var trans = service.UpdateTransaction(dto);
+        var trans = await service.UpdateTransaction(dto);
         return Ok(trans); 
     }
     

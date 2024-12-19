@@ -633,27 +633,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transaction
-     * @name TransactionTransactionsFromNameList
-     * @request GET:/api/Transaction/transactionsFromName
-     */
-    transactionTransactionsFromNameList: (
-      query?: {
-        searchVal?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<BBVenturesApiTransactionResponseDto[], any>({
-        path: `/api/Transaction/transactionsFromName`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Transaction
      * @name TransactionAddTransactionCreate
      * @request POST:/api/Transaction/addTransaction
      */
@@ -699,26 +678,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
 
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserGetWithNameList
-     * @request GET:/api/User/getWithName
-     */
-    userGetWithNameList: (
-      query?: {
-        searchVal?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<BBVenturesApiUserDto[], any>({
-        path: `/api/User/getWithName`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
 
     /**
      * No description
