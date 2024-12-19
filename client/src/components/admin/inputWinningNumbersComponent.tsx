@@ -11,10 +11,17 @@ const InputWinningNumbersComponent = () => {
     const [userInfo] = useAtom(userInfoAtom);
     const [responseData, setResponseData] = useState<BBVenturesApiGameDto | null>(null);
 
+    // Handle input change for winning numbers,
+    // It ensures that the input is within the valid range (1 to 16)
     const handleInputChange = (index: number, value: string) => {
-        const newNumbers = [...winningNumbers];
-        newNumbers[index] = parseInt(value, 10);
-        setWinningNumbers(newNumbers);
+        const newValue = parseInt(value, 10);
+        if (newValue >= 1 && newValue <= 16) {
+            const newNumbers = [...winningNumbers];
+            newNumbers[index] = newValue;
+            setWinningNumbers(newNumbers);
+        } else {
+            toast.error("Please enter a number between 1 and 16.");
+        }
     };
 
     const handleSubmit = async () => {
@@ -23,17 +30,15 @@ const InputWinningNumbersComponent = () => {
             return;
         }
 
+        if (winningNumbers.some(num => num < 1 || num > 16)) {
+            toast.error("All numbers must be between 1 and 16.");
+            return;
+        }
+
         try {
             const response = await http.gameProcessWinningNumbersCreate(winningNumbers);
             toast.success("Winning numbers submitted successfully.");
             setResponseData(response.data);
-
-            // const winners = response.data.winnerUsernames?.map((username, index) => {
-            //     const winnings = response.data.individualWinnings ? response.data.individualWinnings[index] : 0;
-            //     return `${username}: $${winnings.toFixed(2)}`;
-            // }).join("\n");
-            //
-            // alert(`Winners:\n${winners}`);
         } catch (error) {
             toast.error("Failed to submit winning numbers:");
             console.error("Failed to submit winning numbers:", error);

@@ -2,6 +2,7 @@
 using DataAccess.Models;
 using Service.TransferModels.DTOs;
 using DataAccess.Repositories;
+using Service.Validators;
 
 namespace Service.Services;
 
@@ -117,12 +118,13 @@ public class GameService : IGameService
 
     private void ValidateWinningNumbers(List<int> winningNumbers)
     {
-        if (winningNumbers.Count != 3)
-        {
-            throw new ArgumentException("Exactly 3 winning numbers must be provided.");
-        }
+        var validator = new GameValidator();
+        var validationResult = validator.Validate(new GameDto { WinnerNumbers = winningNumbers });
 
-        winningNumbers.Sort();
+        if (!validationResult.IsValid)
+        {
+            throw new ArgumentException(validationResult.Errors.First().ErrorMessage);
+        }
     }
 
     private async Task<Game?> GetActiveGame()

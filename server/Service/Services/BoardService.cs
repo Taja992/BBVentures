@@ -8,7 +8,6 @@ using DataAccess.Models;
 
 namespace Service.Services
 {
-
     public class BoardService : IBoardService
     {
         private readonly AppDbContext _context;
@@ -16,7 +15,7 @@ namespace Service.Services
         private readonly IValidator<CreateBoardDto> _createValidator;
         private readonly IGameRepository _gameRepository;
         private readonly IUserRepository _userRepository;
-        
+
 
         public BoardService(AppDbContext context, IBoardRepository boardRepository,
             IValidator<CreateBoardDto> createValidator, IGameRepository gameRepository, IUserRepository userRepository)
@@ -30,24 +29,30 @@ namespace Service.Services
 
         public async Task<BoardDto> CreateBoard(CreateBoardDto createBoardDto)
         {
+            // Validate the createBoardDto object using the validator
             await _createValidator.ValidateAndThrowAsync(createBoardDto);
 
+            // Calculate the cost based on the field count and autoplay weeks
             int cost = CalculateCost(createBoardDto.FieldCount, createBoardDto.AutoplayWeeks);
 
+            // Retrieve the user by userId
             var user = await _userRepository.GetUserById(createBoardDto.UserId);
             if (user == null)
             {
                 throw new Exception("User not found");
             }
 
+            // Check if the user has sufficient balance
             if (user.Balance < cost)
             {
                 throw new Exception("Insufficient balance");
             }
 
+            // Deduct the cost from the user's balance and update the user
             user.Balance -= cost;
             await _userRepository.UpdateUser(user);
 
+            // Create a new board entity
             var board = new Board
             {
                 UserId = createBoardDto.UserId,
@@ -58,9 +63,10 @@ namespace Service.Services
                 UpdatedAt = DateTime.UtcNow
             };
 
+            // Save the new board to the repository
             var newBoard = await _boardRepository.CreateBoard(board);
-            
 
+            // Return the created board as a BoardDto
             return new BoardDto
             {
                 Id = newBoard.Id,
@@ -74,7 +80,7 @@ namespace Service.Services
                 PlayerEmail = user.Email
             };
         }
-        
+
         private int CalculateCost(int fieldCount, int weeks)
         {
             int baseCost = fieldCount switch
@@ -90,22 +96,29 @@ namespace Service.Services
 
         public async Task<List<BoardDto>> GetAllBoards()
         {
+            // Retrieve all boards from the repository
             var boards = await _boardRepository.GetAllBoards();
             var boardDtos = new List<BoardDto>();
+
+            // Iterate through each board and convert it to a BoardDto
             foreach (var board in boards)
             {
                 var boardDto = BoardDto.FromEntity(board);
+
+                // Retrieve user details for the board
                 var userDetails = await GetUserDetails(board.UserId);
                 boardDto.PlayerUsername = userDetails.PlayerUsername;
                 boardDto.PlayerEmail = userDetails.PlayerEmail;
+
+                // Get the week number of the board
                 boardDto.WeekNumber = await getWeekNumberOfBoard(boardDto);
                 boardDtos.Add(boardDto);
             }
 
+            // Return the list of BoardDto objects
             return boardDtos;
-
         }
-        
+
         public async Task<int> getWeekNumberOfBoard(BoardDto boardDto)
         {
             Game gameFromBoard = await _gameRepository.GetGameById(boardDto.GameId);
@@ -133,12 +146,13 @@ namespace Service.Services
 
         public async Task<(string? PlayerUsername, string? PlayerEmail)> GetUserDetails(string userId)
         {
-
             var user = await _userRepository.GetUserById(userId);
             if (user == null)
             {
                 throw new Exception("User not found");
-            } return (user.UserName, user.Email);
+            }
+
+            return (user.UserName, user.Email);
         }
 
         public int GetCurrentWeekNumber()
@@ -153,7 +167,7 @@ namespace Service.Services
             int thisWeekNum = GetCurrentWeekNumber();
             return await GetBoardsFromWeek(thisWeekNum, userId);
         }
-        
+
 
         public async Task<List<BoardDto>> GetBoardsFromWeek(int weekNum, string userId)
         {
@@ -164,29 +178,25 @@ namespace Service.Services
             {
                 throw new Exception("No active game found");
             }
-            
+
             foreach (Board board in allboards)
             {
                 Calendar calendar = new GregorianCalendar();
                 //boolean for if its this week
-                bool isThisWeek = calendar.GetWeekOfYear(board.CreatedAt, CalendarWeekRule.FirstDay, board.CreatedAt.DayOfWeek) == weekNum;
+                bool isThisWeek =
+                    calendar.GetWeekOfYear(board.CreatedAt, CalendarWeekRule.FirstDay, board.CreatedAt.DayOfWeek) ==
+                    weekNum;
                 if (isThisWeek)
                 {
                     BoardDto dto = BoardDto.FromEntity(board);
-                    dto.WeekNumber = activeGame.WeekNumber; //this is to match the weeknumber in "GetBoardHistoryByUserId()", feel free to change it
+                    dto.WeekNumber =
+                        activeGame
+                            .WeekNumber; //this is to match the weeknumber in "GetBoardHistoryByUserId()", feel free to change it
                     boardsThisWeek.Add(dto);
                 }
-                
             }
 
             return boardsThisWeek;
-
         }
-
-        
-        
-        
-        
     }
-
 }

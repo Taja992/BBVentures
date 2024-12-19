@@ -17,9 +17,9 @@ public class TransactionRepository(AppDbContext context) : ITransactionRepositor
         return transFromUser.ToList();
     }
 
-    public decimal GetSumOfUserTransactions(string Id)
+    public decimal GetSumOfUserTransactions(string id)
     {
-        var transFromUser = from i in context.Transactions.ToList() where i.UserId == Id select i;
+        var transFromUser = from i in context.Transactions.ToList() where i.UserId == id select i;
         List<Transaction> userTransBalance = transFromUser.ToList();
 
         //gets all that are not pending
