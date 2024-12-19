@@ -27,7 +27,7 @@ const tableTheme: Theme = {
     padding: 12px 16px; /* Adds space inside the cells */
     font-size: 0.9rem;
     color: #7E8FA9;
-    text-align: center; /* Centers the text inside the body cells */
+    
   `,
   FooterRow: `
     background-color: #BC99EB;

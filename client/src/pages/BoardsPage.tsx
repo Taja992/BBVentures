@@ -25,7 +25,7 @@ const BoardsPage = () => {
                 <UserBoardHistoryThisWeek/>
             </div>
 
-        </>
+        </div>
     );
 };
 

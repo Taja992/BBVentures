@@ -3,10 +3,10 @@ import { http } from '../../services/http.ts';
 import {BBVenturesApiTransaction, BBVenturesApiUser} from "../../services/Api";
 import {CompactTable} from "@table-library/react-table-library/compact";
 import {useTheme} from "@table-library/react-table-library/theme";
-import {getTheme} from "@table-library/react-table-library/baseline";
+import tableTheme from "../../themes/tableTheme.ts";
 
 function AllHistory(){
-    const theme = useTheme(getTheme());
+    const theme = useTheme(tableTheme);
     const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [filteredTrans, setFilteredTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [allUsers, setAllUsers] = useState<BBVenturesApiUser[]>([]);
@@ -138,7 +138,7 @@ function AllHistory(){
                onChange={e => setUserNameSearch(e.target.value)}/>
         <button className={"button"} onClick={filterTransactions}>search</button>
 
-        <div className="max-h-64 overflow-y-auto">
+        <div className="full-height-table-container">
             <CompactTable columns={columns} data={{nodes: filteredTrans}} theme={theme}/>
         </div>
 

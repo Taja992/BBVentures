@@ -5,7 +5,8 @@ import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { useAtom } from "jotai";
 import { boardHistFromWeekAtom } from "../../atoms/atoms";
-import tableTheme from "../../themes/tableTheme"; 
+import tableTheme from "../../themes/tableTheme";
+import "../../themes/TableStyles.css";
 
 function UserBoardHistoryThisWeek() {
     const theme = useTheme(tableTheme); 
@@ -32,8 +33,8 @@ function UserBoardHistoryThisWeek() {
                 <h2 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase">
                     Your Boards This Week
                 </h2>
-                <div className="max-h-64 overflow-y-auto">
-                    <CompactTable columns={columns} data={{ nodes: boardHistFromWeek }} theme={theme} />
+                <div className="board-history-week">
+                    <CompactTable columns={columns} data={{nodes: boardHistFromWeek}} theme={theme}/>
                 </div>
             </div>
         </>

@@ -50,11 +50,6 @@ const MainLayout = () => {
                                 Game Board
                             </Link>
                             <Link
-                                to="/game"
-                                className="text-lg font-semibold px-4 py-2 rounded-md hover:bg-indigo-500 transition">
-                                Game
-                            </Link>
-                            <Link
                                 to="/boards"
                                 className="text-lg font-semibold px-4 py-2 rounded-md hover:bg-indigo-500 transition">
                                 Boards
