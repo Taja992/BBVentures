@@ -72,7 +72,7 @@
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 8px;
-    background-color: #764ba2;
+    background-color: #667eea;
     color: #000000; /* Black text */
     font-size: 1rem;
     cursor: pointer;
@@ -80,11 +80,11 @@
 }
 
 .field-button:hover {
-    background-color: #764ba2;
+    background-color: #667eea;
 }
 
 .field-button.selected {
-    background-color: #28a745;
+    background-color: rgba(149, 121, 185, 0.75);
 }
 
 /* Optional: For a more polished look, add shadows or glow effects */
@@ -95,5 +95,5 @@
 
 .number-button.selected,
 .field-button.selected {
-    box-shadow: 0 0 10px rgba(40, 167, 69, 0.6); /* Green glow for selected */
+    box-shadow: 0 0 10px rgba(149, 121, 185, 0.75); /* Green glow for selected */
 }

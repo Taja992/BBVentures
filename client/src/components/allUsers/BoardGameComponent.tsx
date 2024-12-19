@@ -7,6 +7,7 @@ import { boardHistFromWeekAtom, boardsAtom, boardStateAtom } from '../../atoms/a
 import { userBalance } from '../../atoms/atoms';
 import { http } from '../../services/http';
 
+
 const BoardGameComponent = () => {
     // State variables for selected numbers, field count, game ID, user balance, board state, and other UI states
     const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
