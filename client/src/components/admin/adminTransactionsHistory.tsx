@@ -109,7 +109,7 @@ function AllHistory(){
     }
 
     const columns = [
-        {label: 'Amount', renderCell: (item: BBVenturesApiTransaction) => item.amount},
+        {label: 'Amount', renderCell: (item: BBVenturesApiTransaction) => `${item.amount} kr`},
         {label: 'Player Name', renderCell: (item: BBVenturesApiTransaction) => getUserNameById(item.userId!)},
         {label: 'Player Email', renderCell: (item: BBVenturesApiTransaction) => getUserEmailById(item.userId!)},
         {label: 'Is Pending', renderCell: (item: BBVenturesApiTransaction) =>

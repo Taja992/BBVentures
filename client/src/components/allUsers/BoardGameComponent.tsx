@@ -125,23 +125,30 @@ const BoardGameComponent = () => {
         return <p>Loading...</p>;
     }
 
+    const fieldPrices: { [key in 5 | 6 | 7 | 8]: number } = {
+        5: 20,
+        6: 40,
+        7: 80,
+        8: 160
+    };
+
     return (
         <div className="board-game-component">
             {isActive ? (
                 <>
                     <div className="field-selection">
-                        {[5, 6, 7, 8].map(count => (
+                        {([5, 6, 7, 8] as (5 | 6 | 7 | 8)[]).map((count) => (
                             <button
                                 key={count}
                                 className={`field-button ${fieldCount === count ? 'selected' : ''}`}
-                                onClick={() => setFieldCount(count as 5 | 6 | 7 | 8)}
+                                onClick={() => setFieldCount(count)}
                             >
-                                {count} Numbers
+                                {count} Numbers ({fieldPrices[count]}kr)
                             </button>
                         ))}
                     </div>
                     <div className="number-grid w-fit">
-                        {Array.from({ length: 16 }, (_, i) => i + 1).map(number => (
+                        {Array.from({length: 16}, (_, i) => i + 1).map(number => (
                             <button
                                 key={number}
                                 className={`number-button ${selectedNumbers.includes(number) ? 'selected' : ''}`}
@@ -156,7 +163,7 @@ const BoardGameComponent = () => {
                             type="checkbox"
                             checked={isAutoplay}
                             onChange={(e) => setIsAutoplay(e.target.checked)}
-                          
+
                         />
                         <label className="ml-2">Auto-play Weeks:</label>
                         <input

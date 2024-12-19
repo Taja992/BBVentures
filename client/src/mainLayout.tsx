@@ -37,7 +37,7 @@ const MainLayout = () => {
                                     {username ? `Welcome, ${username}!` : 'Welcome'}
                                 </h1>
                                 <h2 className="text-xl font-semibold mt-1 ps-8">
-                                    Balance: <span className="font-extrabold">${Balance}</span>
+                                    Balance: <span className="font-extrabold">{Balance} kr</span>
                                 </h2>
                             </div>
                         </div>

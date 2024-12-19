@@ -12,31 +12,34 @@ const InputWinningNumbersComponent = () => {
     const [responseData, setResponseData] = useState<BBVenturesApiGameDto | null>(null);
 
     // Handle input change for winning numbers,
-    // It ensures that the input is within the valid range (1 to 16)
+    // It ensures that only numeric input is allowed
     const handleInputChange = (index: number, value: string) => {
-        const newValue = parseInt(value, 10);
-        if (newValue >= 1 && newValue <= 16) {
-            const newNumbers = [...winningNumbers];
-            newNumbers[index] = newValue;
-            setWinningNumbers(newNumbers);
+        const newNumbers = [...winningNumbers];
+        if (value === "") {
+            newNumbers[index] = NaN; // Set to NaN to indicate an empty value
         } else {
-            toast.error("Please enter a number between 1 and 16.");
+            const newValue = parseInt(value, 10);
+            if (!isNaN(newValue)) {
+                newNumbers[index] = newValue;
+            }
         }
+        setWinningNumbers(newNumbers);
     };
 
     const handleSubmit = async () => {
-        if (winningNumbers.length !== 3) {
+        const validNumbers = winningNumbers.filter(num => !isNaN(num));
+        if (validNumbers.length !== 3) {
             toast.error("Please enter exactly 3 winning numbers.");
             return;
         }
 
-        if (winningNumbers.some(num => num < 1 || num > 16)) {
+        if (validNumbers.some(num => num < 1 || num > 16)) {
             toast.error("All numbers must be between 1 and 16.");
             return;
         }
 
         try {
-            const response = await http.gameProcessWinningNumbersCreate(winningNumbers);
+            const response = await http.gameProcessWinningNumbersCreate(validNumbers);
             toast.success("Winning numbers submitted successfully.");
             setResponseData(response.data);
         } catch (error) {
@@ -57,7 +60,7 @@ const InputWinningNumbersComponent = () => {
                     <input
                         key={index}
                         type="number"
-                        value={winningNumbers[index] || ""}
+                        value={isNaN(winningNumbers[index]) ? "" : winningNumbers[index]}
                         onChange={(e) => handleInputChange(index, e.target.value)}
                         className="shadow-md appearance-none border rounded w-1/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
                         placeholder={`Number ${index + 1}`}
@@ -70,11 +73,7 @@ const InputWinningNumbersComponent = () => {
             >
                 Submit
             </button>
-        
-
-
-
-    {responseData && (
+            {responseData && (
                 <div className="mt-6 p-6 border rounded-lg shadow-lg bg-white">
                     <h3 className="text-lg font-semibold mb-2">Winning Numbers Result</h3>
                     <p><span className="font-semibold">Week Number:</span> {responseData.weekNumber ?? 'N/A'}</p>
