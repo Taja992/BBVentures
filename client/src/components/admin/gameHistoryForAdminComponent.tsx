@@ -2,7 +2,7 @@
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useAtom } from 'jotai';
 import { gamesAtom } from '../../atoms/atoms';
-import { http } from '../../http.ts';
+import { http } from '../../services/http.ts';
 import { BBVenturesApiGameDto } from '../../services/Api';
 import { useTheme } from "@table-library/react-table-library/theme";
 import tableTheme from "../../themes/tableTheme";

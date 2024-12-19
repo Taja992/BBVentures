@@ -4,21 +4,23 @@ import {
     Route,
     RouterProvider,
 } from 'react-router-dom';
-import LoginPage from "./components/loginPage.tsx";
+import LoginPage from "./components/login/loginPage.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
-import RegisterPasswordPage from "./components/passwordManagement/RegisterPasswordPage.tsx";
-import ErrorPage from "./components/errorPage";
 import Root from "./root";
 import MainLayout from './mainLayout.tsx';
+
+import RegisterPasswordPage from "./components/passwordManagement/RegisterPasswordPage.tsx";
 import ResetPasswordPage from './components/passwordManagement/ResetPasswordPage.tsx';
 import RequestPasswordPage from './components/passwordManagement/RequestPasswordPage.tsx';
 import PasswordPageLayout from './components/passwordManagement/PasswordPageLayout.tsx';
-import GameBoard from './components/GameBoard.tsx';
-import GamePage from './components/header-pages/GamePage.tsx';
-import BoardsPage from './components/header-pages/BoardsPage.tsx';
-import ManageUsersPage from './components/header-pages/ManageUsersPage.tsx';
-import UserAccountPage from './components/header-pages/UserAccountPage.tsx';
-import TransactionsPage from './components/header-pages/TransactionsPage.tsx';
+
+import ErrorPage from "./pages/errorPage";
+import GameBoard from './pages/GameBoard.tsx';
+import GamePage from './pages/GamePage.tsx';
+import BoardsPage from './pages/BoardsPage.tsx';
+import ManageUsersPage from './pages/ManageUsersPage.tsx';
+import UserAccountPage from './pages/UserAccountPage.tsx';
+import TransactionsPage from './pages/TransactionsPage.tsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(

@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { BBVenturesApiTransactionDto } from "../../services/Api";
-import { http } from "../../http";
+import { http } from '../../services/http';
+import mbLogo from '../../assets/mb.png';
 
 function TopUp() {
     const [topUpAmount, setTopUpAmount] = useState("");
@@ -16,7 +17,7 @@ function TopUp() {
                 } else {
                     console.error("Couldn't find user ID in http response.");
                 }
-            } catch (error) {
+            } catch {
                 console.error("Failed to get player Id.");
             }
         };
@@ -94,7 +95,7 @@ function TopUp() {
                 />
                 <div className="text-center mb-6">
                     <img
-                        src="/mb.png"
+                        src={mbLogo}
                         alt="Logo"
                         className="mx-auto"
                         style={{width: "150px", height: "auto"}}

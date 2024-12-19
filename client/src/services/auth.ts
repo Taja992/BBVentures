@@ -1,10 +1,9 @@
 import { useAtom } from "jotai";
-
 import { useNavigate } from "react-router-dom";
-import { http } from "../http";
 import { BBVenturesApiAuthUserInfo } from "../services/Api.ts";
-import { jwtAtom, userInfoAtom } from "./atoms.ts";
 import { startTransition } from "react";
+import { http } from "./http.ts";
+import {jwtAtom, userInfoAtom } from "../atoms/atoms.ts";
 
 
 // Define the shape of the credentials object

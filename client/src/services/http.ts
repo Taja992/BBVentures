@@ -1,7 +1,10 @@
-import { Api } from "./services/Api.ts";
-import { tokenStorage, TOKEN_KEY } from "./atoms/atoms.ts";
+
 
 // URL prefix for own server
+
+import {TOKEN_KEY, tokenStorage } from "../atoms/atoms";
+import { Api } from "./Api";
+
 // This is to protect us from accidently sending the JWT to 3rd party services.
 const AUTHORIZE_ORIGIN = "/";
 const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;

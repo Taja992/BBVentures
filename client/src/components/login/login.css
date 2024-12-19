@@ -37,7 +37,7 @@
 }
 
 /* Right blank area */
-.square-a .w-1/2 {
+.square-a .w-half {
     flex: 1;
     background: none; /* Placeholder for potential background or empty side */
 }

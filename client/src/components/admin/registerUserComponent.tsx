@@ -1,6 +1,6 @@
 ﻿import React, { useState } from 'react';
 import {BBVenturesApiRegisterRequest } from '../../services/Api';
-import { http } from '../../http';
+import { http } from '../../services/http.ts';
 import toast from 'react-hot-toast';
 
 

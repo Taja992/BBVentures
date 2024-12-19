@@ -1,6 +1,6 @@
 ﻿import { useState } from "react";
 import { BBVenturesApiUserDto } from "../../services/Api";
-import { http } from "../../http";
+import { http } from '../../services/http';
 import toast from "react-hot-toast";
 
 

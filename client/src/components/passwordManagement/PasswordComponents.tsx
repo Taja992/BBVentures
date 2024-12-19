@@ -1,8 +1,8 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useState} from "react";
 import {BBVenturesApiRegisterPasswordRequest, MicrosoftIdentityResetPasswordRequest} from "../../services/Api.ts";
-import {http} from "../../http.ts";
 import toast from "react-hot-toast";
+import { http } from "../../services/http.ts";
 
 const RegisterPassword: React.FC = () => {
     const [searchParams] = useSearchParams();

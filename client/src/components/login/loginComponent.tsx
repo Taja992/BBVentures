@@ -1,10 +1,10 @@
 ﻿import './login.css';
-import { Credentials, useAuth } from "../atoms/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import toast from "react-hot-toast";
 import { Link } from 'react-router-dom';
+import { Credentials, useAuth } from '../../services/auth';
 
 // Defining the validation schema using yup
 const schema: yup.ObjectSchema<Credentials> = yup

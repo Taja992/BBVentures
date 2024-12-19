@@ -1,7 +1,7 @@
 ﻿import { useState } from "react";
 import { useAtom } from "jotai";
 import { userInfoAtom } from "../../atoms/atoms";
-import { http } from "../../http";
+import { http } from '../../services/http.ts';
 import './InputWinningNumbersComponent.css';
 import toast from "react-hot-toast";
 import { BBVenturesApiGameDto } from "../../services/Api";

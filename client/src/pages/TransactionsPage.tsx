@@ -1,8 +1,9 @@
 ﻿import { useAtom } from "jotai";
-import { userInfoAtom } from "../../atoms/atoms";
-import TopUpComponent from "../player/TopUpComponent";
-import AdminTransactionsHistory from "../admin/adminTransactionsHistory";
-import UserTransactionsHistory from "../player/userTransactionsHistory";
+import { userInfoAtom } from "../atoms/atoms";
+import TopUpComponent from "../components/player/TopUpComponent";
+import UserTransactionsHistory from "../components/player/userTransactionsHistory";
+import AdminTransactionsHistory from "../components/admin/adminTransactionsHistory";
+
 
 const TransactionsPage = () => {
     const [userInfo] = useAtom(userInfoAtom);

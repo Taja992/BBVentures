@@ -1,6 +1,6 @@
 ﻿import { useEffect } from "react";
 import { BBVenturesApiBoardHistoryDto } from "../../services/Api";
-import { http } from '../../http';
+import { http } from '../../services/http';
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { useAtom } from "jotai";

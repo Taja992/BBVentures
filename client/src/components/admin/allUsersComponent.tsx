@@ -1,6 +1,6 @@
 ﻿import { useAtom } from "jotai";
 import { allUsersAtom } from "../../atoms/atoms";
-import { http } from "../../http";
+import { http } from '../../services/http.ts';
 import { useEffect, useState } from "react";
 import { BBVenturesApiUserDto } from "../../services/Api";
 import { CompactTable } from "@table-library/react-table-library/compact";

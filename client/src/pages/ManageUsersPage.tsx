@@ -1,8 +1,9 @@
 ﻿import { useAtom } from "jotai";
-import { userInfoAtom } from "../../atoms/atoms";
-import RegisterUser from "../admin/registerUserComponent";
-import GetAllUsers from "../admin/allUsersComponent";
-import UpdateSelf from "../player/updateSelfComponent";
+import { userInfoAtom } from "../atoms/atoms";
+import RegisterUser from "../components/admin/registerUserComponent";
+import GetAllUsers from "../components/admin/allUsersComponent";
+import UpdateSelf from "../components/player/updateSelfComponent";
+
 
 const ManageUsersPage = () => {
     const [userInfo] = useAtom(userInfoAtom);

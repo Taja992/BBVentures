@@ -1,8 +1,9 @@
 ﻿import { useAtom } from "jotai";
-import {userInfoAtom } from "../../atoms/atoms";
-import AdminBoardsHistoryComponent from "../admin/adminBoardsHistoryComponent";
-import UserBoardHistoryThisWeek from "../player/userBoardHistoryThisWeek";
-import UserBoardsHistoryComponent from "../player/userBoardsHistoryComponent";
+import { userInfoAtom } from "../atoms/atoms";
+import AdminBoardsHistoryComponent from "../components/admin/adminBoardsHistoryComponent";
+import UserBoardsHistoryComponent from "../components/player/userBoardsHistoryComponent";
+import UserBoardHistoryThisWeek from "../components/player/userBoardHistoryThisWeek";
+
 
 const BoardsPage = () => {
     const [userInfo] = useAtom(userInfoAtom);

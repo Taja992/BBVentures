@@ -1,6 +1,7 @@
 ﻿import { useAtom } from "jotai";
-import { userInfoAtom } from "../../atoms/atoms";
-import UpdateSelf from "../player/updateSelfComponent";
+import { userInfoAtom } from "../atoms/atoms";
+import UpdateSelf from "../components/player/updateSelfComponent";
+
 
 
 

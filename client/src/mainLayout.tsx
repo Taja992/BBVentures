@@ -2,8 +2,8 @@
 import { Link, Outlet } from "react-router-dom";
 import {userBalance, userInfoAtom } from "./atoms/atoms";
 import {useEffect, useState } from "react";
-import { http } from "./http";
-import LoginForm from "./components/loginComponent";
+import LoginForm from "./components/login/loginComponent";
+import { http } from "./services/http";
 
 const MainLayout = () => {
     const [userInfo] = useAtom(userInfoAtom);

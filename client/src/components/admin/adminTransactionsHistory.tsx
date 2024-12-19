@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { http } from "../../http";
+import { http } from '../../services/http.ts';
 import {BBVenturesApiTransaction, BBVenturesApiUser} from "../../services/Api";
 import {CompactTable} from "@table-library/react-table-library/compact";
 import {useTheme} from "@table-library/react-table-library/theme";

@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from 'react';
-import { http } from '../../http';
+import { http } from '../../services/http';
 import { BBVenturesApiBoardHistoryDto } from '../../services/Api';
 import toast from 'react-hot-toast';
 import { CompactTable } from "@table-library/react-table-library/compact";

@@ -1,11 +1,11 @@
 ﻿import { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { http } from '../../http';
 import './BoardGameComponent.css';
 import { BBVenturesApiBoardHistoryDto, BBVenturesApiCreateBoardDto } from '../../services/Api';
 import toast from 'react-hot-toast';
 import { boardHistFromWeekAtom, boardsAtom, boardStateAtom } from '../../atoms/atoms';
 import { userBalance } from '../../atoms/atoms';
+import { http } from '../../services/http';
 
 const BoardGameComponent = () => {
     // State variables for selected numbers, field count, game ID, user balance, board state, and other UI states

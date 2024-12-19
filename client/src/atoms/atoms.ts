@@ -1,7 +1,8 @@
 import {atom} from "jotai";
 import {BBVenturesApiBoardDto, BBVenturesApiBoardHistoryDto, BBVenturesApiGameDto, BBVenturesApiUserDto} from "../services/Api.ts";
 import {atomWithStorage, createJSONStorage } from "jotai/utils";
-import { http } from "../http.ts";
+import { http } from "../services/http.ts";
+
 
 
 

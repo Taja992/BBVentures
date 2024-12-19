@@ -1,8 +1,9 @@
 ﻿import { useAtom } from "jotai";
-import { userInfoAtom } from "../../atoms/atoms";
-import GameHistoryForAdminComponent from "../admin/gameHistoryForAdminComponent";
-import GameHistoryForUserComponent from "../player/gameHistoryForUserComponent";
-import InputWinningNumbersComponent from "../admin/inputWinningNumbersComponent";
+import { userInfoAtom } from "../atoms/atoms";
+import GameHistoryForAdminComponent from "../components/admin/gameHistoryForAdminComponent";
+import GameHistoryForUserComponent from "../components/player/gameHistoryForUserComponent";
+import InputWinningNumbersComponent from "../components/admin/inputWinningNumbersComponent";
+
 
 const GamePage = () => {
     const [userInfo] = useAtom(userInfoAtom);

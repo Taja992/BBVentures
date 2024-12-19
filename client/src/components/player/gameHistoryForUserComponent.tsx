@@ -1,7 +1,7 @@
 ﻿import React, { useEffect } from 'react';
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useTheme } from "@table-library/react-table-library/theme";
-import { http } from '../../http.ts';
+import { http } from '../../services/http';
 import { BBVenturesApiGameDto } from '../../services/Api';
 import { useAtom } from 'jotai';
 import { gamesAtom } from '../../atoms/atoms';

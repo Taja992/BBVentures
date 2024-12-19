@@ -1,9 +1,10 @@
 ﻿import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { http } from "../http";
 import { userBalance, userInfoAtom, boardStateAtom } from "../atoms/atoms";
-import BoardGameComponent from "./player/BoardGameComponent";
-import UserBoardHistoryThisWeek from "./player/userBoardHistoryThisWeek";
+import BoardGameComponent from "../components/player/BoardGameComponent";
+import UserBoardHistoryThisWeek from "../components/player/userBoardHistoryThisWeek";
+import { http } from "../services/http";
+
 
 
 const GameBoard = () => {
