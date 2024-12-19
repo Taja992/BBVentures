@@ -8,7 +8,6 @@ public interface IUserService
 {
     Task<IEnumerable<UserDto>> GetAllUsers();
     Task<bool> UpdateUser(UserDto userDto, bool isAdmin);
-    Task<UserDto> GetUserById(string id);
     public Task<bool> UpdateBalance(string id, decimal transactionAmount);
     public Task<IEnumerable<UserDto>> GetAllUsersWithName(string searchVal);
 }
@@ -46,21 +45,6 @@ public class UserService(IUserRepository userRepository) : IUserService
         }
 
         return userDtos;
-    }
-
-    public async Task<UserDto> GetUserById(string id)
-    {
-        var user = await userRepository.GetUserById(id);
-
-        if (user == null)
-        {
-            throw new Exception("user not found");
-        }
-        
-        var userDto = UserDto.FromEntity(user!);
-        var roles = await userRepository.GetUserRoles(user!);
-        userDto.Role = roles.FirstOrDefault();
-        return userDto;
     }
     
 
