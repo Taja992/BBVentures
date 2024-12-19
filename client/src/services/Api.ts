@@ -678,26 +678,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
 
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserGetByIdList
-     * @request GET:/api/User/getById
-     */
-    userGetByIdList: (
-      query?: {
-        id?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<BBVenturesApiUserDto, any>({
-        path: `/api/User/getById`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
 
     /**
      * No description

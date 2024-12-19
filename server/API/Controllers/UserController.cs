@@ -23,16 +23,8 @@ public class UserController(IUserService userService, UserManager<User> userMana
         var players = await userService.GetAllUsers();
         return Ok(players);
     }
-    
-    [HttpGet]
-    [Authorize]
-    [Route("getById")]
-    public async Task<ActionResult<UserDto>> GetUserById(string id)
-    {
-        return Ok(await userService.GetUserById(id));
-    }
-    
 
+    
     [HttpPut]
     [Authorize(Roles = "Admin")]
     [Route("update")]
