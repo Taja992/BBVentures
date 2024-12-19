@@ -37,7 +37,7 @@
 }
 
 .number-button:hover {
-    background-color: rgba(118, 75, 162, 0.75);
+    background: #9579B9BF;
     transform: scale(1.1); /* Slight zoom on hover */
 }
 
@@ -58,7 +58,7 @@
 }
 
 .submit-button:hover {
-    background-color: #0f1e33;
+    background: #9579B9BF;
 }
 
 .field-selection {
@@ -80,14 +80,14 @@
 }
 
 .field-button:hover {
-    background-color: #667eea;
+    background: rgba(149, 121, 185, 0.75);
 }
 
 .field-button.selected {
-    background-color: rgba(149, 121, 185, 0.75);
+    background: rgba(149, 121, 185, 0.75);
 }
 
-/* Optional: For a more polished look, add shadows or glow effects */
+
 .number-button,
 .submit-button {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
