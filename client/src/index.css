@@ -24,19 +24,19 @@ button {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    padding: 7.5px 16px; /* 50% reduction */
+    padding: 8px 16px; /* 50% reduction */
     font-size: 15px; /* Fixed font size */
-    margin: 3px 1.5px; /* Reduced margin */
+    /* Reduced margin */
     cursor: pointer;
     border-radius: 6px; /* Slightly smaller border radius */
     transition: transform 0.2s ease, background-color 0.3s ease;
+    margin: 8px 2px 20px 8px;
 }
 
-/* Add a left margin to the small button */
-.button.small {
-    margin-left: 8px; 
-    margin-top: 8px;
-    margin-bottom: 20px;
+.edit-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 4px;
 }
 
 button:hover {
@@ -88,6 +88,7 @@ input {
     flex: 1;
     padding: 1.5rem;
 }
+
 
 /* Right blank area */
 .square-a .w-half {

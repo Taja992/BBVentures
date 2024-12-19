@@ -6,10 +6,9 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import { useAtom } from "jotai";
 import { boardHistFromWeekAtom } from "../../atoms/atoms";
 import tableTheme from "../../themes/tableTheme";
-import "../../themes/TableStyles.css";
 
 function UserBoardHistoryThisWeek() {
-    const theme = useTheme(tableTheme); 
+    const theme = useTheme(tableTheme);
     const [boardHistFromWeek, setBoardHistFromWeek] = useAtom(boardHistFromWeekAtom);
 
     useEffect(() => {
@@ -33,7 +32,7 @@ function UserBoardHistoryThisWeek() {
                 <h2 className="text-xl text-center font-bold text-[#7E8FA9] mb-4 uppercase">
                     Your Boards This Week
                 </h2>
-                <div className="board-history-week">
+                <div className="max-h-96 overflow-y-auto relative">
                     <CompactTable columns={columns} data={{nodes: boardHistFromWeek}} theme={theme}/>
                 </div>
             </div>

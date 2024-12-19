@@ -185,9 +185,9 @@ const GetAllUsers: React.FC = () => {
             label: "Actions",
             renderCell: (item: BBVenturesApiUserDto) => (
                 editingUserId === item.id ? (
-                    <button onClick={() => handleUpdate(item)}>Save</button>
+                    <button className="edit-button" onClick={() => handleUpdate(item)}>Save</button>
                 ) : (
-                    <button onClick={() => setEditingUserId(item.id!)}>Edit</button>
+                    <button className="edit-button" onClick={() => setEditingUserId(item.id!)}>Edit</button>
                 )
             ),
         },
