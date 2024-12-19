@@ -88,6 +88,7 @@ const BoardGameComponent = () => {
             return;
         }
 
+        // Create a sorted copy of the selectedNumbers array in ascending order
         const sortedNumbers = [...selectedNumbers].sort((a, b) => a - b);
 
         const requestBody: BBVenturesApiCreateBoardDto = {
