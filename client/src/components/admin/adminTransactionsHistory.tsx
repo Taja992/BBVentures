@@ -131,7 +131,7 @@ function AllHistory(){
 
 
     return <>
-        <h1 className={"text-2xl font-bold mb-4"}> All Transactions </h1>
+        <h1 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase"> All Transactions </h1>
 
         <label className={"mr-3"}>From User:</label>
         <input className={"py-1 px-1 my-1 mb-2 border border-grey"} value={userNameSearch}

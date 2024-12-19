@@ -40,11 +40,11 @@ const GameHistoryForUserComponent: React.FC = () => {
         <div>
             {activeGame && (
                 <div>
-                    <h2>Active Game</h2>
+                    <h1 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase"> Active Game </h1>
                     <CompactTable columns={columns} data={{nodes: [activeGame]}} theme={theme}/>
                 </div>
             )}
-            <h2>Game History</h2>
+            <h1 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase"> Game History </h1>
             <div className="max-h-64 overflow-y-auto">
                 <CompactTable columns={columns} data={{nodes: inactiveGames}} theme={theme}/>
             </div>

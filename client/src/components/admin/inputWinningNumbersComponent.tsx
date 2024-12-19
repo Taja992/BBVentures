@@ -51,7 +51,7 @@ const InputWinningNumbersComponent = () => {
 
     return (
         <div className="space-y-6 text-center">
-            <h2 className="text-2xl font-bold mb-4">Input Winning Numbers</h2>
+            <h2 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase">Input Winning Numbers</h2>
             <div className="space-y-4 flex flex-col items-center justify-center"> {/* Center the input fields */}
                 {Array.from({ length: 3 }).map((_, index) => (
                     <input

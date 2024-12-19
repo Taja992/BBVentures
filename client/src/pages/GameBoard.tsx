@@ -38,8 +38,7 @@ const GameBoard = () => {
             {/* Board Game Section */}
             <div className="w-full mx-auto flex flex-col lg:flex-row gap-8">
                 {/* Board Game */}
-                <div className="flex-1 lg:basis-1/2 bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-xl font-bold mb-4">Board Game</h2>
+                <div className="flex-1 flex-center lg:basis-1/2 bg-white p-6 rounded-lg shadow-md">
                     <BoardGameComponent/>
                 </div>
 

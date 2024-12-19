@@ -48,7 +48,7 @@ const userBoardsHistoryComponent = () => {
 
     return (
         <div className="board-history">
-            <h2 className="text-2xl font-bold mb-4">Boards History For User</h2>
+            <h2 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase pt-8 pr-2">Boards History</h2>
             <div className="max-h-64 overflow-y-auto">
                 <CompactTable columns={columns} data={{ nodes: boards }} theme={theme} />
             </div>

@@ -44,7 +44,7 @@ const AdminBoardsHistoryComponent: React.FC = () => {
 
     return (
         <div>
-            <h2 className="text-2xl font-bold mb-4">Boards History For Admin</h2>
+            <h2 className="text-xl font-bold text-[#7E8FA9] mb-4 uppercase pt-14">Boards History Of All Players</h2>
             <div className="full-height-table-container">
                 <CompactTable columns={columns} data={{nodes: boards}} theme={theme}/>
             </div>
