@@ -47,7 +47,6 @@ export interface BBVenturesApiBoardDto {
   /** @format date-time */
   updatedAt?: string | null;
   isWon?: boolean;
-  isAutoplay?: boolean;
   /** @format int32 */
   weekNumber?: number;
   playerUsername?: string | null;
@@ -67,7 +66,6 @@ export interface BBVenturesApiCreateBoardDto {
   /** @format uuid */
   gameId?: string;
   numbers?: number[] | null;
-  isAutoplay?: boolean;
   /** @format int32 */
   autoplayWeeks?: number;
   /** @format int32 */
@@ -716,27 +714,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<BBVenturesApiUserDto[], any>({
         path: `/api/User/getWithName`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserGetByIdList
-     * @request GET:/api/User/getById
-     */
-    userGetByIdList: (
-      query?: {
-        id?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<BBVenturesApiUserDto, any>({
-        path: `/api/User/getById`,
         method: "GET",
         query: query,
         format: "json",
