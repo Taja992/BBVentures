@@ -23,15 +23,6 @@ public class UserController(IUserService userService, UserManager<User> userMana
         var players = await userService.GetAllUsers();
         return Ok(players);
     }
-
-    [HttpGet]
-    [Authorize(Roles = "Admin")]
-    [Route("getWithName")]
-    public async Task<IEnumerable<UserDto>> GetAllUsersWithName(string searchVal)
-    {
-        return await userService.GetAllUsersWithName(searchVal);
-    }
-
     
     [HttpGet]
     [Authorize]

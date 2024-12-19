@@ -14,7 +14,7 @@ public interface ITransactionService
 
     public Task<Transaction> CreateTransaction(TransactionDto dto);
 
-    public TransactionResponseDto UpdateTransaction(TransactionResponseDto dto);
+    public Task<TransactionResponseDto> UpdateTransaction(TransactionResponseDto dto);
     public Task<List<TransactionResponseDto>> GetAllTransactionsFromUsersName(string searchVal);
 }
 
@@ -63,10 +63,10 @@ public class TransactionService(ITransactionRepository transactionRepository, IU
         return newTrans;
     }
 
-    public TransactionResponseDto UpdateTransaction(TransactionResponseDto dto)
+    public async Task<TransactionResponseDto> UpdateTransaction(TransactionResponseDto dto)
     {
         Transaction trans = dto.ToTransaction();
-        transactionRepository.UpdateTransaction(trans);
-        return new TransactionResponseDto().FromEntity(trans);
+        Transaction newTrans = await transactionRepository.UpdateTransaction(trans);
+        return new TransactionResponseDto().FromEntity(newTrans);
     }
 }
