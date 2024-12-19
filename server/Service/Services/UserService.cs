@@ -1,6 +1,4 @@
 ﻿using DataAccess.Interfaces;
-using DataAccess.Models;
-using Microsoft.Extensions.Logging;
 using Service.TransferModels.DTOs;
 
 namespace Service.Services;
@@ -11,7 +9,6 @@ public interface IUserService
     Task<IEnumerable<UserDto>> GetAllUsers();
     Task<bool> UpdateUser(UserDto userDto, bool isAdmin);
     Task<UserDto> GetUserById(string id);
-    Task<bool> AssignRole(string userId, string role);
     public Task<bool> UpdateBalance(string id, decimal transactionAmount);
     public Task<IEnumerable<UserDto>> GetAllUsersWithName(string searchVal);
 }
@@ -66,23 +63,6 @@ public class UserService(IUserRepository userRepository) : IUserService
         return userDto;
     }
     
-    public async Task<bool> AssignRole(string userId, string role)
-    {
-        var user = await userRepository.GetUserById(userId);
-        if (user == null)
-        {
-            throw new Exception("user not found");
-        }
-
-        var currentRoles = await userRepository.GetUserRoles(user);
-        var removeResult = await userRepository.RemoveUserRoles(user, currentRoles);
-        if (!removeResult)
-        {
-            return false;
-        }
-
-        return await userRepository.AddUserRole(user, role);
-    }
 
     public async Task<bool> UpdateUser(UserDto userDto, bool isAdmin)
     {
@@ -101,10 +81,6 @@ public class UserService(IUserRepository userRepository) : IUserService
         {
             return false;
         }
- 
-        
-        
-        
         //normalized is something in the aspnetuser table that needs to be updated when these other fields are
         //toupperinvariant converts it to all capital letters
         if (userDto.Email != null)
@@ -134,13 +110,8 @@ public class UserService(IUserRepository userRepository) : IUserService
         {
             throw new Exception("user not found");
         }
-        
         user.Balance += transactionAmount;
 
         return await userRepository.UpdateUser(user);
-
-
     }
-    
-    
 }

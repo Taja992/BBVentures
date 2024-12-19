@@ -5,7 +5,6 @@
         public required string UserId { get; set; }
         public Guid GameId { get; set; }
         public List<int> Numbers { get; set; } = new();
-        public bool IsAutoplay { get; set; }
         public int AutoplayWeeks { get; set; } = 1;
         public int FieldCount { get; set; }
     }

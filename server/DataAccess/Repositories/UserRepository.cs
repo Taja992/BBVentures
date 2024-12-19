@@ -31,24 +31,10 @@ public class UserRepository(AppDbContext context, UserManager<User> userManager)
         context.Users.Update(user);
         return await context.SaveChangesAsync() > 0;
     }
-    
-    
-
 
     public async Task<IList<string>> GetUserRoles(User user)
     {
         return await userManager.GetRolesAsync(user);
     }
-
-    public async Task<bool> RemoveUserRoles(User user, IEnumerable<string> roles)
-    {
-        var result = await userManager.RemoveFromRolesAsync(user, roles);
-        return result.Succeeded;
-    }
-
-    public async Task<bool> AddUserRole(User user, string role)
-    {
-        var result = await userManager.AddToRoleAsync(user, role);
-        return result.Succeeded;
-    }
+    
 }

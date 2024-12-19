@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using DataAccess;
 using DataAccess.Interfaces;
 using FluentValidation;
 using Service.TransferModels.DTOs;
@@ -10,17 +9,15 @@ namespace Service.Services
 {
     public class BoardService : IBoardService
     {
-        private readonly AppDbContext _context;
         private readonly IBoardRepository _boardRepository;
         private readonly IValidator<CreateBoardDto> _createValidator;
         private readonly IGameRepository _gameRepository;
         private readonly IUserRepository _userRepository;
 
 
-        public BoardService(AppDbContext context, IBoardRepository boardRepository,
+        public BoardService(IBoardRepository boardRepository,
             IValidator<CreateBoardDto> createValidator, IGameRepository gameRepository, IUserRepository userRepository)
         {
-            _context = context;
             _boardRepository = boardRepository;
             _createValidator = createValidator;
             _gameRepository = gameRepository;

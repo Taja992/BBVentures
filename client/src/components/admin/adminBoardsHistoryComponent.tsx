@@ -36,7 +36,6 @@ const AdminBoardsHistoryComponent: React.FC = () => {
         { label: 'Email', renderCell: (item: BBVenturesApiBoardDto) => item.playerEmail },
         { label: 'Week Number', renderCell: (item: BBVenturesApiBoardDto) => item.weekNumber},
         { label: 'Numbers', renderCell: (item: BBVenturesApiBoardDto) => item.numbers?.join(', ') },
-        { label: 'Is Autoplay', renderCell: (item: BBVenturesApiBoardDto) => (item.isAutoplay ? 'Yes' : 'No') },
         { label: 'Created At', renderCell: (item: BBVenturesApiBoardDto) =>
                 item.createdAt ? new Date(item.createdAt).toLocaleString() : 'N/A' },
         
