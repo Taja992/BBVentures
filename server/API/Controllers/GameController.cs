@@ -30,6 +30,7 @@ namespace API.Controllers;
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<GameDto>> ProcessWinningNumbers([FromBody] List<int> winningNumbers)
         {
+            // Validate the input winning numbers
             if (winningNumbers == null || winningNumbers.Count != 3 || winningNumbers.Any(n => n < 1 || n > 16))
             {
                 return BadRequest(new { message = "Invalid winning numbers. Winning numbers must be exactly 3 and between 1 and 16." });
@@ -37,6 +38,7 @@ namespace API.Controllers;
 
             try
             {
+                // Process the winning numbers and create a new game
                 var newGameDto = await _service.ProcessWinningNumbers(winningNumbers);
                 return Ok(newGameDto);
             }
