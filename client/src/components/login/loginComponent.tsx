@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import toast from "react-hot-toast";
 import { Link } from 'react-router-dom';
 import { Credentials, useAuth } from '../../services/auth';
+import loginImage from '../../assets/login.png'; // Adjust the path if necessary
 
 // Defining the validation schema using yup
 const schema: yup.ObjectSchema<Credentials> = yup
@@ -41,24 +42,26 @@ const LoginForm: React.FC = () => {
             ) : (
                 <div className="background-container">
                     <div className="square-a-wrapper">
-                        {/* Top Border */}
-                        <div className="top-border"></div>
-                        {/* Main Square */}
-                        <div className="square-a flex w-[70%] h-[70%] bg-white">
-                            <div className="flex flex-col w-1/2 p-6">
+                        
+                        {/* <div className="top-border border-t-4 border-[#1e3c72]"></div> */}
+
+                        {/* Main Square with rounded corners */}
+                        <div className="square-a flex w-[70%] h-[70%] bg-white rounded-lg overflow-hidden">
+                            {/* Left side form container */}
+                            <div className="flex flex-col w-1/2 p-6 justify-center items-center">
                                 <form
-                                    className="w-full h-full flex flex-col justify-center"
+                                    className="w-full flex flex-col justify-center items-center space-y-4"
                                     onSubmit={handleSubmit(onSubmit)}
                                 >
                                     <h1 className="text-[#1e3c72] text-3xl font-bold mb-2 text-center">Jerne IF</h1>
                                     <h2 className="text-[#2a5298] text-xl mb-6 text-center">Login to Dead Pigeons</h2>
-                                    <div className="form-group mb-4">
+                                    <div className=" w-full">
                                         <label htmlFor="email" className="block text-sm text-[#555] mb-2">Email</label>
                                         <input
                                             type="email"
                                             id="email"
                                             {...register("email")}
-                                            className="w-full p-3 border border-gray-300 rounded"
+                                            className="w-full max-w-xs p-3 border border-gray-300 rounded-lg"
                                             required
                                         />
                                         {errors.email && (
@@ -67,13 +70,13 @@ const LoginForm: React.FC = () => {
                                             </p>
                                         )}
                                     </div>
-                                    <div className="form-group mb-6">
+                                    <div className="justify-center w-full">
                                         <label htmlFor="password" className="block text-sm text-[#555] mb-2">Password</label>
                                         <input
                                             type="password"
                                             id="password"
                                             {...register("password")}
-                                            className="w-full p-3 border border-gray-300 rounded"
+                                            className="w-full max-w-xs p-3 border border-gray-300 rounded-lg"
                                             required
                                         />
                                         {errors.password && (
@@ -82,7 +85,7 @@ const LoginForm: React.FC = () => {
                                             </p>
                                         )}
                                     </div>
-                                    <button type="submit" className="login-button">
+                                    <button type="submit" className="login-button w-full max-w-xs rounded-lg">
                                         Login
                                     </button>
                                     <Link to="/request-password" className="text-blue-500 text-sm mt-4 block text-center">
@@ -90,7 +93,14 @@ const LoginForm: React.FC = () => {
                                     </Link>
                                 </form>
                             </div>
-                            <div className="w-1/2"></div>
+                            {/* Right side with image */}
+                            <div className="w-1/2">
+                                <img
+                                    src={loginImage}
+                                    alt="Login"
+                                    className="object-cover w-full h-full rounded-r-xl"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
