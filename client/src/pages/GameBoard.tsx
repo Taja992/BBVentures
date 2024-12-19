@@ -38,31 +38,29 @@ const GameBoard = () => {
             {/* Board Game Section */}
             <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
                 {/* Board Game */}
-                <div className="flex-1 bg-white p-6 rounded-lg shadow-md">
+                <div className=" bg-white p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-bold mb-4">Board Game</h2>
                     <BoardGameComponent />
                 </div>
 
-                {/* User Board History (This Week) */}
-                <div className="flex-1 bg-white p-6 rounded-lg shadow-md">
+                {/* User Weekly History and Winning Numbers */}
+                <div className="bg-white p-6 rounded-lg shadow-md bg-white p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-bold mb-4">Your Weekly History</h2>
                     <UserBoardHistoryThisWeek />
+                    <div className="mt-6">
+                        <h2 className="text-xl font-bold mb-4">Input Winning Numbers</h2>
+                        <InputWinningNumbersComponent />
+                    </div>
                 </div>
             </div>
 
             {/* Admin Section */}
             {userInfo?.isAdmin && (
-                <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="w-full flex-center pl-96 mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Admin Game History (80%) */}
                     <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
                         <h2 className="text-xl font-bold mb-4">Admin Game History</h2>
                         <GameHistoryForAdminComponent />
-                    </div>
-
-                    {/* Input Winning Numbers (20%) */}
-                    <div className="bg-white p-6 rounded-lg shadow-md">
-                        <h2 className="text-xl font-bold mb-4">Input Winning Numbers</h2>
-                        <InputWinningNumbersComponent />
                     </div>
                 </div>
             )}
