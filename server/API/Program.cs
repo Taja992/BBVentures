@@ -13,6 +13,7 @@ using Service;
 using Service.Auth;
 using Service.Security;
 using Service.Services;
+using Service.TransferModels.DTOs;
 using Service.TransferModels.Requests.Create;
 using Service.Validators;
 
@@ -126,6 +127,7 @@ public class Program
         builder.Services.AddScoped<IGameRepository, GameRepository>();
 
         builder.Services.AddScoped<IValidator<CreateBoardDto>, BoardValidator>();
+        builder.Services.AddScoped<IValidator<TransactionDto>, TransactionValidator>();
 
         #endregion
 
