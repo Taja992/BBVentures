@@ -13,17 +13,19 @@ public class GameRepository : IGameRepository
     {
         _context = context;
     }
-
+    // Retrieves all games from the database
     public async Task<List<Game>> GetAllGamesAsync()
     {
         return await _context.Games.ToListAsync();
     }
-
+    
+    // Retrieves a game by its ID
     public async Task<Game> GetGameById(Guid id)
     {
         return await _context.Games.Where(game => game.Id == id).SingleAsync();
     }
-
+    
+    // Adds a new game to the database
     public async Task<Game> AddGame(Game game)
     {
         game.WeekNumber = WeekNumberHelper.GetWeekOfYearStartingOnSunday(game.EndedAt ?? DateTime.UtcNow);
@@ -66,17 +68,20 @@ public class GameRepository : IGameRepository
     // {
     //     return await _context.Boards.Where(b => b.GameId == gameId).ToListAsync();
     // }
-
+    
+    // Retrieves the active game from the database
     public async Task<Game?> GetActiveGameAsync()
     {
         return await _context.Games.FirstOrDefaultAsync(g => g.IsActive);
     }
-
+    
+    // Checks if a game exists in the database by its ID
     private bool GameExists(Guid id)
     {
         return _context.Games.Any(e => e.Id == id);
     }
     
+    // Retrieves the winning boards for a specific game based on the winning numbers
     public async Task<List<Board>> GetWinningBoardsForGame(Guid gameId, List<int> winningNumbers)
     {
         var game = await _context.Games.Include(g => g.Boards).FirstOrDefaultAsync(g => g.Id == gameId);
