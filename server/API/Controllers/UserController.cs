@@ -59,21 +59,21 @@ public class UserController(IUserService userService, UserManager<User> userMana
         
         userDto.Id = userId;
 
-        try
+        var result = await userService.UpdateUser(userDto, isAdmin: false);
+        if (result)
         {
-            var result = await userService.UpdateUser(userDto, isAdmin: false);
-            if (result)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return BadRequest("Error updating user");
-            }
+            return NoContent();
         }
-        catch (Exception ex)
+        else
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Error updating user: {ex.Message}\n{ex.StackTrace}");
+            var errorResponse = new
+            {
+                Message = "Error updating user",
+                UserId = userDto.Id,
+                UserDto = userDto,
+                Reason = "UpdateUser returned false"
+            };
+            return BadRequest(errorResponse);
         }
         
     }
