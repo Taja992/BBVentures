@@ -66,16 +66,8 @@ public class UserController(IUserService userService, UserManager<User> userMana
         }
         else
         {
-            var errorResponse = new
-            {
-                Message = "Error updating user",
-                UserId = userDto.Id,
-                UserDto = userDto,
-                Reason = "UpdateUser returned false"
-            };
-            return BadRequest(errorResponse);
+            return BadRequest("Could not update User");
         }
-        
     }
     
     
