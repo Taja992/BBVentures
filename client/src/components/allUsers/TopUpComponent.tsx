@@ -81,7 +81,7 @@ function TopUp() {
                 />
                 <input
                     type="text"
-                    placeholder="Phone Number"
+                    placeholder="Mobile Pay Number"
                     value={mobilePayNum}
                     onChange={(e) => setMobilePayNum(e.target.value)}
                     className="p-4 border rounded-lg w-full"
