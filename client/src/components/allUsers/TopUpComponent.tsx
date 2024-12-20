@@ -5,7 +5,6 @@ import mbLogo from '../../assets/mb.png';
 import toast from "react-hot-toast";
 import {useAtom} from "jotai";
 import { transactionAtom } from "../../atoms/atoms";
-import {all} from "axios";
 
 function TopUp() {
     const [topUpAmount, setTopUpAmount] = useState("");
