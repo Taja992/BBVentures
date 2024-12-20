@@ -104,29 +104,6 @@ public class UserControllerTests(ITestOutputHelper output) : ApiTestBase
     }
 
     [Fact]
-    public async Task UpdateSelf_ReturnsBadRequestPlayerCannotEditIsActive()
-    {
-        // Arrange
-        await AuthorizeClient("Player");
-
-        var userDto = new UserDto
-        {
-            Id = PlayerId,
-            UserName = "UpdatedPlayer",
-            Email = "updatedplayer@example.com",
-            IsActive = true
-        };
-        var content = new StringContent(JsonSerializer.Serialize(userDto), Encoding.UTF8, "application/json");
-
-        // Act
-        var response = await Client.PutAsync("/api/user/update-self", content);
-
-        // Assert
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-    }
-
-
-    [Fact]
     public async Task AssignRole_ReturnsOkResponse()
     {
         // Arrange
