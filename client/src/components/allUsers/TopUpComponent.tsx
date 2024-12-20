@@ -3,11 +3,15 @@ import { BBVenturesApiTransactionDto } from "../../services/Api";
 import { http } from '../../services/http';
 import mbLogo from '../../assets/mb.png';
 import toast from "react-hot-toast";
+import {useAtom} from "jotai";
+import { transactionAtom } from "../../atoms/atoms";
+import {all} from "axios";
 
 function TopUp() {
     const [topUpAmount, setTopUpAmount] = useState("");
     const [mobilePayNum, setMobilePayNum] = useState("");
     const [playerId, setPlayerId] = useState<string | null>(null);
+    const [allTrans, setAllTrans] = useAtom(transactionAtom);
 
     useEffect(() => {
         const getPlayerId = async () => {
@@ -47,6 +51,7 @@ function TopUp() {
 
         await http.transactionAddTransactionCreate(trans);
         toast.success("transaction added! waiting for admin approval")
+        setAllTrans([...allTrans, trans])
     }
 
     return (
