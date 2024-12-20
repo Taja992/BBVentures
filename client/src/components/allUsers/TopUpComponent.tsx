@@ -32,11 +32,11 @@ function TopUp() {
     async function topUp() {
         const finalAmount: number = parseInt(topUpAmount);
 
-        if (!finalAmount) {
+        if (!finalAmount || finalAmount < 0) {
             toast.error("Top-up amount entered is not valid. Please try again.");
             return;
         }
-        if (!mobilePayNum) {
+        if (!mobilePayNum || mobilePayNum.length != 11) {
             toast.error("Mobile pay number entered is not valid. Please try again.");
             return;
         }
