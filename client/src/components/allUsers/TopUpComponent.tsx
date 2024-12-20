@@ -2,6 +2,7 @@
 import { BBVenturesApiTransactionDto } from "../../services/Api";
 import { http } from '../../services/http';
 import mbLogo from '../../assets/mb.png';
+import toast from "react-hot-toast";
 
 function TopUp() {
     const [topUpAmount, setTopUpAmount] = useState("");
@@ -29,11 +30,11 @@ function TopUp() {
         const finalAmount: number = parseInt(topUpAmount);
 
         if (!finalAmount) {
-            alert("Top-up amount entered is not valid. Please try again.");
+            toast.error("Top-up amount entered is not valid. Please try again.");
             return;
         }
         if (!mobilePayNum) {
-            alert("Mobile pay number entered is not valid. Please try again.");
+            toast.error("Mobile pay number entered is not valid. Please try again.");
             return;
         }
 
@@ -44,9 +45,8 @@ function TopUp() {
             isPending: true,
         };
 
-        console.log("Request body: ", trans);
-
         await http.transactionAddTransactionCreate(trans);
+        toast.success("transaction added! waiting for admin approval")
     }
 
     return (
