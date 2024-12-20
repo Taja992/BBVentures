@@ -4,10 +4,12 @@ import {BBVenturesApiTransaction, BBVenturesApiUser} from "../../services/Api";
 import {CompactTable} from "@table-library/react-table-library/compact";
 import {useTheme} from "@table-library/react-table-library/theme";
 import tableTheme from "../../themes/tableTheme.ts";
+import {useAtom} from "jotai";
+import { transactionAtom } from "../../atoms/atoms.ts";
 
 function AllHistory(){
     const theme = useTheme(tableTheme);
-    const [allTrans, setAllTrans] = useState<BBVenturesApiTransaction[]>([]);
+    const [allTrans, setAllTrans] = useAtom(transactionAtom);
     const [filteredTrans, setFilteredTrans] = useState<BBVenturesApiTransaction[]>([]);
     const [allUsers, setAllUsers] = useState<BBVenturesApiUser[]>([]);
     const [userNameSearch, setUserNameSearch] = useState('');
