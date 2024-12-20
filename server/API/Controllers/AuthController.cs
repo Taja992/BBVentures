@@ -130,7 +130,7 @@ public class AuthController(
     }
 
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize]
     [Route("userinfo")]
     public async Task<ActionResult<AuthUserInfo>> UserInfo()
     {
@@ -141,7 +141,6 @@ public class AuthController(
         if (user == null) throw new UserNotFoundError();
 
         var roles = await userManager.GetRolesAsync(user);
-        var balance = user.Balance;
         var isAdmin = roles.Contains(Role.Admin);
         var isPlayer = roles.Contains(Role.Player) || isAdmin;
         return Ok(new AuthUserInfo(user.UserName ?? string.Empty, isAdmin, isPlayer));

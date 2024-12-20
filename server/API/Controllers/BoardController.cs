@@ -19,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult<List<BoardDto>>> GetAllBoards()
         {
             var boards = await _boardService.GetAllBoards();

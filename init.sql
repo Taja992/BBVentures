@@ -190,10 +190,10 @@ create table "Boards"
             references "Games"
             on delete cascade,
     "Numbers"    int[],
-    "IsAutoplay" boolean not null,
     "CreatedAt"  timestamp with time zone,
     "UpdatedAt"  timestamp with time zone
-    "IsWon"      boolean
+    "IsWon"      boolean,
+    "AutoplayWeeks" integer default 1 not null
 );
 
 alter table "Boards"
