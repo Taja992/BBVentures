@@ -58,7 +58,7 @@ function UserHistory() {
         {label: 'Amount', renderCell: (item: BBVenturesApiTransaction) => item.amount},
         {label: 'Player Name', renderCell: (item: BBVenturesApiTransaction) => getUserNameById(item.userId!)},
         {label: 'Player Email', renderCell: (item: BBVenturesApiTransaction) => getUserEmailById(item.userId!)},
-        {label: 'Is Pending', renderCell: (item: BBVenturesApiTransaction) => item.isPending ? "pending" : "approved"},
+        {label: 'Is Pending', renderCell: (item: BBVenturesApiTransaction) => item.isPending ? "Pending" : "Approved"},
         {label: 'Mobile Pay Number', renderCell: (item: BBVenturesApiTransaction) => item.mobilePayTransactionNumber},
         {label: 'Made At', renderCell: (item: BBVenturesApiTransaction) => item.createdAt ? new Date(item.createdAt).toLocaleString() : "N/A"}
     ]
